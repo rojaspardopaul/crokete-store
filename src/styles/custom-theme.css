@@ -1,0 +1,144 @@
+/*TODO:
+Este archivo contiene las variables del color primario de KachaBazar.
+Solamente es necesario cambiar las variables --kachabazar-XXX en :root para cambiar el color primario a elección.
+Se utiliza de esta manera: 
+<h1 class="text-kachabazar-500">Título</h1>
+<button class="bg-kachabazar-500">Botón de acción</button>
+*/
+:root {
+    --kachabazar-50: oklch(97.7% 0.01 255.7);
+    --kachabazar-100: oklch(94.9% 0.03 255.7);
+    --kachabazar-200: oklch(89.6% 0.07 255.7);
+    --kachabazar-300: oklch(81.6% 0.13 255.7);
+    --kachabazar-400: oklch(71.5% 0.18 255.7);
+    --kachabazar-500: oklch(65.7% 0.21 255.7);
+    --kachabazar-600: oklch(57.5% 0.21 255.7);
+    --kachabazar-700: oklch(48% 0.19 255.7);
+    --kachabazar-800: oklch(40% 0.16 255.7);
+    --kachabazar-900: oklch(33% 0.13 255.7);
+}
+
+/* Texto */
+.text-kachabazar-50 {
+    color: var(--kachabazar-50);
+}
+
+.text-kachabazar-100 {
+    color: var(--kachabazar-100);
+}
+
+.text-kachabazar-200 {
+    color: var(--kachabazar-200);
+}
+
+.text-kachabazar-300 {
+    color: var(--kachabazar-300);
+}
+
+.text-kachabazar-400 {
+    color: var(--kachabazar-400);
+}
+
+.text-kachabazar-500 {
+    color: var(--kachabazar-500);
+}
+
+.text-kachabazar-600 {
+    color: var(--kachabazar-600);
+}
+
+.text-kachabazar-700 {
+    color: var(--kachabazar-700);
+}
+
+.text-kachabazar-800 {
+    color: var(--kachabazar-800);
+}
+
+.text-kachabazar-900 {
+    color: var(--kachabazar-900);
+}
+
+/* Fondo */
+.bg-kachabazar-50 {
+    background-color: var(--kachabazar-50);
+}
+
+.bg-kachabazar-100 {
+    background-color: var(--kachabazar-100);
+}
+
+.bg-kachabazar-200 {
+    background-color: var(--kachabazar-200);
+}
+
+.bg-kachabazar-300 {
+    background-color: var(--kachabazar-300);
+}
+
+.bg-kachabazar-400 {
+    background-color: var(--kachabazar-400);
+}
+
+.bg-kachabazar-500 {
+    background-color: var(--kachabazar-500);
+}
+
+.bg-kachabazar-600 {
+    background-color: var(--kachabazar-600);
+}
+
+.bg-kachabazar-700 {
+    background-color: var(--kachabazar-700);
+}
+
+.bg-kachabazar-800 {
+    background-color: var(--kachabazar-800);
+}
+
+.bg-kachabazar-900 {
+    background-color: var(--kachabazar-900);
+}
+
+/* Bordes */
+.border-kachabazar-50 {
+    border-color: var(--kachabazar-50);
+}
+
+.border-kachabazar-100 {
+    border-color: var(--kachabazar-100);
+}
+
+.border-kachabazar-200 {
+    border-color: var(--kachabazar-200);
+}
+
+.border-kachabazar-300 {
+    border-color: var(--kachabazar-300);
+}
+
+.border-kachabazar-400 {
+    border-color: var(--kachabazar-400);
+}
+
+.border-kachabazar-500 {
+    border-color: var(--kachabazar-500);
+}
+
+.border-kachabazar-600 {
+    border-color: var(--kachabazar-600);
+}
+
+.border-kachabazar-700 {
+    border-color: var(--kachabazar-700);
+}
+
+.border-kachabazar-800 {
+    border-color: var(--kachabazar-800);
+}
+
+.border-kachabazar-900 {
+    border-color: var(--kachabazar-900);
+}
+
+/* Agregar mas tokens de ser necesario: ejm. sombras, bordes, etc. */
