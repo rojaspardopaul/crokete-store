@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
+import { APP_CONFIG } from "@/config/appConfig";
 
-const useUtilsFunction = () => {
+const useUtilsFunction = (globalSetting) => {
   const lang = Cookies.get("_lang") ?? "es";
 
   //for date and time format
@@ -44,8 +45,11 @@ const useUtilsFunction = () => {
     return data !== undefined ? data : "!#";
   };
 
+  const shopName = globalSetting?.shop_name || APP_CONFIG.SHOP_NAME;
+
   return {
     lang,
+    shopName,
     getNumber,
     getNumberTwo,
     showTimeFormat,

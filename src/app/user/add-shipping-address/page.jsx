@@ -58,7 +58,7 @@ const AddShippingAddress = () => {
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="md:col-span-1">
           <div className="px-4 sm:px-0">
-            <h2 className="text-xl font-semibold mb-5">Add Shipping Address</h2>
+            <h2 className="text-xl font-semibold mb-5">Agregar Dirección de Envío</h2>
           </div>
         </div>
       </div>
@@ -73,10 +73,10 @@ const AddShippingAddress = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputAreaTwo
                           // register={register}
-                          label="Full Name"
+                          label="Nombre Completo"
                           name="name"
                           type="text"
-                          placeholder="Input your full name"
+                          placeholder="Ingresa tu nombre completo"
                         />
 
                         <Error errorName={state?.errors?.name?.join(" ")} />
@@ -85,10 +85,10 @@ const AddShippingAddress = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputAreaTwo
                           // register={register}
-                          label="Full Address"
+                          label="Dirección Completa"
                           name="address"
                           type="text"
-                          placeholder="Input your full address"
+                          placeholder="Ingresa tu dirección completa"
                         />
 
                         <Error errorName={state?.errors?.address?.join(" ")} />
@@ -97,10 +97,10 @@ const AddShippingAddress = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputAreaTwo
                           // register={register}
-                          label="Contact"
+                          label="Contacto"
                           name="contact"
                           type="tel"
-                          placeholder="Phone/Mobile"
+                          placeholder="Teléfono/Móvil"
                         />
 
                         <ErrorTwo errors={state?.errors?.contact} />
@@ -109,7 +109,7 @@ const AddShippingAddress = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <SelectOption
                           name="country"
-                          label="Country"
+                          label="País"
                           options={countries?.map((country) => country?.name)}
                           onChange={handleInputChange}
                           value={selectedValue?.country || ""}
@@ -129,7 +129,7 @@ const AddShippingAddress = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <SelectOption
                           name="city"
-                          label="City"
+                          label="Ciudad"
                           options={cities.map((city) => city.name)}
                           onChange={handleInputChange}
                           value={selectedValue?.city || ""}
@@ -149,7 +149,7 @@ const AddShippingAddress = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <SelectOption
                           name="area"
-                          label="Area"
+                          label="Área"
                           options={areas}
                           onChange={handleInputChange}
                           value={selectedValue?.area || ""}
@@ -168,7 +168,7 @@ const AddShippingAddress = () => {
                       </div>
                     </div>
                     <div className="col-span-6 sm:col-span-3 mt-5 text-right">
-                      <SubmitButton title="Add Shipping Address" />
+                      <SubmitButton title="Agregar Dirección de Envío" />
                     </div>
                   </div>
                   {/* passing user _id  */}

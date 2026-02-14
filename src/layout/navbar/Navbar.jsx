@@ -35,9 +35,9 @@ const Navbar = async ({ globalSetting, storeCustomization }) => {
               <Link href="/" className="flex flex-shrink-0 items-center">
                 <img
                   id="navbar-logo"
-                  className="h-8 w-auto"
-                  src="/logo/logo-light.svg"
-                  alt="Kachabazar"
+                  className="h-auto max-h-16 w-auto object-contain"
+                  src={storeCustomization?.navbar?.logo || "/logo/logo-light.svg"}
+                  alt="Crokete"
                 />
               </Link>
             </div>

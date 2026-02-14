@@ -71,7 +71,7 @@ const UpdateProfile = ({ storeCustomizationSetting }) => {
             <div className="bg-white shadow sm:rounded-lg py-4 px-2">
               <div className="space-y-6">
                 <div>
-                  <Label label="Photo" />
+                  <Label label="Foto" />
                   <div>
                     <div className="mt-1 flex items-center">
                       <Uploader

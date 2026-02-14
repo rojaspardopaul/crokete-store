@@ -27,47 +27,47 @@ const pages = [
   //   icon: FiUser,
   // },
   {
-    title: "Offers",
+    title: "Ofertas",
     href: "/offers",
     icon: FiGift,
   },
   {
-    title: "Checkout",
+    title: "Finalizar Compra",
     href: "/checkout",
     icon: FiShoppingBag,
   },
   {
-    title: "FAQ",
+    title: "Preguntas Frecuentes",
     href: "/faq",
     icon: FiHelpCircle,
   },
   {
-    title: "About Us",
+    title: "Sobre Nosotros",
     href: "/about-us",
     icon: FiUsers,
   },
   {
-    title: "Contact Us",
+    title: "Contáctanos",
     href: "/contact-us",
     icon: FiPhoneIncoming,
   },
   {
-    title: "Privacy Policy",
+    title: "Política de Privacidad",
     href: "/privacy-policy",
     icon: FiPocket,
   },
   {
-    title: "Forget Password",
+    title: "Recuperar Contraseña",
     href: "/forget-password",
     icon: FiFrown,
   },
   {
-    title: "Terms and Conditions",
+    title: "Términos y Condiciones",
     href: "/terms-and-conditions",
     icon: FiFileText,
   },
   {
-    title: "Not Found",
+    title: "Página no encontrada",
     href: "/404",
     icon: FiAlertCircle,
   },
@@ -75,22 +75,22 @@ const pages = [
 
 const userSidebar = [
   {
-    title: "Dashboard",
+    title: "Panel de Control",
     href: "/user/dashboard",
     icon: FiGrid,
   },
   {
-    title: "My Orders",
+    title: "Mis Órdenes",
     href: "/user/my-orders",
     icon: FiList,
   },
   {
-    title: "Update Profile",
+    title: "Actualizar Perfil",
     href: "/user/update-profile",
     icon: FiSettings,
   },
   {
-    title: "Change Password",
+    title: "Cambiar Contraseña",
     href: "/user/change-password",
     icon: FiFileText,
   },
@@ -394,11 +394,11 @@ const languages = [
 ];
 
 const userNavigation = [
-  { name: "Dashboard", href: "/user/dashboard", icon: FiGrid },
-  { name: "My Orders", href: "/user/my-orders", icon: FiList },
-  { name: "Update Profile", href: "/user/update-profile", icon: FiSettings },
-  { name: "Change Password", href: "/user/change-password", icon: FiShield },
-  // { name: "Logout", href: "/", icon: IoLockOpenOutline },
+  { name: "Panel de Control", href: "/user/dashboard", icon: FiGrid },
+  { name: "Mis Órdenes", href: "/user/my-orders", icon: FiList },
+  { name: "Actualizar Perfil", href: "/user/update-profile", icon: FiSettings },
+  { name: "Cambiar Contraseña", href: "/user/change-password", icon: FiShield },
+  // { name: "Cerrar Sesión", href: "/", icon: IoLockOpenOutline },
 ];
 
 export {

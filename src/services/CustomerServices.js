@@ -32,13 +32,18 @@ const loginCustomer = async ({ email, password }) => {
 const registerCustomer = async (token) => {
   try {
     const response = await fetch(`${baseURL}/customer/register/${token}`, {
+      method: "POST",
       cache: "no-cache",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     });
-
+    
     const user = await handleResponse(response);
     return { user, error: null };
   } catch (error) {
-    return { user: [], error: error.message };
+    return { user: null, error: error.message };
   }
 };
 const signUpWithOauthProvider = async ({ name, email, image }) => {
@@ -61,29 +66,41 @@ const signUpWithOauthProvider = async ({ name, email, image }) => {
     return { error: error.message };
   }
 };
-const forgetPassword = async () => {
+const forgetPassword = async ({ email }) => {
   try {
     const response = await fetch(`${baseURL}/customer/forget-password`, {
+      method: "PUT",
       cache: "no-cache",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
     });
 
-    const user = await handleResponse(response);
-    return { user, error: null };
+    const result = await handleResponse(response);
+    return { result, error: null };
   } catch (error) {
-    return { user: [], error: error.message };
+    return { result: null, error: error.message };
   }
 };
 
-const resetPassword = async () => {
+const resetPassword = async ({ token, newPassword }) => {
   try {
     const response = await fetch(`${baseURL}/customer/reset-password`, {
+      method: "PUT",
       cache: "no-cache",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token, newPassword }),
     });
 
-    const user = await handleResponse(response);
-    return { user, error: null };
+    const result = await handleResponse(response);
+    return { result, error: null };
   } catch (error) {
-    return { user: [], error: error.message };
+    return { result: null, error: error.message };
   }
 };
 

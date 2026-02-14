@@ -57,7 +57,7 @@ const CheckoutCartScreen = () => {
     <div className="mx-auto max-w-screen-2xl px-3 sm:px-10 pt-16 pb-16">
       <div className="flex flex-col lg:flex-row">
         <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
-          <h2 className="font-bold text-xl pb-3">Shopping Cart</h2>
+          <h2 className="font-bold text-xl pb-3">Carrito de compras</h2>
           <div className="w-full block mt-3">
             {items.map((item) => (
               <CartItem key={item.id} item={item} currency={currency} />
@@ -74,11 +74,10 @@ const CheckoutCartScreen = () => {
                     height={380}
                   />
                   <h3 className=" font-semibold text-gray-700 text-lg pt-5">
-                    Your cart is empty
+                    Tu carrito está vacío
                   </h3>
                   <p className="px-12 text-center text-sm text-gray-500 pt-2">
-                    No items added in your cart. Please add product to your cart
-                    list.
+                    No hay artículos agregados en tu carrito. Por favor agrega productos a tu lista de carrito.
                   </p>
                 </div>
               </div>
@@ -128,7 +127,7 @@ const CheckoutCartScreen = () => {
                   {couponInfo.couponCode ? (
                     <span className="bg-kachabazar-50 px-4 py-3 leading-tight w-full rounded-md flex justify-between">
                       {" "}
-                      <p className="text-kachabazar-600">Coupon Applied </p>{" "}
+                      <p className="text-kachabazar-600">Cupón Aplicado </p>{" "}
                       <span className="text-red-500 text-right font-semibold">
                         {couponInfo.couponCode}
                       </span>
@@ -138,7 +137,7 @@ const CheckoutCartScreen = () => {
                       <Input
                         ref={couponRef}
                         type="text"
-                        placeholder="Coupon Code"
+                        placeholder="Código de Cupón"
                         className="px-4 py-2 h-10 mr-1 border border-gray-300 rounded-md focus:outline-none"
                         // className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-md h-12 duration-200 bg-white border-gray-200 focus:ring-0 focus:outline-none focus:border-kachabazar-500 placeholder-gray-500 placeholder-opacity-75"
                       />
@@ -163,7 +162,7 @@ const CheckoutCartScreen = () => {
                     {showingTranslateValue(checkout?.total_cost)}
                   </span>
                   <span className="block text-sm text-slate-500 dark:text-slate-400 font-normal">
-                    Shipping and taxes calculated at checkout.
+                    Envío e impuestos calculados al finalizar la compra.
                   </span>
                 </span>
                 <span className="font-bold text-gray-900 dark:text-gray-100">
@@ -187,7 +186,7 @@ const CheckoutCartScreen = () => {
                   onClick={handleCheckout}
                   className="relative h-auto inline-flex items-center justify-center rounded-md w-full transition-colors text-xs sm:text-base font-medium py-2 px-3 bg-kachabazar-500 hover:bg-kachabazar-600 border border-kachabazar-500 text-white flex-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
                 >
-                  Checkout
+                  Finalizar Compra
                 </Link>
               </div>
             </div>

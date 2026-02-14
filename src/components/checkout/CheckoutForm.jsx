@@ -72,7 +72,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
               <div className="flex justify-end my-2">
                 <SwitchToggle
                   id="shipping-address"
-                  title="Use Default Shipping Address"
+                  title="Usar Dirección de Envío Predeterminada"
                   processOption={useExistingAddress}
                   handleProcess={handleDefaultShippingAddress}
                 />
@@ -276,7 +276,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                     <span className="text-xl mr-2">
                       <IoReturnUpBackOutline />
                     </span>
-                    {showingTranslateValue(checkout?.continue_button)}
+                    {t("common:continueShoppingBtn")}
                   </Link>
                 </Button>
               </div>
@@ -292,7 +292,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                     "Procesando"
                   ) : (
                     <span className="flex justify-center text-center">
-                      {showingTranslateValue(checkout?.confirm_button)}
+                      {t("common:confirmOrderBtn")}
                       <span className="text-xl ml-2">
                         {" "}
                         <IoArrowForward />
@@ -336,7 +336,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
               {couponInfo.couponCode ? (
                 <span className="bg-kachabazar-50 px-4 py-3 leading-tight w-full rounded-md flex justify-between">
                   {" "}
-                  <p className="text-kachabazar-600">Coupon Applied </p>{" "}
+                  <p className="text-kachabazar-600">Cupón Aplicado</p>{" "}
                   <span className="text-red-500 text-right">
                     {couponInfo.couponCode}
                   </span>

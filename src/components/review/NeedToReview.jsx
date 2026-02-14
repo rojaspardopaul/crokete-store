@@ -35,7 +35,7 @@ const NeedToReview = ({ reviews, error }) => {
         </h2>
       ) : reviews?.notReviewed?.length === 0 ? (
         <p className="text-rose-500 flex justify-center items-center">
-          You have no products left to review.
+          No tienes productos pendientes de reseñar.
         </p>
       ) : (
         <div>
@@ -59,7 +59,7 @@ const NeedToReview = ({ reviews, error }) => {
                       onClick={() => openModal(item)}
                       className="flex-1 min-w-min px-2 py-1 text-xs font-semibold bg-kachabazar-500 text-white rounded hover:bg-kachabazar-600"
                     >
-                      Write Review
+                      Escribir Reseña
                     </button>
                 </div>
                 

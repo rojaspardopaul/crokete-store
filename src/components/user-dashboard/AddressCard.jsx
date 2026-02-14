@@ -10,7 +10,7 @@ const AddressCard = ({ address }) => {
           href={`/user/shipping-address/${address?._id}`}
           className="absolute top-2 right-2 bg-cyan-600 text-white px-3 py-1 rounded hover:bg-cyan-700"
         >
-          Edit
+          Editar
         </Link>
         <div className="flex-grow">
           <h5 className="leading-none mb-2 text-base font-medium text-gray-700">

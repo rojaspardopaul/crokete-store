@@ -812,7 +812,7 @@ export const storeCustomization = {
     },
     block3_sub_link4: "/user/update-profile",
     block4_logo:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688576/settings/logo-color_el4zmy.svg",
+      "https://res.cloudinary.com/dr397rg7u/image/upload/v1770598590/logo-color_sdtecu.svg",
     block4_address: {
       en: "987 Andre Plain Suite High Street 838, Lake Hestertown, USA",
       de: "987 Andre Plain Suite High Street 838, Lake Hestertown, USA",

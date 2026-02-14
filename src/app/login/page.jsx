@@ -39,9 +39,9 @@ const Login = () => {
             <div className="mx-auto text-left justify-center rounded-md w-full max-w-lg px-4 py-8 sm:p-10 overflow-hidden align-middle transition-all transform bg-white shadow-xl rounded-2x">
               <div className="overflow-hidden mx-auto">
                 <div className="text-center">
-                  <h2 className="text-3xl font-bold">Login</h2>
+                  <h2 className="text-3xl font-bold">Iniciar Sesión</h2>
                   <p className="text-sm md:text-base text-gray-500 mt-1 mb-4">
-                    Login with your email and password
+                    Inicia sesión con tu correo y contraseña
                   </p>
                 </div>
                 <form
@@ -51,11 +51,10 @@ const Login = () => {
                   <div className="grid grid-cols-1 gap-5">
                     <div className="form-group">
                       <InputAreaTwo
-                        defaultValue="justin@gmail.com"
-                        label="Email"
+                        label="Correo Electrónico"
                         name="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder="Correo Electrónico"
                         Icon={FiMail}
                       />
 
@@ -63,11 +62,10 @@ const Login = () => {
                     </div>
                     <div className="form-group">
                       <InputAreaTwo
-                        defaultValue="12345678"
-                        label="Password"
+                        label="Contraseña"
                         name="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         Icon={FiLock}
                       />
 
@@ -96,18 +94,18 @@ const Login = () => {
                           type="button"
                           className="text-end text-sm text-heading ps-3 underline hover:no-underline focus:outline-none"
                         >
-                          Forgot password?
+                          ¿Olvidaste tu contraseña?
                         </Link>
                       </div>
                     </div>
                   </div>
-                  <SubmitButton title={"Login"} />
+                  <SubmitButton title={"Iniciar Sesión"} />
                 </form>
                 <BottomNavigation
                   or={true}
                   route={"/auth/signup"}
-                  pageName={"Sign Up"}
-                  loginTitle="Login"
+                  pageName={"Registrarse"}
+                  loginTitle="Iniciar Sesión"
                 />
               </div>
             </div>

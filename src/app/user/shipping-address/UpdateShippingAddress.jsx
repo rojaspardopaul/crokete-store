@@ -72,7 +72,7 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
         <div className="md:col-span-1">
           <div className="px-4 sm:px-0">
             <h2 className="text-xl font-semibold mb-5">
-              Update Shipping Address
+              Actualizar Dirección de Envío
             </h2>
           </div>
         </div>
@@ -88,11 +88,11 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputAreaTwo
                           // register={register}
-                          label="Full Name"
+                          label="Nombre Completo"
                           name="name"
                           type="text"
                           defaultValue={shippingAddress?.name}
-                          placeholder="Input your full name"
+                          placeholder="Ingrese su nombre completo"
                         />
 
                         <Error errorName={state?.errors?.name?.join(" ")} />
@@ -101,11 +101,11 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputAreaTwo
                           // register={register}
-                          label="Full Address"
+                          label="Dirección Completa"
                           name="address"
                           type="text"
                           defaultValue={shippingAddress?.address}
-                          placeholder="Input your full address"
+                          placeholder="Ingrese su dirección completa"
                         />
 
                         <Error errorName={state?.errors?.address?.join(" ")} />
@@ -114,11 +114,11 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputAreaTwo
                           // register={register}
-                          label="Contact"
+                          label="Contacto"
                           name="contact"
                           type="tel"
                           defaultValue={shippingAddress?.contact}
-                          placeholder="Phone/Mobile"
+                          placeholder="Teléfono/Móvil"
                         />
 
                         <ErrorTwo errors={state?.errors?.contact} />
@@ -127,7 +127,7 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
                       <div className="col-span-6 sm:col-span-3">
                         <SelectOption
                           name="country"
-                          label="Country"
+                          label="País"
                           options={countries?.map((country) => country?.name)}
                           onChange={handleInputChange}
                           value={selectedValue?.country || ""}
@@ -149,7 +149,7 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
                       <div className="col-span-6 sm:col-span-3">
                         <SelectOption
                           name="city"
-                          label="City"
+                          label="Ciudad"
                           options={cities?.map((city) => city?.name)}
                           onChange={handleInputChange}
                           value={selectedValue?.city || ""}
@@ -171,7 +171,7 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
                       <div className="col-span-6 sm:col-span-3">
                         <SelectOption
                           name="area"
-                          label="Area"
+                          label="Área"
                           options={areas}
                           onChange={handleInputChange}
                           value={selectedValue?.area || ""}
@@ -203,7 +203,7 @@ const UpdateShippingAddress = ({ shippingAddress, error }) => {
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3 mt-5 text-right">
-                      <SubmitButton title="Update Shipping Address" />
+                      <SubmitButton title="Actualizar Dirección de Envío" />
                     </div>
                   </div>
                 </div>

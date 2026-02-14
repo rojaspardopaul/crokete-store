@@ -28,7 +28,7 @@ const OrderTime = ({ data, currency, drawer }) => {
             </p>
 
             <span className="my-1 truncate text-xs/5 text-gray-600">
-              Qty: {item.quantity} x {currency}
+              Cant: {item.quantity} x {currency}
               {getNumberTwo(item.price)}
             </span>
             <div className="font-bold text-sm">

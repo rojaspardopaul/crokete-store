@@ -211,11 +211,11 @@ const ProductScreen = ({ product, reviews, attributes, relatedProducts }) => {
 
                     {/* Add to Cart Button */}
                     <Button
-                      onClick={() => handleAddToCart(product)}
+                      onClick={() => handleAddToCart(product, item)}
                       className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold  text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 w-full h-11"
                       variant="create"
                     >
-                      Add to Cart
+                      Agregar al carrito
                     </Button>
                   </div>
                 </div>
@@ -224,7 +224,7 @@ const ProductScreen = ({ product, reviews, attributes, relatedProducts }) => {
                   <div className="flex items-center justify-between space-s-3 sm:space-s-4 w-full">
                     <div>
                       <span className=" font-semibold py-1 text-sm d-block">
-                        <span className="text-gray-700">Category:</span>{" "}
+                        <span className="text-gray-700">Categoría:</span>{" "}
                         <Link
                           href={`/search?category=${category_name}&_id=${product?.category?._id}`}
                           className="cursor-pointer"
@@ -245,7 +245,7 @@ const ProductScreen = ({ product, reviews, attributes, relatedProducts }) => {
                 </div>
                 <div className="flex items-center text-sm text-gray-500 mt-3">
                   <FiHeadphones className="mr-1 text-md" />
-                  Call Us for Order
+                  Llámenos para Ordenar
                   <a
                     href={`tel:${globalSetting?.phone || "+099949343"}`}
                     className="font-bold text-kachabazar-500 ml-1"

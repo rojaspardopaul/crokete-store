@@ -54,7 +54,7 @@ const PagesDrawer = ({ open, setOpen, categories, categoryError }) => {
                   className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
                   onClick={() => setOpen(false)}
                 >
-                  <span className="sr-only">Close menu</span>
+                  <span className="sr-only">Cerrar menú</span>
                   <X className="h-6 w-6" aria-hidden="true" />
                 </button>
 
@@ -84,7 +84,7 @@ const PagesDrawer = ({ open, setOpen, categories, categoryError }) => {
                         )
                       }
                     >
-                      Category
+                      Categorías
                     </Tab>
                     <Tab
                       className={({ selected }) =>
@@ -96,7 +96,7 @@ const PagesDrawer = ({ open, setOpen, categories, categoryError }) => {
                         )
                       }
                     >
-                      Pages
+                      Páginas
                     </Tab>
                   </TabList>
                 </div>

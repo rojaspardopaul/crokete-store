@@ -6,8 +6,8 @@ export async function generateMetadata() {
   // You can fetch user info or page data here to make metadata dynamic
   const user = await getUserServerSession(); // Your own function to fetch user details
   return {
-    title: `${user?.name || "User"} - Dashboard | Kachabazar`,
-    description: `Welcome back ${user?.name || "User"}!`,
+    title: `${user?.name || "Usuario"} - Panel de Control | Kachabazar`,
+    description: `¡Bienvenido de nuevo ${user?.name || "Usuario"}!`,
   };
 }
 

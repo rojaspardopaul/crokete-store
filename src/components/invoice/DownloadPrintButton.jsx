@@ -58,7 +58,7 @@ const DownloadPrintButton = ({ data }) => {
               >
                 {({ loading }) => (
                   <Button variant="create">
-                    {loading ? "Generating..." : "Download PDF"}{" "}
+                    {loading ? "Generando..." : "Descargar PDF"}{" "}
                     <Download className="ml-2" />
                   </Button>
                 )}

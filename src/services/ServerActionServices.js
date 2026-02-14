@@ -24,7 +24,7 @@ const getHeaders = (userInfo) => {
 const loginCustomer = async (currentState, formData) => {
   // Validate form fields
   const validatedFields = loginFormSchema.safeParse({
-    email: formData.get("registerEmail"),
+    email: formData.get("email"),
     password: formData.get("password"),
   });
 
@@ -71,7 +71,7 @@ const loginCustomer = async (currentState, formData) => {
 };
 
 // Redirect function that can be called after loginCustomer resolves
-const handleLogin = async (currentState, formData) => {
+const handleLogin = async (userInfo, currentState, formData) => {
   const result = await loginCustomer(currentState, formData);
   const redirectUrl = formData.get("redirectUrl");
 
@@ -85,34 +85,31 @@ const handleLogin = async (currentState, formData) => {
 };
 
 const verifyEmailAddress = async (currentState, formData) => {
-  // return;
-  // return {
-  //   success: "Login Successfully!",
-  // };
   // Validate form fields
   const validatedFields = signupFormSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
+    phone: formData.get("phone"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
   });
 
-  // If any form fields are invalid, return early
+  // If any form fields are invalid, return early with preserved valid values
   if (!validatedFields.success) {
+    const errors = validatedFields.error.flatten().fieldErrors;
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      errors,
+      values: {
+        name: !errors.name ? formData.get("name") : "",
+        email: !errors.email ? formData.get("email") : "",
+        phone: !errors.phone ? formData.get("phone") : "",
+        // Never preserve passwords for security
+      },
     };
   }
 
-  const { name, password, email } = validatedFields.data;
+  const { name, password, email, phone } = validatedFields.data;
 
-  // console.log("name", name, "password", password, "email", email);
-  // return;
-
-  // Get the data off the form
-
-  // const redirectUrl = formData.get("redirectUrl");
-
-  //   console.log("registerEmail", registerEmail, "password", password);
   try {
     const response = await fetch(`${baseURL}/customer/verify-email`, {
       method: "POST",
@@ -122,11 +119,10 @@ const verifyEmailAddress = async (currentState, formData) => {
         "Content-Type": "application/json",
       },
 
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, phone }),
     });
 
     const user = await handleResponse(response);
-    // console.log("user::", user);
     return { user };
   } catch (error) {
     return { error: error.message };

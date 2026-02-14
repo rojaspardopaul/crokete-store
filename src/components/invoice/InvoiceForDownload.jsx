@@ -93,7 +93,7 @@ const InvoicePDF = ({ data, globalSetting }) => {
                 "text-2xl font-bold text-primary uppercase tracking-wider"
               )}
             >
-              INVOICE
+              FACTURA
             </Text>
             <View
               style={tw("mt-1 px-3 py-1 bg-primary rounded-full inline-block")}
@@ -127,7 +127,7 @@ const InvoicePDF = ({ data, globalSetting }) => {
         <View style={tw("flex flex-row justify-between mb-8")}>
           <View>
             <Text style={tw("text-sm font-bold text-dark mb-2")}>
-              BILLED TO:
+              FACTURADO A:
             </Text>
             <Text style={tw("text-sm")}>
               {data?.user_info?.name || "Customer Name"}
@@ -149,13 +149,13 @@ const InvoicePDF = ({ data, globalSetting }) => {
           <View style={tw("text-right")}>
             <View style={tw("flex flex-row mb-1")}>
               <Text style={tw("w-28 text-sm font-bold text-dark text-left")}>
-                Invoice #:
+                Factura #:
               </Text>
               <Text style={tw("text-sm")}>#{data?.invoice || "N/A"}</Text>
             </View>
             <View style={tw("flex flex-row mb-1")}>
               <Text style={tw("w-28 text-sm font-bold text-dark text-left")}>
-                Issued:
+                Emitida:
               </Text>
               <Text style={tw("text-sm")}>
                 {dayjs(data?.createdAt).format("MMMM D, YYYY")}
@@ -163,12 +163,12 @@ const InvoicePDF = ({ data, globalSetting }) => {
             </View>
             <View style={tw("flex flex-row mb-1")}>
               <Text style={tw("w-28 text-sm font-bold text-dark text-left")}>
-                Due:
+                Vencimiento:
               </Text>
               <Text style={tw("text-sm")}>
                 {dayjs(data?.dueDate).isValid()
                   ? dayjs(data.dueDate).format("MMMM D, YYYY")
-                  : "Upon receipt"}
+                  : "Al recibirla"}
               </Text>
             </View>
           </View>
@@ -182,16 +182,16 @@ const InvoicePDF = ({ data, globalSetting }) => {
               <Text style={tw("text-sm font-bold text-dark")}>#</Text>
             </View>
             <View style={[styles.col2, tw("pl-2")]}>
-              <Text style={tw("text-sm font-bold text-dark")}>DESCRIPTION</Text>
+              <Text style={tw("text-sm font-bold text-dark")}>DESCRIPCIÓN</Text>
             </View>
             <View style={[styles.col3, tw("text-center")]}>
-              <Text style={tw("text-sm font-bold text-dark")}>QTY</Text>
+              <Text style={tw("text-sm font-bold text-dark")}>CANT.</Text>
             </View>
             <View style={[styles.col4, tw("text-right")]}>
-              <Text style={tw("text-sm font-bold text-dark")}>PRICE</Text>
+              <Text style={tw("text-sm font-bold text-dark")}>PRECIO</Text>
             </View>
             <View style={[styles.col5, tw("text-right")]}>
-              <Text style={tw("text-sm font-bold text-dark")}>AMOUNT</Text>
+              <Text style={tw("text-sm font-bold text-dark")}>MONTO</Text>
             </View>
           </View>
 
@@ -242,7 +242,7 @@ const InvoicePDF = ({ data, globalSetting }) => {
 
           {data?.shippingCost > 0 && (
             <View style={tw("flex flex-row justify-between mb-1")}>
-              <Text style={tw("text-sm text-gray-600")}>Shipping:</Text>
+              <Text style={tw("text-sm text-gray-600")}>Envío:</Text>
               <Text style={tw("text-sm")}>
                 {currency}
                 {getNumberTwo(data?.shippingCost)}
@@ -252,7 +252,7 @@ const InvoicePDF = ({ data, globalSetting }) => {
 
           {data?.discount > 0 && (
             <View style={tw("flex flex-row justify-between mb-1")}>
-              <Text style={tw("text-sm text-gray-600")}>Discount:</Text>
+              <Text style={tw("text-sm text-gray-600")}>Descuento:</Text>
               <Text style={tw("text-sm text-green-600")}>
                 -{currency}
                 {getNumberTwo(data?.discount)}
@@ -272,7 +272,7 @@ const InvoicePDF = ({ data, globalSetting }) => {
 
           {data?.taxRate > 0 && (
             <Text style={tw("text-xs text-gray-500 text-right mt-1")}>
-              Includes {data.taxRate}% tax ({currency}
+              Incluye {data.taxRate}% de impuesto ({currency}
               {getNumberTwo(data?.taxAmount)})
             </Text>
           )}
@@ -281,10 +281,10 @@ const InvoicePDF = ({ data, globalSetting }) => {
         {/* Payment Method */}
         <View style={tw("mt-4")}>
           <Text style={tw("text-sm font-bold text-dark mb-1")}>
-            PAYMENT METHOD:
+            MÉTODO DE PAGO:
           </Text>
           <Text style={tw("text-sm")}>
-            {data?.paymentMethod || "Not specified"}
+            {data?.paymentMethod || "No especificado"}
           </Text>
         </View>
 
@@ -298,10 +298,10 @@ const InvoicePDF = ({ data, globalSetting }) => {
           <View style={styles.divider} />
           <View style={tw("flex flex-row justify-between")}>
             <Text style={tw("text-xs text-gray-500")}>
-              Generated on: {currentDate}
+              Generado el: {currentDate}
             </Text>
             <Text style={tw("text-xs text-gray-500")}>
-              {globalSetting?.company_name || "Company Name"} • Invoice #
+              {globalSetting?.company_name || "Nombre de Empresa"} • Factura #
               {data?.invoice}
             </Text>
           </View>

@@ -73,7 +73,7 @@ const ReviewModal = ({ title, edit, isOpen, onClose, product }) => {
     >
       <div className="flex items-center justify-center">
         <div className="relative bg-white rounded-lg w-full max-w-4xl z-50">
-          <h1 className="text-base font-semibold mb-4">{`Review for ${title}`}</h1>
+          <h1 className="text-base font-semibold mb-4">{`Reseña para ${title}`}</h1>
           <div className="flex items-center gap-1 mb-4">
             {[...Array(5)].map((_, i) => {
               const starValue = i + 1;
@@ -111,11 +111,11 @@ const ReviewModal = ({ title, edit, isOpen, onClose, product }) => {
           <form onSubmit={handleSubmit(submitReview)}>
             <textarea
               {...register("comment", { required: false })}
-              placeholder="Write your thoughts..."
+              placeholder="Escribe tus comentarios..."
               className="w-full border-1 focus:ring-0 placeholder:text-sm text-sm focus:outline-none ring-0 border-gray-300 rounded p-2 min-h-[80px]"
             />
             {errors.comment && (
-              <p className="text-sm text-red-500 mt-1">Comment is required.</p>
+              <p className="text-sm text-red-500 mt-1">El comentario es requerido.</p>
             )}
 
             <Button
@@ -126,7 +126,7 @@ const ReviewModal = ({ title, edit, isOpen, onClose, product }) => {
               className="w-full mt-4"
               // className="mt-3 w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded"
             >
-              {isLoading ? "Procesando..." : "Submit Review"}
+              {isLoading ? "Procesando..." : "Enviar Reseña"}
             </Button>
           </form>
         </div>

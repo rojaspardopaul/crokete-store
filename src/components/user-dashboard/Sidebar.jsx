@@ -53,17 +53,17 @@ const Sidebar = () => {
       icon: List,
     },
     {
-      title: "My Review",
+      title: "Mis Reseñas",
       href: "/user/my-reviews",
       icon: Star,
     },
     {
-      title: "My Account",
+      title: "Mi Cuenta",
       href: "/user/my-account",
       icon: User,
     },
     // {
-    //   title: "Shipping Address",
+    //   title: "Dirección de Envío",
     //   href: "/user/shipping-address",
     //   icon: Home,
     // },

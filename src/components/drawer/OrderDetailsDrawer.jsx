@@ -42,7 +42,7 @@ const OrderDetailsDrawer = ({ data }) => {
           <div className="w-full flex justify-between items-center relative px-5 py-4 border-b bg-indigo-50 border-gray-100">
             <div className="flex flex-col">
               <h2 className="font-semibold text-lg m-0 text-heading flex items-center">
-                Invoice No #{data?.invoice}
+                Factura No #{data?.invoice}
               </h2>
 
               <div className="text-sm">
@@ -88,7 +88,7 @@ const OrderDetailsDrawer = ({ data }) => {
             >
               <X />
               <span className="font-sens text-sm text-gray-500 hover:text-red-400 ml-1">
-                Close
+                Cerrar
               </span>
             </button>
           </div>
@@ -115,9 +115,9 @@ const OrderDetailsDrawer = ({ data }) => {
                       />
                     </span>
                     <div className="items-center gap-4 flex justify-between flex-wrap">
-                      <span className="font-semibold text-base">Delivery </span>
+                      <span className="font-semibold text-base">Entrega </span>
                       <span className="text-gray-600 text-sm">
-                        Estimated Delivery: <strong>Feb 8, 2025</strong>
+                        Entrega Estimada: <strong>Feb 8, 2025</strong>
                       </span>
                     </div>
                   </div>
@@ -141,22 +141,22 @@ const OrderDetailsDrawer = ({ data }) => {
                   />
                 </span>
                 <div className="flex justify-between items-center gap-4 flex-wrap">
-                  <h4 className="font-semibold text-base">Payment</h4>
+                  <h4 className="font-semibold text-base">Pago</h4>
                   <p className="text-gray-500 text-sm">
-                    Payment Method: <strong>{data?.paymentMethod}</strong>
+                    Método de Pago: <strong>{data?.paymentMethod}</strong>
                   </p>
                 </div>
               </div>
               <div className="flex flex-col text-gray-500 p-4">
                 <div className="flex justify-between text-sm text-gray-500 mb-2">
-                  <span>Shipping Cost</span>
+                  <span>Costo de Envío</span>
                   <span className="text-gray-800 font-semibold">
                     {currency}
                     {getNumberTwo(data.shippingCost)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500">
-                  <span>Discount</span>
+                  <span>Descuento</span>
                   <span className="text-gray-800 font-semibold">
                     {currency}
                     {getNumberTwo(data.discount)}
@@ -164,7 +164,7 @@ const OrderDetailsDrawer = ({ data }) => {
                 </div>
               </div>
               <div className="flex justify-between text-sm text-gray-500 bg-gray-50 px-4 py-2">
-                <span>Total Amount</span>
+                <span>Monto Total</span>
                 <span className="text-red-500 font-bold text-base">
                   {currency}
                   {getNumberTwo(data.total)}
@@ -184,7 +184,7 @@ const OrderDetailsDrawer = ({ data }) => {
               >
                 {({ loading }) => (
                   <Button variant="create">
-                    {loading ? "Generating..." : "Download PDF"}{" "}
+                    {loading ? "Generando..." : "Descargar PDF"}{" "}
                     <Download className="ml-2" />
                   </Button>
                 )}

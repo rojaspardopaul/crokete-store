@@ -25,10 +25,10 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
   return (
     <div className="pb-16 lg:pb-0 xl:pb-0 bg-white">
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-10">
-        <div className="grid grid-cols-2 md:grid-cols-7 xl:grid-cols-12 gap-5 sm:gap-9 lg:gap-11 xl:gap-7 py-10 lg:py-16 justify-between">
+        <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 py-6 lg:py-10 justify-between">
           {footer?.block1_status && (
-            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
-              <h3 className="text-md lg:leading-7 font-medium mb-4 sm:mb-5 lg:mb-6 pb-0.5">
+            <div className="pb-3.5 sm:pb-0 col-span-1">
+              <h3 className="text-md font-semibold mb-3 lg:mb-4">
                 <CMSkeletonTwo
                   count={1}
                   height={20}
@@ -37,7 +37,7 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
                   data={footer?.block1_title}
                 />
               </h3>
-              <ul className="text-sm flex flex-col space-y-3">
+              <ul className="text-sm flex flex-col space-y-2">
                 <li className="flex items-baseline">
                   <Link
                     href={`${footer?.block1_sub_link1}`}
@@ -101,8 +101,8 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
             </div>
           )}
           {footer?.block2_status && (
-            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
-              <h3 className="text-md lg:leading-7 font-medium mb-4 sm:mb-5 lg:mb-6 pb-0.5">
+            <div className="pb-3.5 sm:pb-0 col-span-1">
+              <h3 className="text-md font-semibold mb-3 lg:mb-4">
                 <CMSkeletonTwo
                   count={1}
                   height={20}
@@ -111,7 +111,7 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
                   data={footer?.block2_title}
                 />
               </h3>
-              <ul className="text-sm lg:text-15px flex flex-col space-y-3">
+              <ul className="text-sm flex flex-col space-y-2">
                 <li className="flex items-baseline">
                   <Link
                     href={`${footer?.block2_sub_link1}`}
@@ -173,8 +173,8 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
             </div>
           )}
           {footer?.block3_status && (
-            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
-              <h3 className="text-md lg:leading-7 font-medium mb-4 sm:mb-5 lg:mb-6 pb-0.5">
+            <div className="pb-3.5 sm:pb-0 col-span-1">
+              <h3 className="text-md font-semibold mb-3 lg:mb-4">
                 <CMSkeletonTwo
                   count={1}
                   height={20}
@@ -183,7 +183,7 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
                   data={footer?.block3_title}
                 />
               </h3>
-              <ul className="text-sm lg:text-15px flex flex-col space-y-3">
+              <ul className="text-sm flex flex-col space-y-2">
                 <li className="flex items-baseline">
                   <Link
                     href={`${userInfo?.email ? footer?.block3_sub_link1 : "#"}`}
@@ -244,26 +244,23 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
             </div>
           )}
           {footer?.block4_status && (
-            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
+            <div className="pb-3.5 sm:pb-0 col-span-2 md:col-span-1">
               <Link
                 href="/"
-                className="mr-3 lg:mr-12 xl:mr-12"
+                className="inline-block mb-3"
                 rel="noreferrer"
               >
-                <div className="relative w-32 h-10">
-                  <Image
-                    // width={110}
-                    // height={40}
-                    width="0"
-                    height="0"
-                    sizes="100vw"
-                    className="w-full h-auto"
-                    src={footer?.block4_logo || "/logo/logo-color.svg"}
-                    alt="logo"
-                  />
-                </div>
+                <Image
+                  width={146}
+                  height={100}
+                  src={footer?.block4_logo || "/logo/logo-color.svg"}
+                  alt="logo"
+                  className="w-auto h-auto"
+                  style={{ maxHeight: '80px', width: 'auto' }}
+                  unoptimized={true}
+                />
               </Link>
-              <p className="leading-7 font-sans text-sm text-gray-600 mt-3">
+              <p className="leading-6 text-sm text-gray-600 mt-2">
                 <CMSkeletonTwo
                   count={1}
                   height={10}
@@ -283,7 +280,7 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
         <hr className="hr-line"></hr>
 
         <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 bg-gray-50 shadow-sm border border-gray-50 rounded-lg">
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-9 lg:gap-11 xl:gap-7 py-8 items-center justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 py-5 sm:py-6 items-center justify-between">
             <div className="col-span-1">
               {footer?.social_links_status && (
                 <div>
@@ -292,73 +289,73 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
                     footer?.social_pinterest ||
                     footer?.social_linkedin ||
                     footer?.social_whatsapp) && (
-                    <span className="text-base leading-7 font-medium block mb-2 pb-0.5">
+                    <span className="text-sm font-semibold block mb-2">
                       Síguenos
                     </span>
                   )}
-                  <ul className="text-sm flex">
+                  <ul className="text-sm flex flex-wrap gap-2">
                     {footer?.social_facebook && (
-                      <li className="flex items-center mr-3 transition ease-in-out duration-500">
+                      <li className="transition ease-in-out duration-500">
                         <Link
                           href={`${footer?.social_facebook}`}
                           aria-label="Social Link"
                           rel="noreferrer"
                           target="_blank"
-                          className="block text-center mx-auto text-gray-500 hover:text-white"
+                          className="block text-gray-500 hover:text-white"
                         >
-                          <FacebookIcon size={34} round />
+                          <FacebookIcon size={32} round />
                         </Link>
                       </li>
                     )}
                     {footer?.social_twitter && (
-                      <li className="flex items-center  mr-3 transition ease-in-out duration-500">
+                      <li className="transition ease-in-out duration-500">
                         <Link
                           href={`${footer?.social_twitter}`}
                           aria-label="Social Link"
                           rel="noreferrer"
                           target="_blank"
-                          className="block text-center mx-auto text-gray-500 hover:text-white"
+                          className="block text-gray-500 hover:text-white"
                         >
-                          <XIcon size={34} round />
+                          <XIcon size={32} round />
                         </Link>
                       </li>
                     )}
                     {footer?.social_pinterest && (
-                      <li className="flex items-center mr-3 transition ease-in-out duration-500">
+                      <li className="transition ease-in-out duration-500">
                         <Link
                           href={`${footer?.social_pinterest}`}
                           aria-label="Social Link"
                           rel="noreferrer"
                           target="_blank"
-                          className="block text-center mx-auto text-gray-500 hover:text-white"
+                          className="block text-gray-500 hover:text-white"
                         >
-                          <PinterestIcon size={34} round />
+                          <PinterestIcon size={32} round />
                         </Link>
                       </li>
                     )}
                     {footer?.social_linkedin && (
-                      <li className="flex items-center  mr-3 transition ease-in-out duration-500">
+                      <li className="transition ease-in-out duration-500">
                         <Link
                           href={`${footer?.social_linkedin}`}
                           aria-label="Social Link"
                           rel="noreferrer"
                           target="_blank"
-                          className="block text-center mx-auto text-gray-500 hover:text-white"
+                          className="block text-gray-500 hover:text-white"
                         >
-                          <LinkedinIcon size={34} round />
+                          <LinkedinIcon size={32} round />
                         </Link>
                       </li>
                     )}
                     {footer?.social_whatsapp && (
-                      <li className="flex items-center  mr-3 transition ease-in-out duration-500">
+                      <li className="transition ease-in-out duration-500">
                         <Link
                           href={`${footer?.social_whatsapp}`}
                           aria-label="Social Link"
                           rel="noreferrer"
                           target="_blank"
-                          className="block text-center mx-auto text-gray-500 hover:text-white"
+                          className="block text-gray-500 hover:text-white"
                         >
-                          <WhatsappIcon size={34} round />
+                          <WhatsappIcon size={32} round />
                         </Link>
                       </li>
                     )}
@@ -366,27 +363,26 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
                 </div>
               )}
             </div>
-            <div className="col-span-1 text-center hidden lg:block md:block">
+            <div className="col-span-1 text-center">
               {footer?.bottom_contact_status && (
                 <div>
-                  <p className="text-base leading-7 font-medium block">
+                  <p className="text-sm font-semibold block">
                     Llámanos
                   </p>
-                  <h5 className="text-2xl font-bold text-kachabazar-500 leading-7">
-                    {/* +012345-67900 */}
+                  <h5 className="text-xl font-bold text-kachabazar-500 mt-1">
                     {footer?.bottom_contact}
                   </h5>
                 </div>
               )}
             </div>
             {footer?.payment_method_status && (
-              <div className="col-span-1 hidden lg:block md:block">
-                <ul className="lg:text-right">
-                  <li className="px-1 mb-2 md:mb-0 transition hover:opacity-80 inline-flex">
+              <div className="col-span-1">
+                <ul className="text-right">
+                  <li className="transition hover:opacity-80 inline-flex">
                     <Image
                       width={274}
                       height={85}
-                      className="w-full"
+                      className="w-full max-w-[200px] h-auto"
                       src={
                         footer?.payment_method_img ||
                         "/payment-method/payment-logo.png"
@@ -401,7 +397,7 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-screen-2xl px-3 sm:px-10 flex justify-center py-4">
+      <div className="mx-auto max-w-screen-2xl px-3 sm:px-10 flex justify-center py-2 sm:py-3">
         {/* <p className="text-sm text-gray-500 leading-6">
           Copyright {new Date().getFullYear()} @{" "}
           <Link

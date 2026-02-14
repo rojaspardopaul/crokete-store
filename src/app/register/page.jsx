@@ -33,9 +33,9 @@ const Register = () => {
             <div className="mx-auto text-left justify-center rounded-md w-full max-w-lg px-4 py-8 sm:p-10 overflow-hidden align-middle transition-all transform bg-white shadow-xl rounded-2x">
               <div className="overflow-hidden mx-auto">
                 <div className="text-center">
-                  <h2 className="text-3xl font-bold ">Signing Up</h2>
+                  <h2 className="text-3xl font-bold ">Registrarse</h2>
                   <p className="text-sm md:text-base text-gray-500 mt-1 mb-4">
-                    Create an account with email
+                    Crea una cuenta con tu correo electrónico
                   </p>
                 </div>
                 <form
@@ -45,10 +45,10 @@ const Register = () => {
                   <div className="grid grid-cols-1 gap-5">
                     <div className="form-group">
                       <InputAreaTwo
-                        label="Name"
+                        label="Nombre"
                         name="name"
                         type="text"
-                        placeholder="Full Name"
+                        placeholder="Nombre Completo"
                         Icon={FiUser}
                       />
 
@@ -57,20 +57,20 @@ const Register = () => {
 
                     <div className="form-group">
                       <InputAreaTwo
-                        label="Email"
+                        label="Correo Electrónico"
                         name="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder="Correo Electrónico"
                         Icon={FiMail}
                       />
                       <Error errorName={state?.errors?.email?.join(" ")} />
                     </div>
                     <div className="form-group">
                       <InputAreaTwo
-                        label="Password"
+                        label="Contraseña"
                         name="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         Icon={FiLock}
                       />
 
@@ -86,17 +86,17 @@ const Register = () => {
                           href={"/forget-password"}
                           className="text-end text-sm text-heading ps-3 underline hover:no-underline focus:outline-none"
                         >
-                          Forgot password?
+                          ¿Olvidaste tu contraseña?
                         </Link>
                       </div>
                     </div>
-                    <SubmitButton title={"Register"} />
+                    <SubmitButton title={"Registrarse"} />
                   </div>
                 </form>
                 <BottomNavigation
                   desc
                   route={"/auth/login"}
-                  pageName={"Login"}
+                  pageName={"Iniciar Sesión"}
                 />
               </div>
             </div>

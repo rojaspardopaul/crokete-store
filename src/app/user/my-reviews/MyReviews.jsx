@@ -25,7 +25,7 @@ const MyReviewsScreen = ({ reviews, error }) => {
               router.push("/user/my-reviews?page=1");
             }}
           >
-            Need to Review
+            Pendientes de Reseñar
           </button>
           <button
             className={`whitespace-nowrap pb-2 px-1 border-b-2 text-sm font-medium ${
@@ -38,7 +38,7 @@ const MyReviewsScreen = ({ reviews, error }) => {
               router.push("/user/my-reviews?page=1");
             }}
           >
-            Reviewed Products
+            Productos Reseñados
           </button>
         </nav>
       </div>

@@ -441,6 +441,13 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
 
     try {
       const { coupons, error } = await getAllCoupons();
+      
+      if (error || !coupons || !Array.isArray(coupons)) {
+        setIsCouponAvailable(false);
+        notifyError("Error al cargar los cupones. Por favor, inténtalo de nuevo.");
+        return;
+      }
+
       const result = coupons.filter(
         (coupon) => coupon.couponCode === couponRef.current.value
       );
@@ -458,7 +465,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
 
       if (total < result[0]?.minimumAmount) {
         notifyError(
-          `Minimum ${result[0].minimumAmount} USD required for Apply this coupon!`
+          `Se requiere un mínimo de ${currency}${result[0].minimumAmount} para aplicar este cupón.`
         );
         return;
       } else {
@@ -470,6 +477,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
         Cookies.set("couponInfo", JSON.stringify(result[0]));
       }
     } catch (error) {
+      setIsCouponAvailable(false);
       return notifyError(error.message);
     }
   };

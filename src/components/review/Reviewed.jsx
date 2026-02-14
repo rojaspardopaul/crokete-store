@@ -34,7 +34,7 @@ const Reviewed = ({ reviews, error }) => {
         </h2>
       ) : reviews?.reviewed?.length === 0 ? (
         <p className="text-rose-500 text-center">
-          You haven’t reviewed any products yet.
+          Aún no has reseñado ningún producto.
         </p>
       ) : (
         <div>
@@ -71,7 +71,7 @@ const Reviewed = ({ reviews, error }) => {
                   onClick={() => openModal(item)}
                   className="mt-auto px-4 py-1 text-sm font-medium 0 text-kachabazar-500 rounded hover:text-kachabazar-600 w-full"
                 >
-                  Edit Review
+                  Editar Reseña
                 </button>
               </div>
             ))}

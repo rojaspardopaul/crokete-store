@@ -19,7 +19,7 @@ import { navData } from "@utils/data";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-const MobileNavbar = ({ open, setOpen }) => {
+const MobileNavbar = ({ open, setOpen, storeCustomization }) => {
   return (
     <Transition show={open} as={Fragment}>
       <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -52,16 +52,16 @@ const MobileNavbar = ({ open, setOpen }) => {
                   className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
                   onClick={() => setOpen(false)}
                 >
-                  <span className="sr-only">Close menu</span>
+                  <span className="sr-only">Cerrar menú</span>
                   <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 <div className="flex px-2 lg:px-0">
                   <Link href="/" className="flex flex-shrink-0 items-center">
                     <img
-                      className="h-8 w-auto"
-                      src="/logo/logo-light.svg"
-                      alt="Kachabazar"
+                      className="h-auto max-h-8 w-auto object-contain"
+                      src={storeCustomization?.navbar?.logo || "/logo/logo-light.svg"}
+                      alt="Crokete"
                     />
                   </Link>
                 </div>
@@ -101,7 +101,7 @@ const MobileNavbar = ({ open, setOpen }) => {
                               id={`mobile-featured-heading-${categoryIdx}`}
                               className="font-medium text-gray-900"
                             >
-                              Featured
+                              Destacados
                             </p>
                             <ul
                               role="list"
@@ -122,7 +122,7 @@ const MobileNavbar = ({ open, setOpen }) => {
                               id="mobile-categories-heading"
                               className="font-medium text-gray-900"
                             >
-                              Categories
+                              Categorías
                             </p>
                             <ul
                               role="list"
@@ -145,7 +145,7 @@ const MobileNavbar = ({ open, setOpen }) => {
                               id="mobile-collection-heading"
                               className="font-medium text-gray-900"
                             >
-                              Collection
+                              Colección
                             </p>
                             <ul
                               role="list"
@@ -167,7 +167,7 @@ const MobileNavbar = ({ open, setOpen }) => {
                               id="mobile-brand-heading"
                               className="font-medium text-gray-900"
                             >
-                              Brands
+                              Marcas
                             </p>
                             <ul
                               role="list"

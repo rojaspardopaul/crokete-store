@@ -40,14 +40,14 @@ const SearchScreen = ({ products, attributes, categories, currency }) => {
                   height={380}
                 />
                 <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl text-center mt-2 font-medium text-gray-600">
-                  Sorry, we can not find this product 😞
+                  Lo sentimos, no podemos encontrar este producto 😞
                 </h2>
               </div>
             ) : (
               <div className="flex justify-between my-3 bg-orange-100 border border-gray-100 rounded p-3">
                 <h6 className="text-sm">
                   Total <span className="font-bold">{productData?.length}</span>{" "}
-                  Items Found
+                  artículos encontrados
                 </h6>
                 <span className="text-sm">
                   <select
@@ -55,13 +55,13 @@ const SearchScreen = ({ products, attributes, categories, currency }) => {
                     className="py-0 text-sm font-medium block w-full rounded border-0 bg-white pr-10 cursor-pointer focus:ring-0"
                   >
                     <option className="px-3" value="All" defaultValue hidden>
-                      Sort By Price
+                      Ordenar por Precio
                     </option>
                     <option className="px-3" value="Low">
-                      Low to High
+                      Menor a Mayor
                     </option>
                     <option className="px-3" value="High">
-                      High to Low
+                      Mayor a Menor
                     </option>
                   </select>
                 </span>
@@ -85,7 +85,7 @@ const SearchScreen = ({ products, attributes, categories, currency }) => {
                 variant="create"
                 className="w-auto mx-auto md:text-sm leading-5 flex items-center transition ease-in-out duration-300 font-medium text-center justify-center px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 mt-6"
               >
-                Load More
+                Cargar Más
               </Button>
             )}
           </div>

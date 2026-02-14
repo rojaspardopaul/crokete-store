@@ -52,7 +52,7 @@ const Rating = ({
       {showReviews && (
         <div className={`${textSize} ml-1 text-gray-400`}>
           <span className="font-medium">{parseFloat(rating).toFixed(1)}</span>
-          <span> ( {totalReviews} reviews )</span>
+          <span> ( {totalReviews} reseñas )</span>
         </div>
       )}
     </div>

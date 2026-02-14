@@ -21,16 +21,13 @@ const Cart = ({ setOpen, currency }) => {
     if (items?.length <= 0) {
       setOpen(false);
     } else {
+      setOpen(false); // Always close the cart popup first
       if (!userInfo) {
         // console.log("userInfo::", userInfo, "history");
-
         // Redirect to login page with returnUrl query parameter
-        // router.push(`/auth/login?redirectUrl=checkout`, { scroll: true });
-        // setOpen(false);
-        router.push(`/auth/login`, { scroll: true });
+        router.push(`/auth/login?redirectUrl=checkout`, { scroll: true });
       } else {
-        router.push("/checkout");
-        setOpen(false);
+        router.push("/checkout", { scroll: true });
       }
     }
   };
@@ -96,19 +93,21 @@ const Cart = ({ setOpen, currency }) => {
           </p>
 
           <div className="flex space-x-3 mt-5">
-            <Link
-              href="/checkout-cart"
-              className="relative h-auto inline-flex items-center justify-center rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 flex-1 border border-slate-200 dark:border-slate-700 dark:focus:ring-offset-0"
+            <button
+              onClick={() => {
+                setOpen(false);
+                router.push("/checkout-cart");
+              }}
+              className="relative h-auto inline-flex items-center justify-center rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 flex-1 border border-slate-200 dark:border-slate-700 dark:focus:ring-offset-0 cursor-pointer"
             >
               Ver detalle de carrito
-            </Link>
-            <Link
-              href="/checkout"
+            </button>
+            <button
               onClick={handleCheckout}
-              className="relative h-auto inline-flex items-center justify-center rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-kachabazar-500 hover:bg-kachabazar-600 border border-kachabazar-500 text-white flex-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
+              className="relative h-auto inline-flex items-center justify-center rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-kachabazar-500 hover:bg-kachabazar-600 border border-kachabazar-500 text-white flex-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 cursor-pointer"
             >
               Ir a pagar
-            </Link>
+            </button>
           </div>
         </div>
       </div>

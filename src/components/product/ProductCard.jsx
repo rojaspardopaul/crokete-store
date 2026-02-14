@@ -118,7 +118,7 @@ const ProductCard = ({ product, attributes }) => {
               className="relative h-auto inline-flex items-center cursor-pointer justify-center rounded-full transition-colors text-xs py-2 px-4 bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-300 hover:text-kachabazar-500 hover:bg-gray-100 dark:hover:bg-slate-800 shadow-lg focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-kachabazar-600 dark:focus:ring-offset-0"
             >
               <IoExpand />
-              <span className="ms-1 hidden xl:block lg:block">Quick View</span>
+              <span className="ms-1 hidden xl:block lg:block">Vista Rápida</span>
             </button>
           </div>
 

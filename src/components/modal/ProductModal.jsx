@@ -201,12 +201,12 @@ const ProductModal = ({
                     </button>
                   </div>
                   <button
-                    onClick={() => handleAddToCart(product)}
+                    onClick={() => handleAddToCart(product, item)}
                     disabled={product.quantity < 1}
                     className="w-full text-sm flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none text-white py-2 px-4 hover:text-white bg-kachabazar-500 hover:bg-kachabazar-600"
                   >
                     <FiShoppingBag className="mr-2" />
-                    Add to cart
+                    Agregar al carrito
                   </button>
                   <Link
                     href={`/product/${product.slug}`}
@@ -214,7 +214,7 @@ const ProductModal = ({
                     className="w-full relative h-auto flex items-center font-semibold text-sm text-gray-600 justify-center rounded transition-colors py-2 px-4 bg-gray-100 hover:bg-gray-200"
                   >
                     <FiEye className="mr-2" />
-                    View details
+                    Ver detalles
                   </Link>
                 </div>
               </div>
@@ -222,7 +222,7 @@ const ProductModal = ({
                 <div className="flex items-center justify-between space-s-3 sm:space-s-4 w-full">
                   <div>
                     <span className=" font-semibold py-1 text-sm d-block">
-                      <span className="text-gray-700">Category</span>{" "}
+                      <span className="text-gray-700">Categoría</span>{" "}
                       <Link
                         href={`/search?category=${category_name}&_id=${product?.category?._id}`}
                         className="cursor-pointer"
@@ -243,7 +243,7 @@ const ProductModal = ({
               </div>
               <div className="flex items-center text-sm text-gray-500 border-t border-gray-100 pt-4 mt-4">
                 <FiHeadphones className="mr-1 text-gray-500 text-md" />
-                Call Us for Order
+                Llámenos para Ordenar
                 <a
                   href={`tel:${globalSetting?.phone || "+099949343"}`}
                   className="font-bold text-kachabazar-500 ml-1"

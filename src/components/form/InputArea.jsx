@@ -11,6 +11,7 @@ const InputArea = ({
   defaultValue,
   autocomplete,
   placeholder,
+  disabled = false,
 }) => {
   return (
     <>
@@ -32,6 +33,7 @@ const InputArea = ({
           defaultValue={defaultValue}
           placeholder={placeholder}
           autoComplete={autocomplete}
+          disabled={disabled}
           className={
             Icon
               ? "py-2 pl-10 w-full placeholder-gray-300"

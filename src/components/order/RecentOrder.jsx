@@ -36,16 +36,35 @@ const RecentOrder = ({ data, error, link, title }) => {
       <div className="max-w-screen-2xl mx-auto">
         <div className="rounded-md">
           {error ? (
-            <h2 className="text-xl text-center my-10 mx-auto w-11/12 text-red-400">
-              {error}
-            </h2>
+            <div className="text-center my-10 mx-auto w-11/12">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <h2 className="text-lg font-semibold text-red-600 mb-2">
+                  {error.includes("sesión") || error.includes("expired") || error.includes("inválida")
+                    ? "Sesión Expirada"
+                    : "Error al cargar pedidos"}
+                </h2>
+                <p className="text-sm text-red-500 mb-4">
+                  {error.includes("sesión") || error.includes("expired") || error.includes("inválida")
+                    ? "Tu sesión ha expirado. Por favor, cierra sesión y vuelve a iniciar sesión para continuar."
+                    : error}
+                </p>
+                <button
+                  onClick={() => {
+                    window.location.href = "/login";
+                  }}
+                  className="bg-kachabazar-500 hover:bg-kachabazar-600 text-white px-6 py-2 rounded-md transition-colors"
+                >
+                  Ir a Iniciar Sesión
+                </button>
+              </div>
+            </div>
           ) : data?.orders?.length === 0 ? (
             <div className="text-center">
               <span className="flex justify-center my-30 pt-16 text-kachabazar-500 font-semibold text-6xl">
                 <IoBagHandle />
               </span>
               <h2 className="font-medium text-md my-4 text-gray-600">
-                You Have no order Yet!
+                ¡Aún no tienes ninguna orden!
               </h2>
             </div>
           ) : (
@@ -65,26 +84,26 @@ const RecentOrder = ({ data, error, link, title }) => {
                                 scope="col"
                                 className="py-3 pr-1 pl-4 text-left text-sm font-semibold text-gray-600 sm:pl-6"
                               >
-                                Order ID
+                                ID de Orden
                               </th>
                               <th
                                 scope="col"
                                 className="px-3 py-1 text-left text-sm font-semibold text-gray-600"
                               >
-                                OrderTime
+                                Fecha
                               </th>
 
                               <th
                                 scope="col"
                                 className="px-3 py-1 text-left text-sm font-semibold text-gray-600"
                               >
-                                Method
+                                Método
                               </th>
                               <th
                                 scope="col"
                                 className="px-3 py-1 text-left text-sm font-semibold text-gray-600"
                               >
-                                Status
+                                Estado
                               </th>
                               {/* <th
                                 scope="col"
@@ -96,13 +115,13 @@ const RecentOrder = ({ data, error, link, title }) => {
                                 scope="col"
                                 className="px-3 py-1 text-left text-sm font-semibold text-gray-600"
                               >
-                                Shipping
+                                Envío
                               </th>
                               <th
                                 scope="col"
                                 className="px-3 py-1 text-left text-sm font-semibold text-gray-600"
                               >
-                                Shipping Cost
+                                Costo de Envío
                               </th>
                               <th
                                 scope="col"
@@ -114,7 +133,7 @@ const RecentOrder = ({ data, error, link, title }) => {
                                 scope="col"
                                 className="relative text-end py-1 pr-3 pl-3 text-sm sm:pr-6 font-semibold text-gray-600"
                               >
-                                Action
+                                Acción
                               </th>
                             </tr>
                           </thead>

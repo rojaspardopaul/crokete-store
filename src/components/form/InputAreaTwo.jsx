@@ -8,6 +8,8 @@ const InputAreaTwo = ({
   type,
   Icon,
   defaultValue,
+  value,
+  onChange,
   autocomplete,
   placeholder,
   readOnly,
@@ -29,6 +31,8 @@ const InputAreaTwo = ({
           readOnly={readOnly}
           // disabled={readOnly} // Add disabled attribute if readOnly is true
           defaultValue={defaultValue}
+          value={value}
+          onChange={onChange}
           placeholder={placeholder}
           autoComplete={autocomplete}
           className={`${

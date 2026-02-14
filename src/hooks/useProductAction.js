@@ -137,7 +137,7 @@ export default function useProductAction({
   }, [variants, attributes, product?.variants]);
 
   // Add to cart
-  const handleAddToCart = () => {
+  const handleAddToCart = (product, quantity = 1) => {
     if (product?.variants?.length === 1 && product?.variants[0].quantity < 1)
       return notifyError("Stock no válido!");
     if (stock <= 0) return notifyError("Stock no válido!");
@@ -180,7 +180,7 @@ export default function useProductAction({
             : getNumber(originalPrice),
       };
 
-      handleAddItem(newItem);
+      handleAddItem(newItem, quantity);
     } else {
       return notifyError("Por favor, seleccionar todas las variantes!");
     }

@@ -26,23 +26,23 @@ const Login = () => {
 
   const submitHandler = async ({ email, password }) => {
     setLoading(true);
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-      callbackUrl: redirectUrl || "/",
-    });
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+        callbackUrl: redirectUrl || "/",
+      });
 
-    setLoading(false);
-    // console.log("result", result);
-
-    if (result?.error) {
-      notifyError(result?.error);
-      // console.error("Error during sign-in:", result.error);
-      // Handle error display here
-    } else if (result?.ok) {
-      router.push(result.url);
-      // window.location.href = result.url;
+      if (result?.error) {
+        notifyError(result?.error);
+      } else if (result?.ok) {
+        router.push(result.url);
+      }
+    } catch (error) {
+      notifyError("Ocurrió un error. Por favor, intenta de nuevo.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,25 +67,24 @@ const Login = () => {
                     <div className="form-group">
                       <InputArea
                         register={register}
-                        defaultValue="justin@gmail.com"
                         label="Correo"
                         name="email"
                         type="email"
                         placeholder="Correo"
                         Icon={FiMail}
+                        disabled={loading}
                       />
                       <Error errorMessage={errors.email} />
                     </div>
                     <div className="form-group">
                       <InputArea
                         register={register}
-                        defaultValue="12345678"
+
                         label="Contraseña"
                         name="password"
                         type="password"
                         placeholder="Contraseña"
-                        Icon={FiLock}
-                      />
+                        Icon={FiLock}                        disabled={loading}                      />
 
                       <Error errorMessage={errors.password} />
                     </div>
@@ -106,9 +105,8 @@ const Login = () => {
                       variant="create"
                       isLoading={loading}
                       type="submit"
-                    // className="w-full text-center py-3 rounded bg-kachabazar-500 text-white hover:bg-kachabazar-600 transition-all focus:outline-none my-1"
                     >
-                      {loading ? "Cargando" : "Ingresar"}
+                      {loading ? "Iniciando sesión..." : "Ingresar"}
                     </Button>
                   </div>
                 </form>

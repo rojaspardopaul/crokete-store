@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { FiLock, FiMail, FiUser } from "react-icons/fi";
+import { FiLock, FiMail, FiUser, FiPhone } from "react-icons/fi";
 import { useActionState, useEffect } from "react";
 
 //internal import
 import Error from "@components/form/Error";
-import { notifyError } from "@utils/toast";
+import { notifyError, notifySuccess } from "@utils/toast";
 import ErrorTwo from "@components/form/ErrorTwo";
 import ShowToast from "@components/common/ShowToast";
 import SubmitButton from "@components/form/SubmitButton";
@@ -22,6 +22,9 @@ const SignUp = () => {
     if (state?.error) {
       // console.log("state error", state);
       notifyError(state?.error);
+    }
+    if (state?.user) {
+      notifySuccess("¡Revisa tu correo electrónico para verificar tu cuenta!");
     }
   });
 
@@ -44,14 +47,15 @@ const SignUp = () => {
                   action={formAction}
                   className="flex flex-col justify-center"
                 >
-                  {/* <div className="grid grid-cols-1 gap-5">
+                  <div className="grid grid-cols-1 gap-5">
                     <div className="form-group">
                       <InputAreaTwo
-                        label="Name"
+                        label="Nombre"
                         name="name"
                         type="text"
-                        placeholder="Full Name"
+                        placeholder="Nombre Completo"
                         Icon={FiUser}
+                        defaultValue={state?.values?.name || ""}
                       />
 
                       <Error errorName={state?.errors?.name?.join(" ")} />
@@ -59,20 +63,34 @@ const SignUp = () => {
 
                     <div className="form-group">
                       <InputAreaTwo
-                        label="Email"
+                        label="Correo"
                         name="email"
                         type="email"
-                        placeholder="Email"
+                        placeholder="Correo"
                         Icon={FiMail}
+                        defaultValue={state?.values?.email || ""}
                       />
                       <Error errorName={state?.errors?.email?.join(" ")} />
                     </div>
+
                     <div className="form-group">
                       <InputAreaTwo
-                        label="Password"
+                        label="Teléfono"
+                        name="phone"
+                        type="tel"
+                        placeholder="Teléfono (ej. 1234567890)"
+                        Icon={FiPhone}
+                        defaultValue={state?.values?.phone || ""}
+                      />
+                      <Error errorName={state?.errors?.phone?.join(" ")} />
+                    </div>
+
+                    <div className="form-group">
+                      <InputAreaTwo
+                        label="Contraseña"
                         name="password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         Icon={FiLock}
                       />
 
@@ -81,19 +99,19 @@ const SignUp = () => {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex ms-auto">
-                        <Link
-                          type="button"
-                          href={"/forget-password"}
-                          className="text-end text-sm text-heading ps-3 underline hover:no-underline focus:outline-none"
-                        >
-                          Forgot password?
-                        </Link>
-                      </div>
+                    <div className="form-group">
+                      <InputAreaTwo
+                        label="Confirmar Contraseña"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirmar Contraseña"
+                        Icon={FiLock}
+                      />
+                      <Error errorName={state?.errors?.confirmPassword?.join(" ")} />
                     </div>
-                    <SubmitButton title={"Sign Up"} />
-                  </div> */}
+
+                    <SubmitButton title={"Registrarse"} />
+                  </div>
                 </form>
                 <BottomNavigation
                   desc

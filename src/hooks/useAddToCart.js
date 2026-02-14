@@ -9,7 +9,7 @@ const useAddToCart = () => {
   // console.log('products',products)
   // console.log("items", items);
 
-  const handleAddItem = (product) => {
+  const handleAddItem = (product, quantity = item) => {
     const result = items.find((i) => i.id === product.id);
     // console.log(
     //   "result in add to",
@@ -19,31 +19,31 @@ const useAddToCart = () => {
     //   // product?.quantity < result?.stock,
     //   // result?.quantity,
     //   // "item",
-    //   // item
+    //   // quantity
     // );
     const { variants, categories, description, ...updatedProduct } = product;
 
     if (result !== undefined) {
       if (
-        result?.quantity + item <=
+        result?.quantity + quantity <=
         (product?.variants?.length > 0
           ? product?.variant?.quantity
           : product?.stock)
       ) {
-        addItem(updatedProduct, item);
-        notifySuccess(`${item} ${product.title} agregado al carrito!`);
+        addItem(updatedProduct, quantity);
+        notifySuccess(`${quantity} ${product.title} agregado al carrito!`);
       } else {
         notifyError("Stock no válido!");
       }
     } else {
       if (
-        item <=
+        quantity <=
         (product?.variants?.length > 0
           ? product?.variant?.quantity
           : product?.stock)
       ) {
-        addItem(updatedProduct, item);
-        notifySuccess(`${item} ${product.title} agregado al carrito!`);
+        addItem(updatedProduct, quantity);
+        notifySuccess(`${quantity} ${product.title} agregado al carrito!`);
       } else {
         notifyError("Stock no válido!");
       }

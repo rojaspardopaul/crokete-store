@@ -37,7 +37,7 @@ const Coupon = async ({ couponInHome }) => {
                   width={100}
                   height={100}
                   className="rounded-lg"
-                  alt={showingTranslateValue(coupon.title)}
+                  alt={showingTranslateValue(coupon.title) || "Coupon"}
                 />
               </figure>
               <div className="ml-3">
@@ -50,7 +50,7 @@ const Coupon = async ({ couponInHome }) => {
                         <span>{coupon?.discountType?.value}%</span>
                       )}
                     </span>{" "}
-                    Off
+                    de Descuento
                   </h6>
                   <div className="ml-2">
                     {dayjs().isAfter(dayjs(coupon.endTime)) ? (
@@ -108,7 +108,7 @@ const Coupon = async ({ couponInHome }) => {
                     </div>
                   </div>
                   <p className="text-xs leading-4 text-gray-500 dark:text-gray-300 mt-2">
-                    * This coupon apply when shopping more then{" "}
+                    * Este cupón aplica cuando compras más de{" "}
                     <span className="font-bold">
                       {currency}
                       {coupon.minimumAmount}
@@ -132,7 +132,7 @@ const Coupon = async ({ couponInHome }) => {
                   width={120}
                   height={120}
                   className="rounded-lg"
-                  alt={showingTranslateValue(coupon.title)}
+                  alt={showingTranslateValue(coupon.title) || "Coupon"}
                 />
               </figure>
               <div className="ml-5">
@@ -175,7 +175,7 @@ const Coupon = async ({ couponInHome }) => {
                       <span>{coupon?.discountType?.value}%</span>
                     )}
                   </span>{" "}
-                  Off
+                  Descuento
                 </h2>
               </div>
             </div>
@@ -184,15 +184,15 @@ const Coupon = async ({ couponInHome }) => {
                 <div className="w-full">
                   <div className="block">
                     <div className=" font-medium flex items-center mb-1">
-                      <span>Coupon</span>
+                      <span>Cupón</span>
                       <div className="ml-2">
                         {dayjs().isAfter(dayjs(coupon.endTime)) ? (
                           <span className="text-red-600 inline-block">
-                            Inactive
+                            Inactivo
                           </span>
                         ) : (
                           <span className="text-kachabazar-600 inline-block">
-                            Active
+                            Activo
                           </span>
                         )}
                       </div>
@@ -203,7 +203,7 @@ const Coupon = async ({ couponInHome }) => {
                     </div>
                   </div>
                   <p className="text-xs leading-5 dark:text-gray-300 text-gray-500 mt-2">
-                    * This coupon code will apply on when you shopping more then{" "}
+                    * Este cupón aplica cuando compras más de{" "}
                     <span className="font-bold text-gray-700">
                       {currency}
                       {coupon.minimumAmount}

@@ -10,14 +10,14 @@ const Error = ({ error, reset }) => {
 
   return (
     <div className="h-screen text-center">
-      <h2 className="text-red-500">Something went wrong! {error.message}</h2>
+      <h2 className="text-red-500">¡Algo salió mal! {error.message}</h2>
       <button
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
       >
-        Try again
+        Intentar de nuevo
       </button>
     </div>
   );

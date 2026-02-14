@@ -31,7 +31,7 @@ const MyAccount = async () => {
               href="/user/update-profile"
               className="absolute top-2 right-2 bg-cyan-600 text-white px-3 py-1 rounded hover:bg-cyan-700"
             >
-              Edit
+              Editar
             </Link>
             <div className="flex items-center justify-center rounded-full text-xl text-center mr-4 bg-gray-200">
               {userInfo?.image ? (
@@ -66,7 +66,7 @@ const MyAccount = async () => {
                 href={`/user/shipping-address?id=${userInfo?.id}`}
                 className="absolute top-2 right-2 bg-cyan-600 text-white px-3 py-1 rounded hover:bg-cyan-700"
               >
-                Edit
+                Editar
               </Link>
               <div className="flex-grow">
                 {error ? (
@@ -78,7 +78,7 @@ const MyAccount = async () => {
                     <h5 className="leading-none mb-2 text-base font-medium text-gray-700">
                       {shippingAddress?.name}{" "}
                       <span className="text-xs text-gray-500">
-                        (Default Shipping Address)
+                        (Dirección de Envío Predeterminada)
                       </span>
                     </h5>
                     <p className="text-sm text-gray-500">
@@ -102,8 +102,8 @@ const MyAccount = async () => {
               href="/user/add-shipping-address"
               className="flex items-center bg-cyan-600 text-white hover:bg-cyan-700 w-full rounded-lg py-3 px-4 text-center relative"
             >
-              <Plus className="text-xl font-bold text-center mr-4" /> Add
-              Default Shipping Address
+              <Plus className="text-xl font-bold text-center mr-4" /> Agregar
+              Dirección de Envío Predeterminada
             </Link>
           </div>
         )}

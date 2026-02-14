@@ -5,7 +5,7 @@ const Stock = ({ stock, card }) => {
     <>
      {stock <= 0 ? (
         <span className="text-red-700 inline-flex items-center justify-center text-xs">
-          Stock out
+          Agotado
         </span>
       ) : (
         <>
@@ -16,7 +16,7 @@ const Stock = ({ stock, card }) => {
                 : "inline-flex items-center justify-center text-xs text-gray-400"
             }`}
           >
-            In stock:
+            En stock:
             <span className="text-green-600 pl-1 font-normal">{stock} </span>
           </span>
         </>

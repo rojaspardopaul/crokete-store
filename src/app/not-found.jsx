@@ -7,23 +7,23 @@ const NotFound = () => {
           404
         </p>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-red-300 sm:text-5xl">
-          Page not found
+          Página no encontrada
         </h1>
         <p className="mt-6 text-base leading-7 text-gray-600 dark:text-white">
-          Sorry, we couldn’t find the page you’re looking for.
+          Lo sentimos, no pudimos encontrar la página que buscas.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <a
             href="/"
             className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Go back home
+            Volver al inicio
           </a>
           <a
             href="#"
             className="text-sm font-semibold text-gray-900 dark:text-gray-200"
           >
-            Contact support <span aria-hidden="true">&rarr;</span>
+            Contactar soporte <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </div>

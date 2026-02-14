@@ -17,6 +17,10 @@ import {
 } from "@services/SettingServices";
 import DiscountedCard from "@components/product/DiscountedCard";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const Home = async () => {
   const { attributes } = await getShowingAttributes();
   const { storeCustomizationSetting, error: storeCustomizationError } =

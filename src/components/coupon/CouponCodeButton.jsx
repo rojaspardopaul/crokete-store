@@ -20,7 +20,7 @@ const CouponCodeButton = ({ coupon }) => {
       <button className="block w-full">
         {copied && coupon.couponCode === copiedCode ? (
           <span className="text-kachabazar-600 text-sm leading-7 font-semibold">
-            Copied!
+            ¡Copiado!
           </span>
         ) : (
           <span className="uppercase  font-semibold text-sm leading-7 text-kachabazar-600">

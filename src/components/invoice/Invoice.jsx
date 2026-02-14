@@ -18,9 +18,9 @@ const Invoice = ({ data, printRef, globalSetting }) => {
       <div className="bg-indigo-50 p-8 rounded-t-xl">
         <div className="flex lg:flex-row md:flex-row sm:flex-row flex-col lg:items-center justify-between pb-4 border-b border-gray-50">
           <div>
-            <h1 className="font-bold text-2xl uppercase">Invoice</h1>
+            <h1 className="font-bold text-2xl uppercase">Factura</h1>
             <h6 className="text-gray-700">
-              Status :{" "}
+              Estado :{" "}
               {data?.status === "Entregado" && (
                 <span className="text-kachabazar-500">{data?.status}</span>
               )}
@@ -61,7 +61,7 @@ const Invoice = ({ data, printRef, globalSetting }) => {
         <div className="flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between pt-4">
           <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
             <span className="font-bold text-sm uppercase text-gray-600 block">
-              Date
+              Fecha
             </span>
             <span className="text-sm text-gray-500 block">
               {data?.createdAt !== undefined && (
@@ -71,7 +71,7 @@ const Invoice = ({ data, printRef, globalSetting }) => {
           </div>
           <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
             <span className="font-bold text-sm uppercase text-gray-600 block">
-              Invoice No.
+              Factura No.
             </span>
             <span className="text-sm text-gray-500 block">
               #{data?.invoice}
@@ -79,7 +79,7 @@ const Invoice = ({ data, printRef, globalSetting }) => {
           </div>
           <div className="flex flex-col lg:text-right text-left">
             <span className="font-bold text-sm uppercase text-gray-600 block">
-              Invoice To.
+              Facturado a
             </span>
             <span className="text-sm text-gray-500 block">
               {data?.user_info?.name} <br />
@@ -108,26 +108,26 @@ const Invoice = ({ data, printRef, globalSetting }) => {
                   scope="col"
                   className="font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-left"
                 >
-                  Product Name
+                  Nombre del Producto
                 </th>
                 <th
                   scope="col"
                   className="font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-center"
                 >
-                  Quantity
+                  Cantidad
                 </th>
                 <th
                   scope="col"
                   className="font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-center"
                 >
-                  Item Price
+                  Precio Unitario
                 </th>
 
                 <th
                   scope="col"
                   className="font-semibold px-6 py-2 text-gray-700 uppercase tracking-wider text-right"
                 >
-                  Amount
+                  Monto
                 </th>
               </tr>
             </thead>
@@ -140,7 +140,7 @@ const Invoice = ({ data, printRef, globalSetting }) => {
         <div className="flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between pt-4">
           <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
             <span className="mb-1 font-bold text-sm uppercase text-gray-600 block">
-              Payment Method
+              Método de Pago
             </span>
             <span className="text-sm text-gray-500 font-semibold block">
               {data?.paymentMethod}
@@ -148,7 +148,7 @@ const Invoice = ({ data, printRef, globalSetting }) => {
           </div>
           <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
             <span className="mb-1 font-bold text-sm uppercase text-gray-600 block">
-              Shipping Cost
+              Costo de Envío
             </span>
             <span className="text-sm text-gray-500 font-semibold block">
               {currency}
@@ -157,7 +157,7 @@ const Invoice = ({ data, printRef, globalSetting }) => {
           </div>
           <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
             <span className="mb-1 font-bold text-sm uppercase text-gray-600 block">
-              Discount
+              Descuento
             </span>
             <span className="text-sm text-gray-500 font-semibold block">
               {currency}
@@ -166,7 +166,7 @@ const Invoice = ({ data, printRef, globalSetting }) => {
           </div>
           <div className="flex flex-col sm:flex-wrap">
             <span className="mb-1 font-bold text-sm uppercase text-gray-600 block">
-              Total Amount
+              Monto Total
             </span>
             <span className="text-2xl font-bold text-red-500 block">
               {currency}
