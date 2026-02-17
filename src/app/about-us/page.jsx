@@ -8,22 +8,22 @@ import CMSkeletonTwo from "@components/preloader/CMSkeleton";
 import { getStoreCustomizationSetting } from "@services/SettingServices";
 
 export const metadata = {
-  title: "About Us | Kachabazar",
+  title: "Quiénes Somos | Crokete",
   description:
-    "Get in touch with us! Find our contact information and fill out our contact form.",
-  keywords: ["contact", "email", "phone", "location"],
+    "¡Conócenos! Crokete Pet es tu tienda de croquetas y accesorios para mascotas en Zapopan, Jalisco. Alimento premium para perros y gatos.",
+  keywords: ["croquetas", "alimento para mascotas", "accesorios", "farmacia veterinaria", "Zapopan"],
   // You can also add more advanced metadata here
   openGraph: {
-    title: "About Us | Kachabazar",
+    title: "Quiénes Somos | Crokete",
     description:
-      "Get in touch with us! Find our contact information and fill out our contact form.",
-    url: "https://kachabazar-store-nine.vercel.app/about-us",
+      "Tienda de croquetas y accesorios para mascotas en Zapopan. Alimento premium para perros y gatos.",
+    url: "https://crokete.com.mx/about-us",
     images: [
       {
-        url: "https://kachabazar-store-nine.vercel.app/og-image.jpg",
+        url: "https://crokete.com.mx/og-image.jpg",
         width: 800,
         height: 600,
-        alt: "About Us Page",
+        alt: "Quiénes Somos",
       },
     ],
   },

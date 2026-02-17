@@ -8,22 +8,22 @@ import FaqContent from "@components/faq/FaqContent";
 import { getStoreCustomizationSetting } from "@services/SettingServices";
 
 export const metadata = {
-  title: "FAQ | Kachabazar",
+  title: "Preguntas Frecuentes | Crokete",
   description:
-    "Get in touch with us! Find our contact information and fill out our contact form.",
-  keywords: ["contact", "email", "phone", "location"],
+    "Preguntas frecuentes sobre croquetas, entrega, pagos y productos para mascotas en Zapopan.",
+  keywords: ["FAQ", "preguntas", "croquetas", "mascotas", "ayuda"],
   // You can also add more advanced metadata here
   openGraph: {
-    title: "FAQ | Kachabazar",
+    title: "Preguntas Frecuentes | Crokete",
     description:
-      "Get in touch with us! Find our contact information and fill out our contact form.",
-    url: "https://kachabazar-store-nine.vercel.app/faq",
+      "Encuentra respuestas a tus preguntas sobre productos para mascotas, entregas y más.",
+    url: "https://crokete.com.mx/faq",
     images: [
       {
-        url: "https://kachabazar-store-nine.vercel.app/og-image.jpg",
+        url: "https://crokete.com.mx/og-image.jpg",
         width: 800,
         height: 600,
-        alt: "FAQ Page",
+        alt: "Preguntas Frecuentes",
       },
     ],
   },

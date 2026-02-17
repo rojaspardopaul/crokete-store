@@ -11,22 +11,22 @@ import CMSkeletonTwo from "@components/preloader/CMSkeleton";
 import { getStoreCustomizationSetting } from "@services/SettingServices";
 
 export const metadata = {
-  title: "Contact Us | Kachabazar",
+  title: "Contáctanos | Crokete",
   description:
-    "Get in touch with us! Find our contact information and fill out our contact form.",
-  keywords: ["contact", "email", "phone", "location"],
+    "¡Contáctanos! Encuentra nuestra información de contacto y envíanos tu mensaje. Estamos en Zapopan, Jalisco.",
+  keywords: ["contacto", "soporte", "croquetas", "mascotas", "Zapopan"],
   // You can also add more advanced metadata here
   openGraph: {
-    title: "Contact Us | Kachabazar",
+    title: "Contáctanos | Crokete",
     description:
-      "Get in touch with us! Find our contact information and fill out our contact form.",
-    url: "https://kachabazar-store-nine.vercel.app/contact-us",
+      "Tienda de croquetas y accesorios para mascotas en Zapopan. Contáctanos para cualquier consulta.",
+    url: "https://crokete.com.mx/contact-us",
     images: [
       {
-        url: "https://kachabazar-store-nine.vercel.app/og-image.jpg",
+        url: "https://crokete.com.mx/og-image.jpg",
         width: 800,
         height: 600,
-        alt: "Contact Us Page",
+        alt: "Contáctanos",
       },
     ],
   },
