@@ -46,7 +46,7 @@ const ContactUs = async () => {
 
   return (
     <div className="">
-      <PageHeader headerBg={contact_us?.header_bg} title={contact_us?.title} />
+      <PageHeader headerBg={contact_us?.header_bg} />
 
       <div className="bg-white dark:bg-zinc-900">
         <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">

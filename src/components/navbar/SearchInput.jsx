@@ -2,22 +2,40 @@
 
 import { Input } from "@components/ui/input";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const SearchInput = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [searchText, setSearchText] = useState("");
+
+  // Sync input with URL query param
+  useEffect(() => {
+    const query = searchParams.get("query");
+    setSearchText(query ? decodeURIComponent(query) : "");
+  }, [searchParams]);
 
   const handleSearch = (e) => {
     e.preventDefault();
 
-    if (searchText) {
-      router.push(`/search?query=${searchText}`, { scroll: true });
-      setSearchText("");
+    if (searchText.trim()) {
+      router.push(`/search?query=${encodeURIComponent(searchText.trim())}`, { scroll: true });
     } else {
-      router.push(`/`, { scroll: true });
-      setSearchText("");
+      router.push(`/search`, { scroll: true });
+    }
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSearchText(value);
+
+    // If input is fully cleared and we're on a search page with a query, remove the query filter
+    if (value === "" && searchParams.get("query")) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("query");
+      const qs = params.toString();
+      router.push(`/search${qs ? `?${qs}` : ""}`, { scroll: false });
     }
   };
 
@@ -29,10 +47,10 @@ const SearchInput = () => {
       >
         <label className="flex items-center py-0.5">
           <Input
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={handleChange}
             value={searchText}
             className="form-input w-full pl-5 appearance-none transition ease-in-out text-sm text-gray-700 font-sans rounded-md h-9 duration-200 bg-white focus:ring-0 outline-none border-none focus:outline-none"
-            placeholder="Buscar productos (ej. camisa, pantalón)"
+            placeholder="Buscar productos (ej. croqueta, royal)"
           />
         </label>
         <button

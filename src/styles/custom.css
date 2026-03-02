@@ -10,30 +10,30 @@
 /* added some styles on root */
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 0.75rem;
+  --background: oklch(98.5% 0.005 228);
+  --foreground: oklch(0.22 0.020 252);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --card-foreground: oklch(0.22 0.020 252);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.22 0.020 252);
+  --primary: oklch(0.60 0.155 242);
+  --primary-foreground: oklch(0.99 0.003 228);
+  --secondary: oklch(0.965 0.010 230);
+  --secondary-foreground: oklch(0.35 0.030 248);
+  --muted: oklch(0.96 0.008 230);
+  --muted-foreground: oklch(0.50 0.030 245);
+  --accent: oklch(0.62 0.125 178);
+  --accent-foreground: oklch(0.99 0.003 228);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --border: oklch(0.92 0.012 230);
+  --input: oklch(0.92 0.012 230);
+  --ring: oklch(0.60 0.155 242);
+  --chart-1: oklch(0.60 0.155 242);
+  --chart-2: oklch(0.62 0.125 178);
+  --chart-3: oklch(0.43 0.12 248);
+  --chart-4: oklch(0.79 0.105 236);
+  --chart-5: oklch(0.70 0.135 239);
 
   --sidebar: var(--background);
   --sidebar-foreground: var(--foreground);
@@ -46,29 +46,29 @@
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.14 0.04 259.21);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
+  --background: oklch(0.18 0.012 250);
+  --foreground: oklch(0.95 0.008 230);
+  --card: oklch(0.22 0.012 250);
+  --card-foreground: oklch(0.95 0.008 230);
+  --popover: oklch(0.22 0.012 250);
+  --popover-foreground: oklch(0.95 0.008 230);
+  --primary: oklch(0.70 0.135 239);
+  --primary-foreground: oklch(0.18 0.012 250);
+  --secondary: oklch(0.28 0.020 248);
+  --secondary-foreground: oklch(0.95 0.008 230);
+  --muted: oklch(0.28 0.020 248);
+  --muted-foreground: oklch(0.65 0.030 240);
+  --accent: oklch(0.55 0.110 178);
+  --accent-foreground: oklch(0.95 0.008 230);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  --ring: oklch(0.60 0.155 242);
+  --chart-1: oklch(0.70 0.135 239);
+  --chart-2: oklch(0.55 0.110 178);
+  --chart-3: oklch(0.79 0.105 236);
+  --chart-4: oklch(0.43 0.12 248);
+  --chart-5: oklch(0.60 0.155 242);
 }
 
 @theme inline {
@@ -110,6 +110,34 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Crokete brand colors - registered for Tailwind utilities (bg-, text-, from-, to-, border-, ring-, etc.) */
+  --color-kachabazar-50:  var(--kachabazar-50);
+  --color-kachabazar-100: var(--kachabazar-100);
+  --color-kachabazar-200: var(--kachabazar-200);
+  --color-kachabazar-300: var(--kachabazar-300);
+  --color-kachabazar-400: var(--kachabazar-400);
+  --color-kachabazar-500: var(--kachabazar-500);
+  --color-kachabazar-600: var(--kachabazar-600);
+  --color-kachabazar-700: var(--kachabazar-700);
+  --color-kachabazar-800: var(--kachabazar-800);
+  --color-kachabazar-900: var(--kachabazar-900);
+  --color-crokete-cream-50:  var(--crokete-cream-50);
+  --color-crokete-cream-100: var(--crokete-cream-100);
+  --color-crokete-cream-200: var(--crokete-cream-200);
+  --color-crokete-cream-300: var(--crokete-cream-300);
+  --color-crokete-earth-600: var(--crokete-earth-600);
+  --color-crokete-earth-700: var(--crokete-earth-700);
+  --color-crokete-earth-800: var(--crokete-earth-800);
+  --color-crokete-earth-900: var(--crokete-earth-900);
+  --color-crokete-green-50:  var(--crokete-green-50);
+  --color-crokete-green-100: var(--crokete-green-100);
+  --color-crokete-green-200: var(--crokete-green-200);
+  --color-crokete-green-300: var(--crokete-green-300);
+  --color-crokete-green-400: var(--crokete-green-400);
+  --color-crokete-green-500: var(--crokete-green-500);
+  --color-crokete-green-600: var(--crokete-green-600);
+  --color-crokete-green-700: var(--crokete-green-700);
 }
 
 @layer base {
@@ -790,7 +818,7 @@ p:not(:last-of-type) {
 }
 
 .more-link {
-  color: darkorange;
+  color: var(--kachabazar-500, #4a90c4);
   font-size: 13px;
   cursor: pointer;
   font-weight: 600;
@@ -803,7 +831,7 @@ p:not(:last-of-type) {
 }
 
 .read-or-hide {
-  color: darkorange;
+  color: var(--kachabazar-500, #4a90c4);
   font-size: 13px;
   cursor: pointer;
   display: block;
@@ -915,3 +943,324 @@ p:not(:last-of-type) {
 .react-responsive-modal-modal {
   width: 1800px !important;
 }
+
+/* ============================
+   Crokete: Pet-themed animations
+   ============================ */
+
+/* Bounce animation for add-to-cart */
+@keyframes cart-bounce {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(0.95); }
+  75% { transform: scale(1.05); }
+}
+.animate-cart-bounce {
+  animation: cart-bounce 0.5s ease-in-out;
+}
+
+/* Gentle wiggle for fun elements */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+.animate-wiggle {
+  animation: wiggle 0.4s ease-in-out;
+}
+
+/* Paw print fade-in for rating */
+@keyframes paw-pop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-paw-pop {
+  animation: paw-pop 0.3s ease-out forwards;
+}
+
+/* Slide up for product cards on scroll */
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+/* Soft pulse for badges */
+@keyframes soft-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.animate-soft-pulse {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+/* Float animation for sticky cart */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Gradient shimmer for loading states */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--crokete-cream-100) 25%, var(--crokete-cream-200) 50%, var(--crokete-cream-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ============================
+   Crokete: Custom scrollbar
+   ============================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--crokete-cream-100, #edf2f8);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--kachabazar-300, #8fb5d6);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--kachabazar-500, #4a90c4);
+}
+
+/* ============================
+   Crokete: Trust badge styles
+   ============================ */
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: white;
+  border: 1px solid var(--crokete-cream-200, #dce6f0);
+  transition: all 0.3s ease;
+}
+.trust-badge:hover {
+  border-color: var(--kachabazar-300, #8fb5d6);
+  box-shadow: 0 4px 12px rgba(74, 144, 196, 0.12);
+  transform: translateY(-2px);
+}
+.trust-badge-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--kachabazar-50, #edf4fa);
+  color: var(--kachabazar-600, #3a7ab0);
+  flex-shrink: 0;
+}
+
+/* ============================
+   Crokete: Product card smooth hover
+   ============================ */
+.product-card-hover {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.product-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(74, 144, 196, 0.18);
+}
+
+/* ============================
+   Crokete: Warm badge for discounts
+   ============================ */
+.discount-badge {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  letter-spacing: 0.025em;
+}
+
+/* ============================
+   Crokete: Section divider with paw
+   ============================ */
+.paw-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.paw-divider::before,
+.paw-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--kachabazar-200, #b3d1e8), transparent);
+}
+
+/* ============================
+   Crokete: Product Gallery & Zoom Panel (Petco-style)
+   ============================ */
+
+/* Main image container — crosshair cursor on hover for zoom hint */
+.zoom-lens-container {
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The wrapper needs relative positioning so zoom panel can be absolute */
+.zoom-lens-wrapper {
+  position: relative;
+}
+
+/* Zoom indicator square on the main image */
+.zoom-indicator {
+  z-index: 10;
+  transition: none; /* follows cursor instantly */
+}
+
+/* Zoom panel — appears to the right of the main image */
+.zoom-panel {
+  z-index: 50;
+  transition: opacity 0.15s ease;
+}
+
+/* Hide zoom on pure touch devices (coarse pointer with no hover capability) */
+@media (pointer: coarse) and (hover: none) {
+  .zoom-lens-container {
+    cursor: default;
+  }
+  .zoom-indicator,
+  .zoom-panel {
+    display: none !important;
+  }
+}
+
+/* Thumbnail active state transition */
+.product-gallery__thumb {
+  transition: all 0.2s ease;
+}
+.product-gallery__thumb:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Embla slides — prevent image drag */
+.product-gallery__slide img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* ─── Floating WhatsApp Button ─────────────────────────────────── */
+.wa-fab {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wa-widget {
+  animation: wa-slide-up 0.3s ease-out;
+}
+
+@keyframes wa-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── Page Loading Indicator (route change) ──────────────────── */
+
+/* Full-screen semi-transparent overlay */
+.page-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(2px);
+  pointer-events: all;
+  animation: pl-fade-in 0.15s ease-out;
+}
+
+/* Thin progress bar at the very top */
+.page-loading-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--kachabazar-400, #60a5fa) 0%,
+    var(--kachabazar-600, #2563eb) 50%,
+    var(--kachabazar-400, #60a5fa) 100%
+  );
+  background-size: 200% 100%;
+  animation: pl-bar-slide 1.2s ease-in-out infinite;
+  border-radius: 0 2px 2px 0;
+  width: 100%;
+}
+
+/* Centered paw + text */
+.page-loading-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Paw icon */
+.page-loading-paw {
+  width: 48px;
+  height: 48px;
+  color: var(--kachabazar-500, #3b82f6);
+  animation: pl-paw-bounce 0.8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.10));
+}
+
+/* Loading text */
+.page-loading-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--kachabazar-600, #2563eb);
+  letter-spacing: 0.05em;
+  animation: pl-text-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Animations ── */
+@keyframes pl-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pl-bar-slide {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pl-paw-bounce {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  30%      { transform: scale(1.15) rotate(-8deg); }
+  60%      { transform: scale(0.95) rotate(5deg); }
+}
+
+@keyframes pl-text-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+/* Hide on touch devices if needed — no, always show */
+

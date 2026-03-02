@@ -57,10 +57,7 @@ const MainCarousel = async () => {
 
   return (
     <>
-      <CarouselCard
-        sliderData={sliderData}
-        storeCustomizationSetting={storeCustomizationSetting}
-      />
+      <CarouselCard sliderData={sliderData} />
     </>
   );
 };

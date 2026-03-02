@@ -6,6 +6,7 @@ import {
   ChevronDown,
   ChevronUp,
   File,
+  Gift,
   Grid,
   Home,
   List,
@@ -56,6 +57,11 @@ const Sidebar = () => {
       title: "Mis Reseñas",
       href: "/user/my-reviews",
       icon: Star,
+    },
+    {
+      title: "Mis Recompensas",
+      href: "/user/rewards",
+      icon: Gift,
     },
     {
       title: "Mi Cuenta",

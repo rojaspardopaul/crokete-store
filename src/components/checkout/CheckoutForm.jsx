@@ -10,7 +10,6 @@ import {
   IoWalletSharp,
 } from "react-icons/io5";
 import { ImCreditCard } from "react-icons/im";
-import useTranslation from "next-translate/useTranslation";
 
 //internal import
 import Label from "@components/form/Label";
@@ -23,9 +22,9 @@ import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
 import { Input } from "@components/ui/input";
 import { Button } from "@components/ui/button";
 import SwitchToggle from "@components/form/SwitchToggle";
+import LoyaltyCartBanner from "@components/loyalty/LoyaltyCartBanner";
 
 const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
-  const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -181,17 +180,17 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                 </div>
               </div>
 
-              <Label label={showingTranslateValue(checkout?.shipping_cost)} />
+              <Label label={showingTranslateValue(checkout?.shipping_cost) || "Costo de Envío"} />
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <InputShipping
                     currency={currency}
                     register={register}
                     handleShippingCost={handleShippingCost}
-                    name={showingTranslateValue(checkout?.shipping_name_two)}
+                    name={showingTranslateValue(checkout?.shipping_name_one) || "Envío Estándar"}
                     description={showingTranslateValue(
                       checkout?.shipping_one_desc
-                    )}
+                    ) || "Entrega en 3-5 días - "}
                     value={Number(checkout?.shipping_one_cost) || 60}
                   />
                   <Error errorMessage={errors.shippingOption} />
@@ -202,10 +201,10 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                     currency={currency}
                     register={register}
                     handleShippingCost={handleShippingCost}
-                    name={showingTranslateValue(checkout?.shipping_name_two)}
+                    name={showingTranslateValue(checkout?.shipping_name_two) || "Envío Express"}
                     description={showingTranslateValue(
                       checkout?.shipping_two_desc
-                    )}
+                    ) || "Entrega en 1-2 días - "}
                     value={Number(checkout?.shipping_two_cost) || 20}
                   />
                   <Error errorMessage={errors.shippingOption} />
@@ -229,7 +228,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                     <InputPayment
                       setShowCard={setShowCard}
                       register={register}
-                      name={t("common:cashOnDelivery")}
+                      name="Pago Contra Entrega"
                       value="Cash"
                       Icon={IoWalletSharp}
                     />
@@ -242,26 +241,13 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                     <InputPayment
                       setShowCard={setShowCard}
                       register={register}
-                      name={t("common:creditCard")}
+                      name="Tarjeta de Crédito"
                       value="Card"
                       Icon={ImCreditCard}
                     />
                     <Error errorMessage={errors.paymentMethod} />
                   </div>
                 )}
-
-                {/* {storeSetting?.razorpay_status && ( */}
-                <div className="">
-                  <InputPayment
-                    setShowCard={setShowCard}
-                    register={register}
-                    name="RazorPay"
-                    value="RazorPay"
-                    Icon={ImCreditCard}
-                  />
-                  <Error errorMessage={errors.paymentMethod} />
-                </div>
-                {/* )} */}
               </div>
             </div>
 
@@ -276,7 +262,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                     <span className="text-xl mr-2">
                       <IoReturnUpBackOutline />
                     </span>
-                    {t("common:continueShoppingBtn")}
+                    Continuar Comprando
                   </Link>
                 </Button>
               </div>
@@ -292,7 +278,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                     "Procesando"
                   ) : (
                     <span className="flex justify-center text-center">
-                      {t("common:confirmOrderBtn")}
+                      Confirmar Pedido
                       <span className="text-xl ml-2">
                         {" "}
                         <IoArrowForward />
@@ -390,6 +376,10 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                 {currency}
                 {parseFloat(total).toFixed(2)}
               </span>
+            </div>
+            {/* Loyalty points estimate */}
+            <div className="mt-3">
+              <LoyaltyCartBanner cartTotal={parseFloat(total)} compact />
             </div>
           </div>
         </div>

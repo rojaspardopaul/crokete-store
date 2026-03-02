@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IoAdd, IoExpand, IoBagAdd, IoRemove } from "react-icons/io5";
 import { useCart } from "react-use-cart";
 import Link from "next/link";
@@ -17,14 +17,86 @@ import Rating from "@components/common/Rating";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import ProductModal from "@components/modal/ProductModal";
 import ImageWithFallback from "@components/common/ImageWithFallBack";
+import { useSetting } from "@context/SettingContext";
 
 const DiscountedCard = ({ product, attributes, currency }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
   const { items, addItem, updateItemQuantity, inCart } = useCart();
   const { handleIncreaseQuantity } = useAddToCart();
-  const { showingTranslateValue } = useUtilsFunction();
+  const { showingTranslateValue, getNumber } = useUtilsFunction();
+  const { globalSetting } = useSetting();
 
-  // console.log('attributes in product cart',attributes)
+  // Resolve variant display names from attribute data
+  const variantOptions = useMemo(() => {
+    if (!product?.variants?.length || !attributes?.length) return [];
+
+    const internalFields = new Set([
+      'originalPrice', 'price', 'discount', 'quantity',
+      'barcode', 'sku', 'productId', 'image', '_id',
+      'id', 'stock', 'createdAt', 'updatedAt', '__v',
+    ]);
+
+    const options = product.variants.map((variant, idx) => {
+      const attrKeys = Object.keys(variant).filter(k => !internalFields.has(k));
+      const labels = attrKeys.map(attId => {
+        const att = attributes.find(a => a._id === attId);
+        if (!att) return null;
+        const val = att.variants?.find(v => v._id === variant[attId]);
+        return val ? showingTranslateValue(val.name) : null;
+      }).filter(Boolean);
+
+      return {
+        idx,
+        label: labels.join(' / ') || `Opción ${idx + 1}`,
+        price: getNumber(variant.price),
+        originalPrice: getNumber(variant.originalPrice),
+        quantity: variant.quantity || 0,
+        variant,
+      };
+    });
+
+    const seen = new Set();
+    return options.filter(o => {
+      if (seen.has(o.label)) return false;
+      seen.add(o.label);
+      return true;
+    });
+  }, [product?.variants, attributes]);
+
+  const displayPrice = useMemo(() => {
+    if (variantOptions.length > 0 && variantOptions[selectedVariantIdx]) {
+      return variantOptions[selectedVariantIdx].price;
+    }
+    return product?.isCombination
+      ? product?.variants?.[0]?.price
+      : product?.prices?.price;
+  }, [selectedVariantIdx, variantOptions, product]);
+
+  const displayOriginalPrice = useMemo(() => {
+    if (variantOptions.length > 0 && variantOptions[selectedVariantIdx]) {
+      return variantOptions[selectedVariantIdx].originalPrice;
+    }
+    return product?.isCombination
+      ? product?.variants?.[0]?.originalPrice
+      : product?.prices?.originalPrice;
+  }, [selectedVariantIdx, variantOptions, product]);
+
+  // Image based on selected variant
+  const displayImage = useMemo(() => {
+    if (variantOptions.length > 0 && variantOptions[selectedVariantIdx]?.variant?.image) {
+      return variantOptions[selectedVariantIdx].variant.image;
+    }
+    return product?.image?.[0];
+  }, [selectedVariantIdx, variantOptions, product?.image]);
+
+  // Discount percentage based on selected variant
+  const displayDiscount = useMemo(() => {
+    if (displayOriginalPrice > 0 && displayPrice < displayOriginalPrice) {
+      return Math.round(((displayOriginalPrice - displayPrice) / displayOriginalPrice) * 100);
+    }
+    return 0;
+  }, [displayPrice, displayOriginalPrice]);
 
   const handleAddItem = (p) => {
     if (p.stock < 1) return notifyError("Stock no válido!");
@@ -57,14 +129,14 @@ const DiscountedCard = ({ product, attributes, currency }) => {
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
           product={product}
-          currency={currency}
           attributes={attributes}
+          globalSetting={globalSetting}
         />
       )}
 
       <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-white border-gray-100 transition-all duration-100 ease-in-out hover:border-kachabazar-500 ">
         <div className="w-full flex justify-between">
-          <Discount product={product} />
+          <Discount product={product} discount={displayDiscount} />
         </div>
         <div className="relative w-full min-h-48 lg:h-48 xl:h-52">
           <Link
@@ -75,7 +147,7 @@ const DiscountedCard = ({ product, attributes, currency }) => {
               fill
               sizes="100%"
               alt="product"
-              src={product.image?.[0]}
+              src={displayImage}
             />
           </Link>
           <div className="absolute lg:bottom-0 bottom-4 lg:group-hover:bottom-4 inset-x-1 opacity-100 flex justify-center lg:opacity-0 lg:invisible group-hover:opacity-100 group-hover:visible transition-all">
@@ -154,6 +226,30 @@ const DiscountedCard = ({ product, attributes, currency }) => {
               {showingTranslateValue(product?.title)}
             </Link>
           </div>
+
+          {/* Variant pills */}
+          {variantOptions.length > 1 && (
+            <div className="flex flex-wrap gap-1.5">
+              {variantOptions.map((opt, idx) => (
+                <button
+                  key={opt.idx}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSelectedVariantIdx(idx);
+                  }}
+                  className={`text-[11px] font-medium px-2.5 py-1 rounded-full border transition-all duration-200 cursor-pointer ${
+                    selectedVariantIdx === idx
+                      ? "bg-kachabazar-500 text-white border-kachabazar-500 shadow-sm"
+                      : "bg-gray-50 text-gray-600 border-gray-200 hover:border-kachabazar-300 hover:bg-kachabazar-50 hover:text-kachabazar-700"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+
           <div className="flex gap-0.5 items-center">
             <Rating
               size="md"
@@ -163,21 +259,20 @@ const DiscountedCard = ({ product, attributes, currency }) => {
             />
           </div>
 
-          <PriceTwo
-            card
-            product={product}
-            currency={currency}
-            price={
-              product?.isCombination
-                ? product?.variants[0]?.price
-                : product?.prices?.price
-            }
-            originalPrice={
-              product?.isCombination
-                ? product?.variants[0]?.originalPrice
-                : product?.prices?.originalPrice
-            }
-          />
+          <div className="flex items-center justify-between">
+            <PriceTwo
+              card
+              product={product}
+              currency={currency}
+              price={displayPrice}
+              originalPrice={displayOriginalPrice}
+            />
+            <span className="text-[10px] text-gray-400">
+              {(variantOptions.length > 0 ? variantOptions[selectedVariantIdx]?.quantity : product?.stock) > 0
+                ? `Stock: ${variantOptions.length > 0 ? variantOptions[selectedVariantIdx]?.quantity : product?.stock}`
+                : <span className="text-red-500">Agotado</span>}
+            </span>
+          </div>
         </div>
       </div>
     </>

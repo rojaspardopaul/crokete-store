@@ -24,6 +24,7 @@ import { getUserSession } from "@lib/auth-client";
 import { useSetting } from "@context/SettingContext";
 import useUtilsFunction from "./useUtilsFunction";
 import { addShippingAddress } from "@services/ServerActionServices";
+import requests from "@services/httpServices";
 
 const useCheckoutSubmit = ({ shippingAddress }) => {
   const { dispatch } = useContext(UserContext);
@@ -40,6 +41,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [useExistingAddress, setUseExistingAddress] = useState(false);
   const [isCouponAvailable, setIsCouponAvailable] = useState(false);
+  const [loyaltyRewardCode, setLoyaltyRewardCode] = useState(null);
 
   const router = useRouter();
   const stripe = useStripe();
@@ -218,6 +220,21 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
       // Proceed with order success
       router.push(`/order/${orderResponse?._id}`);      
       notifySuccess("Tu pedido ha sido confirmado! La factura se enviará a tu correo.");
+
+      // Mark loyalty reward as used (if applicable)
+      if (loyaltyRewardCode && userInfo?.token) {
+        try {
+          requests.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`;
+          await requests.post("/loyalty/use-reward", {
+            couponCode: loyaltyRewardCode,
+            orderId: orderResponse?._id,
+          });
+          setLoyaltyRewardCode(null);
+        } catch (_) {
+          // non-critical
+        }
+      }
+
       Cookies.remove("couponInfo");
       emptyCart();
       setIsCheckoutSubmit(false);
@@ -453,7 +470,46 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
       );
       setIsCouponAvailable(false);
 
-      if (result.length < 1) {
+      if (result.length < 1) {        // Try loyalty reward coupon as fallback
+        try {
+          if (userInfo?.token) {
+            const prevToken = requests.defaults?.headers?.common?.["Authorization"];
+            requests.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`;
+            
+            const rewardResult = await requests.post("/loyalty/apply-reward", {
+              couponCode: couponRef.current.value,
+              orderTotal: total,
+            });
+
+            if (prevToken) {
+              requests.defaults.headers.common["Authorization"] = prevToken;
+            }
+
+            if (rewardResult?.valid) {
+              const rewardCoupon = {
+                couponCode: rewardResult.couponCode,
+                discountType: {
+                  type: rewardResult.discountType,
+                  value: rewardResult.discountValue,
+                },
+                minimumAmount: 0,
+              };
+              notifySuccess(
+                `🎁 Recompensa aplicada: ${rewardResult.description}`
+              );
+              setIsCouponApplied(true);
+              setMinimumAmount(0);
+              setDiscountPercentage(rewardCoupon.discountType);
+              setLoyaltyRewardCode(rewardResult.couponCode);
+              dispatch({ type: "SAVE_COUPON", payload: rewardCoupon });
+              Cookies.set("couponInfo", JSON.stringify(rewardCoupon));
+              return;
+            }
+          }
+        } catch (loyaltyErr) {
+          // Loyalty reward not found either, show generic error
+          console.log("Loyalty coupon check:", loyaltyErr?.response?.data?.message || loyaltyErr.message);
+        }
         notifyError("Por favor, ingresa un código de cupón válido.");
         return;
       }

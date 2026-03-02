@@ -387,7 +387,7 @@ const Footer = async ({ error, storeCustomizationSetting }) => {
                         footer?.payment_method_img ||
                         "/payment-method/payment-logo.png"
                       }
-                      alt="payment method"
+                      alt="método de pago"
                     />
                   </li>
                 </ul>

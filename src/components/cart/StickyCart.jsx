@@ -25,16 +25,16 @@ const StickyCart = ({ currency }) => {
           onClick={() => setOpenCartDrawer(!openCartDrawer)}
           className="absolute"
         >
-          <div className="right-0 w-35 float-right fixed top-2/4 bottom-2/4 align-middle shadow-lg cursor-pointer z-30 hidden lg:block xl:block">
-            <div className="flex flex-col items-center justify-center bg-indigo-50 rounded-tl-lg p-2 text-gray-700">
+          <div className="right-0 w-35 float-right fixed top-2/4 bottom-2/4 align-middle shadow-xl cursor-pointer z-30 hidden lg:block xl:block animate-float rounded-l-2xl overflow-hidden">
+            <div className="flex flex-col items-center justify-center bg-kachabazar-50 p-3 text-kachabazar-800 border-b border-kachabazar-200">
               <span className="text-2xl mb-1 text-kachabazar-600">
                 <IoBagHandleOutline />
               </span>
-              <span className="px-2 text-sm  font-medium">
-                {totalItems} Elemento/s
+              <span className="px-2 text-sm font-semibold">
+                {totalItems} {totalItems === 1 ? "producto" : "productos"}
               </span>
             </div>
-            <div className="flex flex-col items-center justify-center bg-kachabazar-700 p-2 text-white text-base  font-medium rounded-bl-lg mx-auto">
+            <div className="flex flex-col items-center justify-center bg-kachabazar-600 p-3 text-white text-base font-bold">
               {currency}
               {cartTotal.toFixed(2)}
             </div>

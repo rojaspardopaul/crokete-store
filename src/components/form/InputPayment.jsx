@@ -9,12 +9,12 @@ const InputPayment = ({ Icon, name, value, register, setShowCard }) => {
             <span className="text-xl md:mr-3 mr-1 text-gray-400">
               <Icon />
             </span>
-            <h6 className="font-medium text-sm text-gray-600">{value}</h6>
+            <h6 className="font-medium text-sm text-gray-600">{name}</h6>
           </div>
           <input
             onClick={() => setShowCard(value === "Card" ? true : false)}
             {...register("paymentMethod", {
-              required: "Payment Method is required!",
+              required: "Debes seleccionar un método de pago",
             })}
             type="radio"
             value={value}

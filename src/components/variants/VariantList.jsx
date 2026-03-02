@@ -34,6 +34,19 @@ const VariantList = ({
     ...new Map(variants?.map((v) => [v[att], v]).filter(Boolean)).values(),
   ].filter(Boolean);
 
+  // Resolve display name for a variant value
+  const getVariantLabel = (variantValue) => {
+    for (const vr of varTitle) {
+      if (vr?._id !== att) continue;
+      for (const el of vr?.variants || []) {
+        if (el?._id === variantValue) {
+          return showingTranslateValue(el.name);
+        }
+      }
+    }
+    return null;
+  };
+
   return (
     <>
       {option === "Dropdown" ? (
@@ -42,53 +55,40 @@ const VariantList = ({
           value={selectVariant[att] || ""}
         >
           <SelectTrigger className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-600 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-kachabazar-600 sm:text-sm/6">
-            <SelectValue placeholder="Select Variant" />
+            <SelectValue placeholder="Seleccionar" />
           </SelectTrigger>
           <SelectContent>
-            {uniqueVariants.map((vl) =>
-              varTitle.map((vr) =>
-                vr?.variants?.map(
-                  (el) =>
-                    vr?._id === att &&
-                    el?._id === vl[att] && (
-                      <SelectItem key={el._id} value={vl[att]}>
-                        {showingTranslateValue(el.name)}
-                      </SelectItem>
-                    )
-                )
-              )
-            )}
+            {uniqueVariants.map((vl) => {
+              const label = getVariantLabel(vl[att]);
+              if (!label) return null;
+              return (
+                <SelectItem key={vl[att]} value={vl[att]}>
+                  {label}
+                </SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
       ) : (
         <div className="w-full flex flex-wrap gap-2">
-          {uniqueVariants.map((vl) =>
-            varTitle.map((vr) =>
-              vr?.variants?.map(
-                (el) =>
-                  vr?._id === att &&
-                  el?._id === vl[att] && (
-                    <Button
-                      size="sm"
-                      key={el._id}
-                      onClick={() => handleChangeVariant(vl[att])}
-                      variant={
-                        Object?.values(selectVariant).includes(vl[att])
-                          ? "active"
-                          : "outline"
-                      }
-                      className={`h-7 text-xs ${
-                        Object?.values(selectVariant).includes(vl[att])
-                          ? "cursor-pointer inline-flex items-center rounded-full bg-kachabazar-100 px-3 py-1 text-xs font-medium text-kachabazar-700"
-                          : "cursor-pointer inline-flex items-center rounded-full bg-white hover:bg-kachabazar-100 hover:shadow-md px-3 py-1 text-xs font-medium text-gray-600 hover:text-green-700"
-                      }`}
-                    >
-                      {showingTranslateValue(el.name)}
-                    </Button>
-                  )
-              )
-            )
-          )}
+          {uniqueVariants.map((vl) => {
+            const label = getVariantLabel(vl[att]);
+            if (!label) return null;
+            const isSelected = Object?.values(selectVariant).includes(vl[att]);
+            return (
+              <button
+                key={vl[att]}
+                onClick={() => handleChangeVariant(vl[att])}
+                className={`inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium border-2 transition-all duration-200 cursor-pointer min-w-[60px] ${
+                  isSelected
+                    ? "bg-kachabazar-500 text-white border-kachabazar-500 shadow-md"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-kachabazar-400 hover:bg-kachabazar-50 hover:text-kachabazar-700 hover:shadow-sm"
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
       )}
     </>

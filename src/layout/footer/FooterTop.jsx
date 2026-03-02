@@ -20,7 +20,7 @@ const FooterTop = async ({ error, storeCustomizationSetting }) => {
           <div className="flex-grow hidden lg:flex md:flex md:justify-items-center lg:justify-start">
             <Image
               src={home?.daily_need_img_left || "/app-download-img-left.png"}
-              alt="app download"
+              alt="descargar app"
               width={500}
               height={394}
               priority
@@ -62,7 +62,7 @@ const FooterTop = async ({ error, storeCustomizationSetting }) => {
                   sizes="100vw"
                   className="w-full h-auto"
                   src={home?.button1_img || "/app/app-store.svg"}
-                  alt="app store"
+                  alt="tienda de apps"
                 />
               </Link>
               <Link
@@ -78,7 +78,7 @@ const FooterTop = async ({ error, storeCustomizationSetting }) => {
                   sizes="100vw"
                   className="w-full h-auto"
                   src={home?.button2_img || "/app/play-store.svg"}
-                  alt="play store"
+                  alt="tienda de apps"
                 />
               </Link>
             </div>
@@ -90,7 +90,7 @@ const FooterTop = async ({ error, storeCustomizationSetting }) => {
                 width={500}
                 height={394}
                 priority
-                alt="app download"
+                alt="descargar app"
                 className="block w-auto"
               />
             </div>

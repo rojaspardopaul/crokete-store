@@ -1,21 +1,46 @@
-/*TODO:
-Este archivo contiene las variables del color primario de KachaBazar.
-Solamente es necesario cambiar las variables --kachabazar-XXX en :root para cambiar el color primario a elección.
-Se utiliza de esta manera: 
-<h1 class="text-kachabazar-500">Título</h1>
-<button class="bg-kachabazar-500">Botón de acción</button>
+/*
+  Crokete - Design System
+  Paleta azul celeste, profesional y amigable para tienda de mascotas.
+  Tonos: Azul cerúleo (primario), Menta/Teal (acento), Gris azulado (fondos).
+
+  Uso:
+  <h1 class="text-kachabazar-500">Título</h1>
+  <button class="bg-kachabazar-500">Botón de acción</button>
 */
 :root {
-    --kachabazar-50: oklch(97.7% 0.01 255.7);
-    --kachabazar-100: oklch(94.9% 0.03 255.7);
-    --kachabazar-200: oklch(89.6% 0.07 255.7);
-    --kachabazar-300: oklch(81.6% 0.13 255.7);
-    --kachabazar-400: oklch(71.5% 0.18 255.7);
-    --kachabazar-500: oklch(65.7% 0.21 255.7);
-    --kachabazar-600: oklch(57.5% 0.21 255.7);
-    --kachabazar-700: oklch(48% 0.19 255.7);
-    --kachabazar-800: oklch(40% 0.16 255.7);
-    --kachabazar-900: oklch(33% 0.13 255.7);
+    /* === Paleta Principal: Azul Cerúleo (fresco, confiable, moderno) === */
+    --kachabazar-50:  oklch(97.5% 0.010 228);
+    --kachabazar-100: oklch(94% 0.028 230);
+    --kachabazar-200: oklch(88% 0.060 233);
+    --kachabazar-300: oklch(79% 0.105 236);
+    --kachabazar-400: oklch(70% 0.135 239);
+    --kachabazar-500: oklch(60% 0.155 242);
+    --kachabazar-600: oklch(52% 0.145 245);
+    --kachabazar-700: oklch(43% 0.120 248);
+    --kachabazar-800: oklch(35% 0.095 250);
+    --kachabazar-900: oklch(28% 0.065 252);
+
+    /* === Menta / Teal (acento secundario) === */
+    --crokete-green-50:  oklch(97% 0.015 175);
+    --crokete-green-100: oklch(94% 0.035 175);
+    --crokete-green-200: oklch(88% 0.070 178);
+    --crokete-green-300: oklch(79% 0.110 180);
+    --crokete-green-400: oklch(70% 0.130 180);
+    --crokete-green-500: oklch(62% 0.125 178);
+    --crokete-green-600: oklch(55% 0.110 176);
+    --crokete-green-700: oklch(47% 0.090 175);
+
+    /* === Gris Azulado / Ice (fondos limpios) === */
+    --crokete-cream-50:  oklch(98.5% 0.005 228);
+    --crokete-cream-100: oklch(96.5% 0.010 230);
+    --crokete-cream-200: oklch(94% 0.018 232);
+    --crokete-cream-300: oklch(91% 0.028 234);
+
+    /* === Slate Navy (textos oscuros profesionales) === */
+    --crokete-earth-600: oklch(42% 0.035 245);
+    --crokete-earth-700: oklch(35% 0.030 248);
+    --crokete-earth-800: oklch(28% 0.025 250);
+    --crokete-earth-900: oklch(22% 0.020 252);
 }
 
 /* Texto */
@@ -141,4 +166,54 @@ Se utiliza de esta manera:
     border-color: var(--kachabazar-900);
 }
 
-/* Agregar mas tokens de ser necesario: ejm. sombras, bordes, etc. */
+/* ============================
+   Hover utilities
+   ============================ */
+.hover\:bg-kachabazar-500:hover { background-color: var(--kachabazar-500); }
+.hover\:bg-kachabazar-600:hover { background-color: var(--kachabazar-600); }
+.hover\:bg-kachabazar-700:hover { background-color: var(--kachabazar-700); }
+.hover\:bg-kachabazar-800:hover { background-color: var(--kachabazar-800); }
+.hover\:text-kachabazar-500:hover { color: var(--kachabazar-500); }
+.hover\:text-kachabazar-600:hover { color: var(--kachabazar-600); }
+.hover\:border-kachabazar-500:hover { border-color: var(--kachabazar-500); }
+.hover\:border-kachabazar-600:hover { border-color: var(--kachabazar-600); }
+.hover\:border-kachabazar-800:hover { border-color: var(--kachabazar-800); }
+
+/* Focus utilities */
+.focus\:border-kachabazar-500:focus { border-color: var(--kachabazar-500); }
+.focus\:bg-kachabazar-500:focus { background-color: var(--kachabazar-500); }
+.focus\:ring-kachabazar-600:focus { --tw-ring-color: var(--kachabazar-600); }
+
+/* Ring */
+.ring-kachabazar-500 { --tw-ring-color: var(--kachabazar-500); }
+.ring-kachabazar-600 { --tw-ring-color: var(--kachabazar-600); }
+
+/* ============================
+   Tokens secundarios (verde natural)
+   ============================ */
+.text-crokete-green-500 { color: var(--crokete-green-500); }
+.text-crokete-green-600 { color: var(--crokete-green-600); }
+.text-crokete-green-700 { color: var(--crokete-green-700); }
+.bg-crokete-green-50  { background-color: var(--crokete-green-50); }
+.bg-crokete-green-100 { background-color: var(--crokete-green-100); }
+.bg-crokete-green-500 { background-color: var(--crokete-green-500); }
+.bg-crokete-green-600 { background-color: var(--crokete-green-600); }
+.border-crokete-green-300 { border-color: var(--crokete-green-300); }
+.border-crokete-green-500 { border-color: var(--crokete-green-500); }
+
+/* ============================
+   Tokens crema/beige (fondos)
+   ============================ */
+.bg-crokete-cream-50  { background-color: var(--crokete-cream-50); }
+.bg-crokete-cream-100 { background-color: var(--crokete-cream-100); }
+.bg-crokete-cream-200 { background-color: var(--crokete-cream-200); }
+.bg-crokete-cream-300 { background-color: var(--crokete-cream-300); }
+.text-crokete-cream-50 { color: var(--crokete-cream-50); }
+
+/* ============================
+   Tokens tierra (textos oscuros)
+   ============================ */
+.text-crokete-earth-600 { color: var(--crokete-earth-600); }
+.text-crokete-earth-700 { color: var(--crokete-earth-700); }
+.text-crokete-earth-800 { color: var(--crokete-earth-800); }
+.text-crokete-earth-900 { color: var(--crokete-earth-900); }

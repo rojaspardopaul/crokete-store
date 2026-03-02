@@ -10,6 +10,8 @@ import { getUserSession } from "@lib/auth-client";
 import { FiShoppingCart } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
+import WhatsAppButton from "@components/button/WhatsAppButton";
+import LoyaltyCartBanner from "@components/loyalty/LoyaltyCartBanner";
 
 const Cart = ({ setOpen, currency }) => {
   const router = useRouter();
@@ -108,6 +110,20 @@ const Cart = ({ setOpen, currency }) => {
             >
               Ir a pagar
             </button>
+          </div>
+
+          {/* Loyalty points estimate */}
+          <LoyaltyCartBanner cartTotal={cartTotal} />
+          
+          {/* WhatsApp Order Button */}
+          <div className="mt-3">
+            <WhatsAppButton
+              items={items}
+              cartTotal={cartTotal}
+              fullWidth={true}
+            >
+              Ordenar por WhatsApp
+            </WhatsAppButton>
           </div>
         </div>
       </div>

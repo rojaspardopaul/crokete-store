@@ -4,21 +4,40 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { Transition, Menu, MenuButton } from "@headlessui/react";
 import { FiUser } from "react-icons/fi";
+import { Star } from "lucide-react";
 import Image from "next/image";
 
 //internal imports
 import { userNavigation } from "@utils/data";
 import { getUserSession } from "@lib/auth-client";
+import { useLoyaltyContext } from "@context/LoyaltyContext";
 
 const ProfileDropDown = () => {
   const userInfo = getUserSession();
-  // console.log("session", userInfo);
+  const ctx = useLoyaltyContext();
+  const loyaltyPoints = ctx?.loyalty?.points;
+  const hasRewards = ctx?.loyalty?.availableRewards > 0;
 
   return (
     <>
       <Menu as="div" className="relative">
         {userInfo?.email ? (
-          <MenuButton className="-m-1.5 flex items-center p-1.5">
+          <div className="flex items-center gap-2">
+            {/* Loyalty points pill */}
+            {loyaltyPoints != null && (
+              <Link
+                href="/user/rewards"
+                className={`hidden sm:flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-full transition-all ${
+                  hasRewards
+                    ? "bg-amber-100 text-amber-800 animate-soft-pulse"
+                    : "bg-amber-50 text-amber-700 hover:bg-amber-100"
+                }`}
+              >
+                <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                {loyaltyPoints}
+              </Link>
+            )}
+            <MenuButton className="-m-1.5 flex items-center p-1.5">
             <span className="sr-only">Open user menu</span>
 
             {userInfo?.image ? (
@@ -35,6 +54,7 @@ const ProfileDropDown = () => {
               </div>
             )}
           </MenuButton>
+          </div>
         ) : (
           <Link
             href="/auth/login"

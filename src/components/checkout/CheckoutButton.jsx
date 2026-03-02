@@ -2,14 +2,12 @@
 
 import React from "react";
 import { useFormStatus } from "react-dom";
-import useTranslation from "next-translate/useTranslation";
 
 //internal imports
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { IoArrowForward } from "react-icons/io5";
 
 const CheckoutButton = ({ stripe, isEmpty, storeCustomizationSetting }) => {
-  const { t } = useTranslation();
   const { pendiente } = useFormStatus();
   const { showingTranslateValue } = useUtilsFunction();
   // console.log("pendiente", pendiente);
@@ -22,7 +20,7 @@ const CheckoutButton = ({ stripe, isEmpty, storeCustomizationSetting }) => {
       {pendiente ? (
         <span className="flex justify-center text-center">
           <img src="/loader/spinner.gif" alt="Loading" width={20} height={10} />
-          <span className="ml-2">{t("common:procesando")}</span>
+          <span className="ml-2">Procesando...</span>
         </span>
       ) : (
         <span className="flex justify-center text-center">

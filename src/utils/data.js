@@ -396,6 +396,7 @@ const languages = [
 const userNavigation = [
   { name: "Panel de Control", href: "/user/dashboard", icon: FiGrid },
   { name: "Mis Órdenes", href: "/user/my-orders", icon: FiList },
+  { name: "Mis Recompensas", href: "/user/rewards", icon: FiGift },
   { name: "Actualizar Perfil", href: "/user/update-profile", icon: FiSettings },
   { name: "Cambiar Contraseña", href: "/user/change-password", icon: FiShield },
   // { name: "Cerrar Sesión", href: "/", icon: IoLockOpenOutline },

@@ -1,5 +1,5 @@
 //internal imports
-import React from "react";
+import React, { Suspense } from "react";
 import "@styles/custom.css";
 import "@styles/custom-theme.css";
 import Providers from "./provider";
@@ -8,6 +8,9 @@ import Footer from "@layout/footer/Footer";
 import FooterTop from "@layout/footer/FooterTop";
 import MobileFooter from "@layout/footer/MobileFooter";
 import FeatureCard from "@components/feature-card/FeatureCard";
+import FloatingWhatsApp from "@components/common/FloatingWhatsApp";
+import PageLoading from "@components/common/PageLoading";
+import LoyaltyEducationalModal from "@components/loyalty/LoyaltyEducationalModal";
 import {
   getStoreSetting,
   getGlobalSetting,
@@ -56,7 +59,7 @@ export default async function RootLayout({ children }) {
                 globalSetting={globalSetting}
                 storeCustomization={storeCustomizationSetting}
               />
-              <main className="bg-gray-50 dark:bg-zinc-900 z-10">
+              <main className="bg-crokete-cream-50 dark:bg-zinc-900 z-10">
                 {children}
               </main>
               {/* <div className="bg-gray-50 dark:bg-zinc-900 z-10">{children}</div> */}
@@ -79,6 +82,11 @@ export default async function RootLayout({ children }) {
                   />
                 </div>
               </div>
+              <FloatingWhatsApp />
+              <LoyaltyEducationalModal />
+              <Suspense fallback={null}>
+                <PageLoading />
+              </Suspense>
             </Providers>
           </SettingProvider>
         </div>

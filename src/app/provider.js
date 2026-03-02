@@ -10,6 +10,7 @@ import { SessionProvider } from "next-auth/react";
 import { UserProvider } from "@context/UserContext";
 import { SidebarProvider } from "@context/SidebarContext";
 import { LanguageProvider } from "@context/LanguageContext";
+import { LoyaltyProvider } from "@context/LoyaltyContext";
 
 let stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
@@ -25,9 +26,11 @@ const Providers = ({ children, storeSetting }) => {
         <LanguageProvider>
           <SidebarProvider>
             <UserProvider>
-              <Elements stripe={stripePromise}>
-                <CartProvider>{children} </CartProvider>
-              </Elements>
+              <LoyaltyProvider>
+                <Elements stripe={stripePromise}>
+                  <CartProvider>{children} </CartProvider>
+                </Elements>
+              </LoyaltyProvider>
             </UserProvider>
           </SidebarProvider>
         </LanguageProvider>

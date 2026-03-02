@@ -39,8 +39,8 @@ const CategoryCarousel = ({ categories }) => {
         }}
         spaceBetween={8}
         navigation={true}
-        allowTouchMove={false}
-        loop={true}
+        allowTouchMove={true}
+        loop={false}
         autoplay={{
           delay: 2000,
           disableOnInteraction: false,
@@ -89,7 +89,7 @@ const CategoryCarousel = ({ categories }) => {
           },
         }}
         modules={[Navigation]}
-        className="mySwiper category-slider my-10"
+        className="mySwiper category-slider my-3"
       >
         <div>
           {categories[0]?.children?.map((category, i) => (
@@ -98,7 +98,7 @@ const CategoryCarousel = ({ categories }) => {
                 onClick={() =>
                   handleCategoryClick(category?._id, category.name)
                 }
-                className="text-center cursor-pointer p-3 bg-white rounded-lg"
+                className="text-center cursor-pointer p-2 bg-white rounded-lg"
               >
                 <div className="bg-white p-2 mx-auto my-auto text-center w-10 h-10 rounded-full shadow-md">
                   <Image

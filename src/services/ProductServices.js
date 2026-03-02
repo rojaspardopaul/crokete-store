@@ -4,17 +4,15 @@ const getShowingStoreProducts = async ({
   category = "",
   title = "",
   slug = "",
+  pet = "",
+  brand = "",
 }) => {
   try {
     // console.log("slug::", slug);
     const response = await fetch(
-      `${baseURL}/products/store?category=${category}&title=${title}&slug=${slug}`,
+      `${baseURL}/products/store?category=${category}&title=${title}&slug=${slug}&pet=${pet}&brand=${brand}`,
       {
-        // cache: "no-cache",
-        next: {
-          revalidate: 60,
-          tags: ["store_products"],
-        },
+        cache: "no-store",
       }
     );
 

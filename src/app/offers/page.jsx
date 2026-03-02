@@ -1,45 +1,40 @@
 import React from "react";
+import { redirect } from "next/navigation";
 
 //internal imports
-import Coupon from "@components/coupon/Coupon";
 import PageHeader from "@components/header/PageHeader";
+import OffersClient from "@components/offer/OffersClient";
 import { getStoreCustomizationSetting } from "@services/SettingServices";
+import { getAvailableRewards } from "@services/LoyaltyServices";
+import { getUserServerSession } from "@lib/auth-server";
 
 export const metadata = {
-  title: "Offers | Kachabazar",
+  title: "Mis Ofertas | Crokete",
   description:
-    "Discover the latest offers and discounts available at Kachabazar.",
-  keywords: ["offers", "discounts", "promotions", "sales"],
-  // You can also add more advanced metadata here
-  openGraph: {
-    title: "Offers | Kachabazar",
-    description:
-      "Discover the latest offers and discounts available at Kachabazar.",
-    url: "https://kachabazar-store-nine.vercel.app/offers",
-    images: [
-      {
-        url: "https://kachabazar-store-nine.vercel.app/og-image.jpg",
-        width: 800,
-        height: 600,
-        alt: "Offers Page",
-      },
-    ],
-  },
+    "Descubre tus recompensas y ofertas exclusivas en Crokete.",
+  keywords: ["ofertas", "descuentos", "recompensas", "puntos"],
 };
 
 const Offers = async () => {
   const { storeCustomizationSetting } = await getStoreCustomizationSetting();
+
+  // Check if user is logged in
+  const user = await getUserServerSession();
+  if (!user?.email) {
+    redirect("/auth/login?redirectUrl=offers");
+  }
+
+  const { data: rewardsData } = await getAvailableRewards();
+
   return (
     <div className="dark:bg-zinc-900">
       <PageHeader
         headerBg={storeCustomizationSetting?.offers?.header_bg}
-        title={storeCustomizationSetting?.offers?.title}
+        title="Mis Recompensas y Ofertas"
       />
 
       <div className="mx-auto max-w-screen-2xl px-4 py-10 lg:py-20 sm:px-10">
-        <div className="grid gap-6 grid-cols-1 xl:grid-cols-2">
-          <Coupon />
-        </div>
+        <OffersClient rewardsData={rewardsData} />
       </div>
     </div>
   );

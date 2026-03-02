@@ -13,21 +13,21 @@ const Banner = async ({}) => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className=" text-xl">
-            <span className="text-kachabazar-600 dark:text-gray-200 font-bold">
+      <div className="flex flex-row justify-between items-center gap-3">
+        <div className="min-w-0">
+          <h2 className="text-sm sm:text-base lg:text-xl">
+            <span className="text-kachabazar-600 dark:text-gray-200 font-bold line-clamp-1">
               {showingTranslateValue(home?.promotion_title)}
-            </span>{" "}
-          </h1>
+            </span>
+          </h2>
 
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
             {showingTranslateValue(home?.promotion_description)}
           </p>
         </div>
         <Link
           href={`${home?.promotion_button_link}`}
-          className="text-sm  font-medium px-6 py-2 bg-kachabazar-500 text-center rounded-full text-white hover:bg-kachabazar-700"
+          className="text-xs sm:text-sm font-medium px-4 sm:px-6 py-1.5 sm:py-2 bg-kachabazar-500 text-center rounded-full text-white hover:bg-kachabazar-700 whitespace-nowrap flex-shrink-0"
         >
           {showingTranslateValue(home?.promotion_button_name)}
         </Link>

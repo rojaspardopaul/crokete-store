@@ -10,44 +10,33 @@ const Price = ({ product, price, card, originalPrice, currency }) => {
     : getNumberTwo(product?.prices?.price);
   const baseOriginalPrice = getNumberTwo(originalPrice);
   const discountAmount = originalPrice > price ? originalPrice - price : 0;
-  const discountPercent =
-    originalPrice > price
-      ? ((discountAmount / originalPrice) * 100).toFixed(2)
-      : 0;
 
   return (
     <>
-      <div className="product-price font-bold">
+      <div className="product-price font-bold flex items-baseline gap-2">
         <span
           className={`${
             card
-              ? "inline-block text-base text-gray-900"
-              : "inline-block text-xl"
+              ? "inline-block text-lg font-extrabold text-kachabazar-700"
+              : "inline-block text-2xl font-extrabold text-kachabazar-700"
           }`}
         >
           {currency}
           {finalPrice}
         </span>
         {discountAmount > 0 && (
-          <span
+          <del
             className={
               card
-                ? "sm:text-sm font-normal text-base text-gray-400 ml-1"
-                : "text-sm font-normal text-gray-400 ml-1"
+                ? "text-sm font-normal text-gray-400"
+                : "text-base font-normal text-gray-400"
             }
           >
             {currency}
             {baseOriginalPrice}
-          </span>
+          </del>
         )}
       </div>
-
-      {/* {discountAmount > 0 && !card && (
-        <p className="text-xs text-kachabazar-600">
-          Save {currency}
-          {getNumberTwo(discountAmount)} ({discountPercent}% off)
-        </p>
-      )} */}
     </>
   );
 };

@@ -1,85 +1,107 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay, Navigation } from "swiper";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
-const CarouselCard = ({ storeCustomizationSetting, sliderData }) => {
+const CarouselCard = ({ sliderData }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "center", skipSnaps: false },
+    [Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => emblaApi.off("select", onSelect);
+  }, [emblaApi, onSelect]);
+
+  const scrollTo = useCallback(
+    (index) => emblaApi && emblaApi.scrollTo(index),
+    [emblaApi]
+  );
+
+  // Filter out slides with no image
+  const slides = sliderData?.filter((s) => s.image) || [];
+  if (slides.length === 0) return null;
+
   return (
-    <Swiper
-      spaceBetween={30}
-      centeredSlides={true}
-      autoplay={{
-        delay: 2000,
-        disableOnInteraction: false,
-      }}
-      loop={true}
-      pagination={
-        (storeCustomizationSetting?.slider?.bottom_dots ||
-          storeCustomizationSetting?.slider?.both_slider) && {
-          clickable: true,
-        }
-      }
-      navigation={
-        (storeCustomizationSetting?.slider?.left_right_arrow ||
-          storeCustomizationSetting?.slider?.both_slider) && {
-          clickable: true,
-        }
-      }
-      modules={[Autoplay, Pagination, Navigation]}
-      className="mySwiper"
-    >
-      {sliderData?.map((item, i) => (
-        <SwiperSlide
-          className="h-full relative rounded-lg overflow-hidden dark:bg-zinc-900"
-          key={i + 1}
-        >
-          <div className="text-sm text-gray-600 hover:text-kachabazar-dark dark:bg-zinc-900">
-            <Image
-              width={950}
-              height={400}
-              src={item.image}
-              alt={item.title || "Slider image"}
-              className="object-cover w-full h-full"
-              priority
+    <div className="relative w-full lg:h-full overflow-hidden rounded-2xl bg-gray-100 dark:bg-zinc-800">
+      {/* Viewport */}
+      <div ref={emblaRef} className="overflow-hidden lg:h-full">
+        <div className="flex lg:h-full">
+          {slides.map((item, i) => (
+            <div
+              key={item.id || i}
+              className="relative flex-[0_0_100%] min-w-0 lg:h-full"
+            >
+              {/* Aspect ratio on mobile · fill parent height on lg (matched to sidebar) */}
+              <div className="relative aspect-[2.5/1] lg:aspect-auto lg:h-full">
+                <Image
+                  src={item.image}
+                  alt={item.title || `Slide ${i + 1}`}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 60vw"
+                  className="object-cover"
+                  priority={i === 0}
+                />
+
+                {/* Gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/30 to-transparent dark:from-zinc-900/70 dark:via-zinc-900/30" />
+
+                {/* Content overlay */}
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-[55%] sm:w-[50%] lg:w-[45%] pl-4 sm:pl-6 lg:pl-10 pr-2">
+                    <h2 className="text-sm sm:text-lg lg:text-2xl font-bold text-gray-800 dark:text-gray-100 leading-tight line-clamp-2">
+                      {item.title}
+                    </h2>
+                    <p className="hidden sm:block mt-1 lg:mt-2 text-xs sm:text-sm lg:text-base text-gray-600 dark:text-gray-300 leading-snug line-clamp-2">
+                      {item.info}
+                    </p>
+                    {item.url && item.buttonName && (
+                      <Link
+                        href={item.url}
+                        className="hidden sm:inline-block mt-2 lg:mt-4 text-xs sm:text-sm font-semibold px-4 sm:px-5 lg:px-6 py-1.5 sm:py-2 bg-kachabazar-500 rounded-full text-white hover:bg-kachabazar-600 transition-colors shadow-sm"
+                      >
+                        {item.buttonName}
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Dots */}
+      {slides.length > 1 && (
+        <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => scrollTo(i)}
+              aria-label={`Ir a slide ${i + 1}`}
+              className={`rounded-full transition-all duration-300 cursor-pointer ${
+                i === selectedIndex
+                  ? "w-5 h-2 bg-kachabazar-500"
+                  : "w-2 h-2 bg-gray-400/50 hover:bg-gray-400"
+              }`}
             />
-          </div>
-          {/* Mobile Layout - Below 768px */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-start pt-3 min-[416px]:pt-8 px-3 md:hidden">
-            <div className="max-w-full" style={{ maxWidth: '45%' }}>
-              <h1 className="text-base sm:text-lg font-bold text-gray-800 mb-1 line-clamp-2" style={{ lineHeight: '1.2' }}>
-                {item.title}
-              </h1>
-              <p className="text-sm sm:text-base text-gray-600 line-clamp-4" style={{ lineHeight: '1.3' }}>
-                {item.info}
-              </p>
-            </div>
-          </div>
-          {/* Desktop Layout - 768px and above */}
-          <div className="hidden md:flex absolute inset-0 z-10 flex-col justify-center pl-10 pr-16">
-            <div className="w-10/12 lg:w-8/12 xl:w-7/12" style={{ maxWidth: '45%' }}>
-              <h1 className="mb-2 text-2xl lg:text-3xl font-bold text-gray-800">
-                {item.title}
-              </h1>
-              <p className="text-base leading-6 text-gray-600 font-sans">
-                {item.info}
-              </p>
-              <Link
-                href={item.url}
-                className="inline-block text-sm leading-6 font-medium mt-6 px-6 py-2 bg-kachabazar-500 text-center rounded-md text-white hover:bg-kachabazar-600"
-              >
-                {item.buttonName}
-              </Link>
-            </div>
-          </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 

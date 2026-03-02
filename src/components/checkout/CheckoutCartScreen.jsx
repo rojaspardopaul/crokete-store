@@ -15,6 +15,7 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import { useSetting } from "@context/SettingContext";
 import { Input } from "@components/ui/input";
 import { Button } from "@components/ui/button";
+import WhatsAppButton from "@components/button/WhatsAppButton";
 
 const CheckoutCartScreen = () => {
   const userInfo = getUserSession();
@@ -188,6 +189,21 @@ const CheckoutCartScreen = () => {
                 >
                   Finalizar Compra
                 </Link>
+              </div>
+              
+              {/* WhatsApp Order Button */}
+              <div className="mt-4 border-t border-gray-200 pt-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 text-center">
+                  <span className="font-medium">O compra más rápido por WhatsApp</span>
+                </p>
+                <WhatsAppButton
+                  items={items}
+                  cartTotal={parseFloat(total)}
+                  fullWidth={true}
+                  size="lg"
+                >
+                  Completar compra por WhatsApp
+                </WhatsAppButton>
               </div>
             </div>
           </div>

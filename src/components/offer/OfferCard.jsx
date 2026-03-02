@@ -1,29 +1,30 @@
-//internal import
-import Coupon from "@components/coupon/Coupon";
-import useUtilsFunction from "@hooks/useUtilsFunction";
-import { getStoreCustomizationSetting } from "@services/SettingServices";
+"use client";
 
-const OfferCard = async () => {
-  const { showingTranslateValue } = useUtilsFunction();
-  const { storeCustomizationSetting, error } =
-    await getStoreCustomizationSetting();
+import { useEffect, useState } from "react";
+import { getUserSession } from "@lib/auth-client";
+import requests from "@services/httpServices";
+import LoyaltyHomeWidget from "@components/loyalty/LoyaltyHomeWidget";
 
-  return (
-    <div className="w-full group dark:bg-zinc-900">
-      <div className="bg-gray-50 dark:bg-slate-600 h-full border-2 border-orange-500 transition duration-150 ease-linear transform group-hover:border-kachabazar-500 rounded shadow">
-        <div className="bg-orange-100 dark:bg-slate-600 dark:text-gray-200 text-gray-900 px-6 py-2 rounded-t border-b flex items-center justify-center">
-          <h3 className="text-base font-medium ">
-            {showingTranslateValue(
-              storeCustomizationSetting?.home?.discount_title
-            )}
-          </h3>
-        </div>
-        <div className="overflow-hidden dark:bg-zinc-900">
-          <Coupon couponInHome />
-        </div>
-      </div>
-    </div>
-  );
+const OfferCard = () => {
+  const userInfo = getUserSession();
+  const [rewards, setRewards] = useState([]);
+
+  // Fetch available rewards for logged-in users (for the coupon preview)
+  useEffect(() => {
+    if (!userInfo?.token) return;
+    const fetchRewards = async () => {
+      try {
+        requests.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`;
+        const data = await requests.get("/loyalty/rewards");
+        setRewards(data?.available || []);
+      } catch {
+        // silently fail
+      }
+    };
+    fetchRewards();
+  }, [userInfo?.token]);
+
+  return <LoyaltyHomeWidget rewards={rewards} />;
 };
 
 export default OfferCard;

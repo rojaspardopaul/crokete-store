@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { FiLock, FiMail } from "react-icons/fi";
+import { FiLock, FiMail, FiEye, FiEyeOff } from "react-icons/fi";
 
 //internal import
 import Error from "@components/form/Error";
@@ -13,6 +13,8 @@ import { notifyError, notifySuccess } from "@utils/toast";
 const ForgetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
   const password = useRef("");
   const {
     register,
@@ -117,34 +119,54 @@ const ForgetPassword = () => {
                 <>
                   {" "}
                   <div className="form-group">
-                    <input
-                      name="newPassword"
-                      type="password"
-                      placeholder="New password"
-                      {...register("newPassword", {
-                        required: "You must specify a password",
-                        minLength: {
-                          value: 8,
-                          message: "Password must have at least 8 characters",
-                        },
-                      })}
-                      className="py-2 px-4 md:px-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-gray-100 border-gray-200 focus:outline-none focus:border-kachabazar-500 h-11 md:h-12"
-                    />
+                    <div className="relative">
+                      <input
+                        name="newPassword"
+                        type={showNewPw ? "text" : "password"}
+                        placeholder="Nueva contraseña"
+                        {...register("newPassword", {
+                          required: "Debes especificar una contraseña",
+                          minLength: {
+                            value: 8,
+                            message: "La contraseña debe tener al menos 8 caracteres",
+                          },
+                        })}
+                        className="py-2 px-4 md:px-5 pr-10 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-gray-100 border-gray-200 focus:outline-none focus:border-kachabazar-500 h-11 md:h-12"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPw((v) => !v)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                        tabIndex={-1}
+                      >
+                        {showNewPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                      </button>
+                    </div>
 
                     <Error errorName={errors.newPassword} />
                   </div>
                   <div className="form-group">
-                    <input
-                      name="confirm_password"
-                      type="password"
-                      placeholder="Confirm password"
-                      {...register("confirm_password", {
-                        validate: (value) =>
-                          value === password.current ||
-                          "The passwords do not match",
-                      })}
-                      className="py-2 px-4 md:px-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-gray-100 border-gray-200 focus:outline-none focus:border-kachabazar-500 h-11 md:h-12"
-                    />
+                    <div className="relative">
+                      <input
+                        name="confirm_password"
+                        type={showConfirmPw ? "text" : "password"}
+                        placeholder="Confirmar contraseña"
+                        {...register("confirm_password", {
+                          validate: (value) =>
+                            value === password.current ||
+                            "Las contraseñas no coinciden",
+                        })}
+                        className="py-2 px-4 md:px-5 pr-10 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-gray-100 border-gray-200 focus:outline-none focus:border-kachabazar-500 h-11 md:h-12"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPw((v) => !v)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                        tabIndex={-1}
+                      >
+                        {showConfirmPw ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                      </button>
+                    </div>
 
                     <Error errorName={errors.confirm_password} />
                   </div>

@@ -11,15 +11,15 @@ const TopNavbar = async ({ storeCustomization }) => {
   // console.log("storeCustomization", storeCustomization);
 
   return (
-    <div className="hidden lg:block bg-gray-100">
+    <div className="hidden lg:block bg-kachabazar-50 border-b border-kachabazar-100">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
-        <div className="text-gray-700 py-2 font-sans text-xs font-medium flex justify-between items-center">
+        <div className="text-crokete-earth-700 py-2 font-sans text-xs font-medium flex justify-between items-center">
           <span className="flex items-center">
-            <FiPhoneCall className="mr-2" />
+            <FiPhoneCall className="mr-2 text-kachabazar-500" />
             {showingTranslateValue(navbar?.help_text)}
             <a
               href={`tel:${navbar?.phone_number || "+099949343"}`}
-              className="font-bold text-kachabazar-500 ml-1"
+              className="font-bold text-kachabazar-600 ml-1 hover:text-kachabazar-700 transition-colors"
             >
               {navbar?.phone_number || "+099949343"}
             </a>

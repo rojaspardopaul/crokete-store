@@ -726,89 +726,108 @@ export const storeCustomization = {
     shipping_card: {
       en: "Free Shipping From €500.00",
       de: "Kostenloser Versand ab 500,00 €",
+      es: "Envío Gratis a Partir de $500.00",
     },
     support_card: {
       en: "Support 24/7  At Anytime",
       de: "Support rund um die Uhr und jederzeit",
+      es: "Soporte 24/7 en Todo Momento",
     },
     payment_card: {
       en: "Secure Payment  Totally Safe",
       de: "Sichere Zahlung, absolut sicher",
+      es: "Pago Seguro 100% Confiable",
     },
     offer_card: {
       en: "Latest Offer Upto 20% Off",
       de: "Aktuelles Angebot: Bis zu 20 % Rabatt",
+      es: "Últimas Ofertas Hasta 20% de Descuento",
     },
     block1_title: {
       en: "Company",
       de: "Unternehmen",
+      es: "Empresa",
     },
     block1_sub_title1: {
       en: "About Us",
       de: "Über uns",
+      es: "Sobre Nosotros",
     },
     block1_sub_link1: "/about-us",
     block1_sub_title2: {
       en: "Contact Us",
       de: "Kontaktiere uns",
+      es: "Contáctanos",
     },
     block1_sub_link2: "/contact-us",
     block1_sub_title3: {
       en: "Careers",
       de: "Karriere",
+      es: "Empleos",
     },
     block1_sub_link3: "#",
     block1_sub_title4: {
       en: "Latest News",
       de: "Neueste Nachrichten",
+      es: "Últimas Noticias",
     },
     block1_sub_link4: "#",
     block2_title: {
       en: "Latest News",
       de: "Neueste Nachrichten",
+      es: "Categorías",
     },
     block2_sub_title1: {
       en: "Fish & Meat",
       de: "Fisch Fleisch",
+      es: "Alimento para Perro",
     },
     block2_sub_link1: "/search?category=fish-meat",
     block2_sub_title2: {
       en: "Soft Drink",
       de: "Erfrischungsgetränk",
+      es: "Alimento para Gato",
     },
     block2_sub_link2: "/search?category=drinks",
     block2_sub_title3: {
       en: "Milk & Dairy",
       de: "Milch und Milchprodukte",
+      es: "Accesorios",
     },
     block2_sub_link3: "/search?category=milk-dairy",
     block2_sub_title4: {
       en: "Beauty & Health",
       de: "Schönheit und Gesundheit",
+      es: "Salud y Bienestar",
     },
     block2_sub_link4: "/search?category=beauty-health",
     block3_title: {
       en: "My Account",
       de: "Mein Konto",
+      es: "Mi Cuenta",
     },
     block3_sub_title1: {
       en: "Dashboard",
       de: "Armaturenbrett",
+      es: "Panel",
     },
     block3_sub_link1: "/user/dashboard",
     block3_sub_title2: {
       en: "My Orders",
       de: "Meine Bestellungen",
+      es: "Mis Pedidos",
     },
     block3_sub_link2: "/user/my-orders",
     block3_sub_title3: {
       en: "Recent Orders",
       de: "letzte Bestellungen",
+      es: "Pedidos Recientes",
     },
     block3_sub_link3: "/user/dashboard",
     block3_sub_title4: {
       en: "Update Profile",
       de: "Profil aktualisieren",
+      es: "Actualizar Perfil",
     },
     block3_sub_link4: "/user/update-profile",
     block4_logo:
@@ -816,6 +835,7 @@ export const storeCustomization = {
     block4_address: {
       en: "987 Andre Plain Suite High Street 838, Lake Hestertown, USA",
       de: "987 Andre Plain Suite High Street 838, Lake Hestertown, USA",
+      es: "Zapopan, Jalisco, México",
     },
     block4_phone: "02.356.1666",
     block4_email: "ccruidk@test.com",
@@ -833,30 +853,37 @@ export const storeCustomization = {
     card_description_one: {
       en: "Free shipping applies to all orders over shipping €100",
       de: "Kostenloser Versand gilt für alle Bestellungen über 100 € Versandkosten",
+      es: "Envío gratis en pedidos mayores a $500",
     },
     card_description_two: {
       en: "Home Delivery within 1 Hour",
       de: "Lieferung nach Hause innerhalb von 1 Stunde",
+      es: "Entrega a domicilio",
     },
     card_description_three: {
       en: "Cash on Delivery Available",
       de: "Lieferung per Nachnahme möglich",
+      es: "Pago contra entrega disponible",
     },
     card_description_four: {
       en: "7 Days returns money back guarantee",
       de: "7 Tage Geld-zurück-Garantie",
+      es: "7 días de garantía de devolución",
     },
     card_description_five: {
       en: "Warranty not available for this item",
       de: "Für diesen Artikel ist keine Garantie verfügbar",
+      es: "Garantía no disponible para este producto",
     },
     card_description_six: {
       en: "Guaranteed 100% organic from natural products.",
       de: "Garantiert 100 % biologisch aus Naturprodukten.",
+      es: "Garantizado 100% ingredientes naturales.",
     },
     card_description_seven: {
       en: "Delivery from our pick point Boho One, Bridge Street West, Middlesbrough, North Yorkshire, TS2 1AE.",
       de: "Lieferung von unserem Abholpunkt Boho One, Bridge Street West, Middlesbrough, North Yorkshire, TS2 1AE.",
+      es: "Entrega desde nuestro punto de distribución en Zapopan, Jalisco.",
     },
   },
   seo: {
