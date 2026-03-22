@@ -19,24 +19,24 @@ const CategoryCard = ({ title, icon, nested, id, onClose }) => {
     show: false,
   });
 
-  // ✅ Search only when clicking on the category name
-  const handleSearch = (id, categoryName) => {
-    const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
+  // Always navigates using the TOP-LEVEL parent's id so the category filter
+  // (which only shows parent categories) reflects the correct selection.
+  const handleSearch = () => {
+    const name = title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
     router.push(`/search?category=${name}&_id=${id}`);
     if (onClose) {
       onClose();
     }
   };
 
-  // ✅ Toggle expand only when clicking the arrow/icon
   const toggleExpand = () => {
     setShow(!show);
   };
 
-  const handleSubNestedToggle = (id) => {
+  const handleSubNestedToggle = (childId) => {
     setShowSubCategory({
-      id: id,
-      show: showSubCategory.id === id ? !showSubCategory.show : true,
+      id: childId,
+      show: showSubCategory.id === childId ? !showSubCategory.show : true,
     });
   };
 
@@ -54,15 +54,24 @@ const CategoryCard = ({ title, icon, nested, id, onClose }) => {
           />
         )}
 
-        {/* ✅ Clicking name = search */}
+        {/*
+          - Parent WITH children: clicking the title expands subcategories (no navigation).
+          - Parent WITHOUT children: clicking the title navigates and closes the dropdown.
+        */}
         <div
-          onClick={() => handleSearch(id, title)}
+          onClick={() => {
+            if (nested?.length > 0) {
+              toggleExpand();
+            } else {
+              handleSearch();
+            }
+          }}
           className="ml-3 text-sm font-medium flex-1 cursor-pointer hover:text-kachabazar-600"
         >
           {title}
         </div>
 
-        {/* ✅ Clicking arrow = expand */}
+        {/* Arrow always toggles expand */}
         {nested?.length > 0 && (
           <span
             onClick={toggleExpand}
@@ -73,7 +82,7 @@ const CategoryCard = ({ title, icon, nested, id, onClose }) => {
         )}
       </div>
 
-      {/* Nested categories */}
+      {/* Nested categories (first level children) */}
       {show && nested.length > 0 && (
         <ul className="pl-6 pb-3 pt-1 -mt-1">
           {nested.map((children) => (
@@ -83,13 +92,9 @@ const CategoryCard = ({ title, icon, nested, id, onClose }) => {
                   <span className="text-xs text-gray-500 pr-2">
                     <IoRemoveSharp />
                   </span>
+                  {/* Child with sub-children: clicking name navigates with PARENT id */}
                   <div
-                    onClick={() =>
-                      handleSearch(
-                        children._id,
-                        showingTranslateValue(children.name)
-                      )
-                    }
+                    onClick={handleSearch}
                     className="flex-1 text-sm text-gray-600 hover:text-kachabazar-600 cursor-pointer"
                   >
                     {showingTranslateValue(children.name)}
@@ -107,13 +112,9 @@ const CategoryCard = ({ title, icon, nested, id, onClose }) => {
                   </span>
                 </div>
               ) : (
+                /* Child without sub-children: clicking navigates with PARENT id */
                 <div
-                  onClick={() =>
-                    handleSearch(
-                      children._id,
-                      showingTranslateValue(children.name)
-                    )
-                  }
+                  onClick={handleSearch}
                   className="flex items-center py-1 text-sm text-gray-600 hover:text-kachabazar-600 cursor-pointer"
                 >
                   <span className="text-xs text-gray-500 pr-2">
@@ -123,18 +124,13 @@ const CategoryCard = ({ title, icon, nested, id, onClose }) => {
                 </div>
               )}
 
-              {/* Sub children */}
+              {/* Sub children (grandchildren) — also navigate with top-level parent id */}
               {showSubCategory.id === children._id && showSubCategory.show && (
                 <ul className="pl-6 pb-3">
                   {children.children.map((subChildren) => (
                     <li
                       key={subChildren._id}
-                      onClick={() =>
-                        handleSearch(
-                          subChildren._id,
-                          showingTranslateValue(subChildren.name)
-                        )
-                      }
+                      onClick={handleSearch}
                       className="flex items-center py-1 text-sm text-gray-600 hover:text-kachabazar-600 cursor-pointer"
                     >
                       <span className="text-xs text-gray-500 pr-2">
@@ -154,3 +150,4 @@ const CategoryCard = ({ title, icon, nested, id, onClose }) => {
 };
 
 export default CategoryCard;
+

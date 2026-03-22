@@ -20,10 +20,6 @@ import {
 import { SettingProvider } from "@context/SettingContext";
 import { APP_CONFIG } from "@/config/appConfig";
 
-// Force dynamic rendering for all pages
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 export async function generateMetadata() {
   const { globalSetting } = await getGlobalSetting();
   const shopName = globalSetting?.shop_name || APP_CONFIG.SHOP_NAME;
@@ -35,15 +31,21 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }) {
-  const { globalSetting } = await getGlobalSetting();
-  const { storeSetting } = await getStoreSetting();
-
-  // Fetch all customization data at once (adjust your API to return full data)
-  const { storeCustomizationSetting, error } =
-    await getStoreCustomizationSetting();
+  // Parallelize all settings fetches — eliminates sequential waterfall
+  const [{ globalSetting }, { storeSetting }, { storeCustomizationSetting, error }] =
+    await Promise.all([
+      getGlobalSetting(),
+      getStoreSetting(),
+      getStoreCustomizationSetting(),
+    ]);
 
   return (
     <html lang="es" className="" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to critical origins for faster resource loading */}
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body
         suppressHydrationWarning
         className="bg-white antialiased dark:bg-zinc-900"
@@ -67,6 +69,7 @@ export default async function RootLayout({ children }) {
               <div className="w-full">
                 <FooterTop
                   error={error}
+                  globalSetting={globalSetting}
                   storeCustomizationSetting={storeCustomizationSetting}
                 />
                 <div className="hidden relative  lg:block mx-auto max-w-screen-2xl py-6 px-3 sm:px-10">

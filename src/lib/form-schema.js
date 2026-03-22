@@ -108,19 +108,43 @@ const shippingAddressFormSchema = z.object({
     .string()
     .min(3, { message: "El nombre debe tener al menos 3 caracteres." })
     .trim(),
-  address: z
-    .string()
-    .min(10, { message: "La dirección debe tener al menos 10 caracteres." })
-    .trim(),
   contact: z
     .string()
     .min(8, { message: "El teléfono debe tener al menos 8 dígitos." })
     .max(15, { message: "El teléfono debe tener máximo 15 dígitos." })
     .regex(/^\d+$/, { message: "El teléfono solo debe contener números." })
     .trim(),
-  country: z.string().min(2, { message: "El país es requerido." }).trim(),
-  city: z.string().min(2, { message: "La ciudad es requerida." }).trim(),
-  area: z.string().min(2, { message: "El área es requerida." }).trim(),
+  postalCode: z
+    .string()
+    .length(5, { message: "El código postal debe tener 5 dígitos." })
+    .regex(/^\d{5}$/, { message: "El código postal solo debe contener números." })
+    .trim(),
+  colonia: z
+    .string()
+    .min(2, { message: "La colonia es requerida." })
+    .trim(),
+  calle: z
+    .string()
+    .min(3, { message: "La calle debe tener al menos 3 caracteres." })
+    .trim(),
+  numExterior: z
+    .string()
+    .min(1, { message: "El número exterior es requerido." })
+    .trim(),
+  numInterior: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal("")),
+  municipio: z
+    .string()
+    .min(2, { message: "El municipio es requerido." })
+    .trim(),
+  referencias: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal("")),
 });
 
 const checkoutFormSchema = (shippingOptions) => {
@@ -141,24 +165,37 @@ const checkoutFormSchema = (shippingOptions) => {
       .max(15, { message: "El teléfono debe tener máximo 15 dígitos." })
       .regex(/^\d+$/, { message: "El teléfono solo debe contener números." })
       .trim(),
-    address: z
+    postalCode: z
       .string()
-      .min(5, { message: "La dirección debe tener al menos 5 caracteres." })
+      .length(5, { message: "El código postal debe tener 5 dígitos." })
+      .regex(/^\d{5}$/, { message: "El código postal solo debe contener números." })
       .trim(),
-    city: z
+    colonia: z
       .string()
-      .min(2, { message: "La ciudad debe tener al menos 2 caracteres." })
+      .min(2, { message: "La colonia es requerida." })
       .trim(),
-    country: z
+    calle: z
       .string()
-      .min(2, { message: "El país debe tener al menos 2 caracteres." })
+      .min(3, { message: "La calle debe tener al menos 3 caracteres." })
       .trim(),
-    zipCode: z
+    numExterior: z
       .string()
-      .min(5, { message: "El código postal debe tener al menos 5 dígitos." })
-      .max(10, { message: "El código postal debe tener máximo 10 dígitos." })
-      .regex(/^\d+$/, { message: "El código postal solo debe contener números." })
+      .min(1, { message: "El número exterior es requerido." })
       .trim(),
+    numInterior: z
+      .string()
+      .trim()
+      .optional()
+      .or(z.literal("")),
+    municipio: z
+      .string()
+      .min(2, { message: "El municipio es requerido." })
+      .trim(),
+    referencias: z
+      .string()
+      .trim()
+      .optional()
+      .or(z.literal("")),
 
     paymentMethod: z.enum(["Cash", "Card"], {
       message: "El método de pago es requerido.",

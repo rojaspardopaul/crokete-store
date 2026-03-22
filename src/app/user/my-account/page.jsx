@@ -85,11 +85,12 @@ const MyAccount = async () => {
                       {shippingAddress?.contact}{" "}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {shippingAddress?.address}{" "}
+                      {shippingAddress?.calle} {shippingAddress?.numExterior}
+                      {shippingAddress?.numInterior ? ` Int. ${shippingAddress.numInterior}` : ""}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {shippingAddress?.country}, {shippingAddress?.city},{" "}
-                      {shippingAddress?.area} -{shippingAddress?.zipCode}
+                      {shippingAddress?.colonia}, {shippingAddress?.municipio},{" "}
+                      C.P. {shippingAddress?.postalCode}
                     </p>
                   </>
                 )}

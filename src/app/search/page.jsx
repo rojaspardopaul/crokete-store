@@ -34,17 +34,27 @@ export async function generateMetadata({ searchParams }) {
 const Search = async ({ searchParams }) => {
   const { _id, query, pet, brand } = await searchParams;
 
-  const { products, error } = await getShowingStoreProducts({
-    category: _id ? _id : "",
-    title: query ? encodeURIComponent(query) : "",
-    pet: pet || "",
-    brand: brand || "",
-  });
-  const { attributes } = await getShowingAttributes();
-  const { categories } = await getShowingCategory();
-  const { globalSetting } = await getGlobalSetting();
-  const { pets } = await getShowingPets();
-  const { brands } = await getShowingBrands();
+  // Parallelize all data fetches
+  const [
+    { products, error },
+    { attributes },
+    { categories },
+    { globalSetting },
+    { pets },
+    { brands },
+  ] = await Promise.all([
+    getShowingStoreProducts({
+      category: _id ? _id : "",
+      title: query ? encodeURIComponent(query) : "",
+      pet: pet || "",
+      brand: brand || "",
+    }),
+    getShowingAttributes(),
+    getShowingCategory(),
+    getGlobalSetting(),
+    getShowingPets(),
+    getShowingBrands(),
+  ]);
   const currency = globalSetting?.default_currency || "$";
 
   return (

@@ -61,7 +61,7 @@ const FloatingWhatsApp = () => {
   return (
     <div
       ref={widgetRef}
-      className="fixed bottom-20 right-6 z-[9990] flex flex-col items-end"
+      className="fixed bottom-15 right-6 z-[9990] flex flex-col items-end"
     >
       {/* Chat widget popup */}
       {isOpen && (

@@ -83,7 +83,7 @@ const Register = () => {
                       <div className="flex ms-auto">
                         <Link
                           type="button"
-                          href={"/forget-password"}
+                          href={"/auth/forget-password"}
                           className="text-end text-sm text-heading ps-3 underline hover:no-underline focus:outline-none"
                         >
                           ¿Olvidaste tu contraseña?

@@ -38,7 +38,7 @@ const MainDrawer = ({ open, onClose, children }) => {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <DialogPanel className="pointer-events-auto w-[45vw] max-w-none bg-white shadow-xl flex flex-col h-full">
+                <DialogPanel className="pointer-events-auto w-full sm:w-[90vw] md:w-[60vw] lg:w-[45vw] max-w-none bg-white shadow-xl flex flex-col h-full">
                   {children}
                 </DialogPanel>
               </TransitionChild>

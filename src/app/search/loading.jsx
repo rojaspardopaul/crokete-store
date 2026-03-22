@@ -1,26 +1,16 @@
-import React from "react";
-import "react-loading-skeleton/dist/skeleton.css";
-
-//internal imports
-import CMSkeletonTwo from "@components/preloader/CMSkeletonTwo";
+import ProductGridSkeleton from "@components/preloader/ProductGridSkeleton";
 
 export default function Loading() {
   return (
-    <>
-      <div className="mx-auto max-w-screen-2xl px-4 sm:px-10">
-        <div className="grid grid-cols-3 gap-1">
-          <CMSkeletonTwo count={8} width={95} />
-          <CMSkeletonTwo count={8} width={95} />
-          <CMSkeletonTwo count={8} width={95} />
-        </div>
-
-        <div className="h-10"></div>
-        <CMSkeletonTwo count={6} width={100} />
-        <div className="h-6"></div>
-        <CMSkeletonTwo count={20} width={100} />
-        <div className="h-10"></div>
-        <CMSkeletonTwo count={2} width={15} />
+    <div className="mx-auto max-w-screen-2xl px-3 sm:px-6 lg:px-10 py-6">
+      {/* Filters skeleton */}
+      <div className="flex gap-3 mb-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-9 w-24 bg-gray-200 rounded-lg animate-pulse" />
+        ))}
       </div>
-    </>
+      {/* Product grid skeleton */}
+      <ProductGridSkeleton count={12} />
+    </div>
   );
 }

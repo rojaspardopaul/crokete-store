@@ -4,6 +4,7 @@ import { Eye } from "lucide-react";
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { IoBagHandle } from "react-icons/io5";
 
 //internal import
@@ -11,11 +12,14 @@ import OrderHistory from "./OrderHistory";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import Pagination from "@components/pagination/Pagination";
-import OrderDetailsDrawer from "@components/drawer/OrderDetailsDrawer";
+const OrderDetailsDrawer = dynamic(
+  () => import("@components/drawer/OrderDetailsDrawer"),
+  { ssr: false }
+);
 
 const RecentOrder = ({ data, error, link, title }) => {
   const router = useRouter();
-  const [orderData, setOrderData] = useState({});
+  const [orderData, setOrderData] = useState(null);
   const { showingTranslateValue } = useUtilsFunction();
   const { setDrawerOpen } = useContext(SidebarContext);
 

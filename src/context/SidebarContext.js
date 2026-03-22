@@ -1,4 +1,4 @@
-import React, { useState, useMemo, createContext } from "react";
+import React, { useState, useMemo, useCallback, createContext } from "react";
 
 // create context
 export const SidebarContext = createContext();
@@ -12,21 +12,22 @@ export const SidebarProvider = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("need");
 
-  const toggleCartDrawer = () => setCartDrawerOpen(!cartDrawerOpen);
-  const closeCartDrawer = () => setCartDrawerOpen(false);
+  // Stable callbacks using updater pattern — prevents unnecessary re-renders
+  const toggleCartDrawer = useCallback(() => setCartDrawerOpen((prev) => !prev), []);
+  const closeCartDrawer = useCallback(() => setCartDrawerOpen(false), []);
 
-  const toggleCategoryDrawer = () => setCategoryDrawerOpen(!categoryDrawerOpen);
-  const closeCategoryDrawer = () => setCategoryDrawerOpen(false);
+  const toggleCategoryDrawer = useCallback(() => setCategoryDrawerOpen((prev) => !prev), []);
+  const closeCategoryDrawer = useCallback(() => setCategoryDrawerOpen(false), []);
 
-  const toggleDrawer = () => setDrawerOpen(!drawerOpen);
-  const closeDrawer = () => setDrawerOpen(false);
+  const toggleDrawer = useCallback(() => setDrawerOpen((prev) => !prev), []);
+  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
-  const closeModal = () => setIsModalOpen(false);
+  const toggleModal = useCallback(() => setIsModalOpen((prev) => !prev), []);
+  const closeModal = useCallback(() => setIsModalOpen(false), []);
 
-  const handleChangePage = (p) => {
+  const handleChangePage = useCallback((p) => {
     setCurrentPage(p);
-  };
+  }, []);
 
   const value = useMemo(
     () => ({

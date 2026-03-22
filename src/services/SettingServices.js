@@ -1,6 +1,7 @@
+import { cache } from "react";
 import { baseURL, handleResponse } from "@services/CommonService";
 
-const getStoreCustomizationSetting = async () => {
+const getStoreCustomizationSetting = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/setting/store/customization`, {
       // cache: "force-cache", //if you want to no cache then comment this line, this setup will only re-call the api on hard reload after first call
@@ -14,9 +15,9 @@ const getStoreCustomizationSetting = async () => {
     // console.log("error", error);
     return { error: error.message };
   }
-};
+});
 
-const getGlobalSetting = async () => {
+const getGlobalSetting = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/setting/global`, {
       // cache: "force-cache", //if you want to no cache then comment this line, this setup will only re-call the api on hard reload after first call
@@ -29,9 +30,9 @@ const getGlobalSetting = async () => {
   } catch (error) {
     return { error: error.message };
   }
-};
+});
 
-const getShowingLanguage = async () => {
+const getShowingLanguage = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/language/show`, {
       // cache: "force-cache", //if you want to no cache then comment this line, this setup will only re-call the api on hard reload after first call
@@ -43,9 +44,9 @@ const getShowingLanguage = async () => {
   } catch (error) {
     return { error: error.message };
   }
-};
+});
 
-const getStoreSetting = async () => {
+const getStoreSetting = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/setting/store-setting`, {
       // cache: "force-cache", //if you want to no cache then comment this line, this setup will only re-call the api on hard reload after first call
@@ -59,9 +60,9 @@ const getStoreSetting = async () => {
   } catch (error) {
     return { error: error.message };
   }
-};
+});
 
-const getStoreSecretKeys = async () => {
+const getStoreSecretKeys = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/setting/store-setting/keys`, {
       // cache: "force-cache", //if you want to no cache then comment this line, this setup will only re-call the api on hard reload after first call
@@ -75,9 +76,9 @@ const getStoreSecretKeys = async () => {
   } catch (error) {
     return { error: error.message };
   }
-};
+});
 
-const getStoreSeoSetting = async () => {
+const getStoreSeoSetting = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/setting/store-setting/seo`, {
       // cache: "force-cache", //if you want to no cache then comment this line, this setup will only re-call the api on hard reload after first call
@@ -90,7 +91,7 @@ const getStoreSeoSetting = async () => {
   } catch (error) {
     return { error: error.message };
   }
-};
+});
 
 export {
   getGlobalSetting,

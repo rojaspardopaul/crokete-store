@@ -29,13 +29,12 @@ export async function generateMetadata({ params }) {
 const ProductSlug = async ({ params }) => {
   const { slug } = await params;
 
-  const { attributes } = await getShowingAttributes();
-
-  const { relatedProducts, products, reviews, error } =
-    await getShowingStoreProducts({
-      category: "",
-      slug: slug,
-    });
+  // Parallelize attributes + products fetch
+  const [{ attributes }, { relatedProducts, products, reviews, error }] =
+    await Promise.all([
+      getShowingAttributes(),
+      getShowingStoreProducts({ category: "", slug }),
+    ]);
 
   let product = {};
 

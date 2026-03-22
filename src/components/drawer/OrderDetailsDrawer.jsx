@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useReactToPrint } from "react-to-print";
-import { CreditCard, Download, Printer, Truck, X } from "lucide-react";
+import { CreditCard, Printer, Truck, X } from "lucide-react";
 
 //internal import
 import MainDrawer from "./MainDrawer";
@@ -11,7 +10,18 @@ import { SidebarContext } from "@context/SidebarContext";
 import { useSetting } from "@context/SettingContext";
 import OrderItems from "@components/order/OrderItems";
 import { Button } from "@components/ui/button";
-import InvoicePDF from "@components/invoice/InvoiceForDownload";
+
+const PDFDownloadSection = dynamic(
+  () => import("@components/invoice/PDFDownloadSection"),
+  {
+    ssr: false,
+    loading: () => (
+      <Button variant="create" disabled>
+        Cargando PDF...
+      </Button>
+    ),
+  }
+);
 
 const OrderDetailsDrawer = ({ data }) => {
   const printRef = useRef();
@@ -23,7 +33,7 @@ const OrderDetailsDrawer = ({ data }) => {
 
   const handlePrintInvoice = useReactToPrint({
     contentRef: printRef,
-    documentTitle: `Invoice-${data?.invoice}`,
+    documentTitle: `Pedido-${data?.invoice}`,
   });
 
   // Flag to only render PDFDownloadLink after client mount
@@ -42,7 +52,7 @@ const OrderDetailsDrawer = ({ data }) => {
           <div className="w-full flex justify-between items-center relative px-5 py-4 border-b bg-indigo-50 border-gray-100">
             <div className="flex flex-col">
               <h2 className="font-semibold text-lg m-0 text-heading flex items-center">
-                Factura No #{data?.invoice}
+                Pedido #{data?.invoice}
               </h2>
 
               <div className="text-sm">
@@ -126,9 +136,15 @@ const OrderDetailsDrawer = ({ data }) => {
                 <span>{data?.user_info?.name}</span>
                 <span>{data?.user_info?.email} </span>
                 <span>
-                  {data?.user_info?.address} {data?.city} {data?.country}
-                  {data?.zipCode}
+                  {data?.user_info?.calle} {data?.user_info?.numExterior}
+                  {data?.user_info?.numInterior ? ` Int. ${data.user_info.numInterior}` : ""}
                 </span>
+                <span>
+                  {data?.user_info?.colonia}, {data?.user_info?.municipio}, Jalisco C.P. {data?.user_info?.postalCode}
+                </span>
+                {data?.user_info?.referencias && (
+                  <span>Ref: {data.user_info.referencias}</span>
+                )}
                 <span className="font-medium">{data?.user_info?.contact}</span>
               </div>
             </div>
@@ -173,26 +189,17 @@ const OrderDetailsDrawer = ({ data }) => {
             </div>
           </div>
         </div>
-        <div className="bg-neutral-50 dark:bg-slate-900 p-6 mt-4">
-          <div className="flex space-x-3 flex-wrap justify-between">
+        <div className="bg-neutral-50 dark:bg-slate-900 p-4 sm:p-6 mt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between">
             {isClient && (
-              <PDFDownloadLink
-                document={
-                  <InvoicePDF data={data} globalSetting={globalSetting} />
-                }
-                fileName={`Invoice-${data.invoice}.pdf`}
-              >
-                {({ loading }) => (
-                  <Button variant="create">
-                    {loading ? "Generando..." : "Descargar PDF"}{" "}
-                    <Download className="ml-2" />
-                  </Button>
-                )}
-              </PDFDownloadLink>
+              <PDFDownloadSection
+                data={data}
+                globalSetting={globalSetting}
+              />
             )}
 
-            <Button onClick={handlePrintInvoice} variant="import">
-              {showingTranslateValue(dashboard?.print_button)}{" "}
+            <Button onClick={handlePrintInvoice} variant="import" className="w-full sm:w-auto justify-center">
+              Imprimir Pedido
               <span className="ml-2">
                 <Printer />
               </span>

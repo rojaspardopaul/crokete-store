@@ -45,8 +45,8 @@ const CarouselCard = ({ sliderData }) => {
               key={item.id || i}
               className="relative flex-[0_0_100%] min-w-0 lg:h-full"
             >
-              {/* Aspect ratio on mobile · fill parent height on lg (matched to sidebar) */}
-              <div className="relative aspect-[2.5/1] lg:aspect-auto lg:h-full">
+              {/* Aspect ratio: compact on mobile, wider on md, fills height on lg */}
+              <div className="relative aspect-[2.5/1] md:aspect-[3.5/1] lg:aspect-auto lg:h-full">
                 <Image
                   src={item.image}
                   alt={item.title || `Slide ${i + 1}`}
@@ -56,22 +56,24 @@ const CarouselCard = ({ sliderData }) => {
                   priority={i === 0}
                 />
 
-                {/* Gradient overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/30 to-transparent dark:from-zinc-900/70 dark:via-zinc-900/30" />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
                 {/* Content overlay */}
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-[55%] sm:w-[50%] lg:w-[45%] pl-4 sm:pl-6 lg:pl-10 pr-2">
-                    <h2 className="text-sm sm:text-lg lg:text-2xl font-bold text-gray-800 dark:text-gray-100 leading-tight line-clamp-2">
+                  <div className="w-[65%] sm:w-[55%] lg:w-[50%] pl-4 sm:pl-6 lg:pl-10 pr-2">
+                    <h2 className="text-sm sm:text-lg font-bold text-white leading-tight line-clamp-2 drop-shadow-sm">
                       {item.title}
                     </h2>
-                    <p className="hidden sm:block mt-1 lg:mt-2 text-xs sm:text-sm lg:text-base text-gray-600 dark:text-gray-300 leading-snug line-clamp-2">
+
+                    <p className="hidden sm:block mt-1 text-xs sm:text-sm text-white/80 leading-snug line-clamp-2">
                       {item.info}
                     </p>
+
                     {item.url && item.buttonName && (
                       <Link
                         href={item.url}
-                        className="hidden sm:inline-block mt-2 lg:mt-4 text-xs sm:text-sm font-semibold px-4 sm:px-5 lg:px-6 py-1.5 sm:py-2 bg-kachabazar-500 rounded-full text-white hover:bg-kachabazar-600 transition-colors shadow-sm"
+                        className="inline-block mt-2 text-xs sm:text-sm font-semibold px-4 sm:px-5 py-1.5 sm:py-2 bg-white text-kachabazar-600 rounded-full hover:bg-kachabazar-500 hover:text-white transition-colors shadow-md"
                       >
                         {item.buttonName}
                       </Link>
@@ -94,8 +96,8 @@ const CarouselCard = ({ sliderData }) => {
               aria-label={`Ir a slide ${i + 1}`}
               className={`rounded-full transition-all duration-300 cursor-pointer ${
                 i === selectedIndex
-                  ? "w-5 h-2 bg-kachabazar-500"
-                  : "w-2 h-2 bg-gray-400/50 hover:bg-gray-400"
+                  ? "w-5 h-2 bg-white"
+                  : "w-2 h-2 bg-white/50 hover:bg-white/70"
               }`}
             />
           ))}

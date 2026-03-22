@@ -1,3 +1,5 @@
+// @deprecated — Ya no se usa. El sistema de direcciones ahora usa zmgPostalCodes.js
+// Se puede eliminar este archivo de forma segura.
 const countries = [
   {
     name: "Bangladesh",

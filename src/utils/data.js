@@ -52,14 +52,14 @@ const pages = [
     icon: FiPhoneIncoming,
   },
   {
-    title: "Política de Privacidad",
-    href: "/privacy-policy",
-    icon: FiPocket,
+    title: "Recuperar Contraseña",
+    href: "/auth/forget-password",
+    icon: FiFrown,
   },
   {
-    title: "Recuperar Contraseña",
-    href: "/forget-password",
-    icon: FiFrown,
+    title: "Política de Privacidad",
+    href: "/privacy-policy",
+    icon: FiShield,
   },
   {
     title: "Términos y Condiciones",

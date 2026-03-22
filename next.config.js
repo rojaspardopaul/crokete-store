@@ -5,10 +5,12 @@ const nextConfig = {
   // Disable static generation, use SSR only
   output: 'standalone',
 
-  // Allow mobile devices on LAN to access dev server
-  allowedDevOrigins: ['http://192.168.0.14:3000'],
-
   images: {
+    // Enable modern formats for smaller file sizes
+    formats: ['image/avif', 'image/webp'],
+    // Fine-tune responsive sizes to match actual layout breakpoints
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
     remotePatterns: [
       {
         protocol: "https",
@@ -16,6 +18,9 @@ const nextConfig = {
       },
     ],
   },
+
+  // Enable gzip compression
+  compress: true,
 };
 
 module.exports = nextConfig;

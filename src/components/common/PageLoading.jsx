@@ -88,30 +88,26 @@ const PageLoading = () => {
   if (!loading) return null;
 
   return (
-    <div className="page-loading-overlay" aria-live="polite" role="status">
-      {/* Top progress bar */}
-      <div className="page-loading-bar" />
+    <>
+      {/* Shimmer bar — fixed top, non-blocking */}
+      <div className="page-loading-bar" role="progressbar" aria-label="Cargando" />
 
-      {/* Center paw icon */}
-      <div className="page-loading-center">
+      {/* Small paw badge — bottom-right, non-blocking */}
+      <div className="page-loading-badge" aria-hidden="true">
         <svg
-          className="page-loading-paw"
+          className="page-loading-paw-icon"
           viewBox="0 0 64 64"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          aria-label="Cargando"
         >
-          {/* Main pad */}
           <ellipse cx="32" cy="42" rx="12" ry="10" fill="currentColor" />
-          {/* Toe pads */}
           <ellipse cx="18" cy="28" rx="6" ry="7" fill="currentColor" />
           <ellipse cx="30" cy="22" rx="5.5" ry="7" fill="currentColor" />
           <ellipse cx="38" cy="22" rx="5.5" ry="7" fill="currentColor" />
           <ellipse cx="48" cy="28" rx="6" ry="7" fill="currentColor" />
         </svg>
-        <span className="page-loading-text">Cargando...</span>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
+import { cache } from "react";
 import { baseURL, handleResponse } from "@services/CommonService";
 
-const getShowingAttributes = async () => {
+const getShowingAttributes = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/attributes/show`, {
       // cache: "force-cache",
@@ -12,6 +13,6 @@ const getShowingAttributes = async () => {
   } catch (error) {
     return { attributes: [], error: error.message };
   }
-};
+});
 
 export { getShowingAttributes };

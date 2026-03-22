@@ -1,6 +1,7 @@
+import { cache } from "react";
 import { baseURL, handleResponse } from "@services/CommonService";
 
-const getShowingStoreProducts = async ({
+const getShowingStoreProducts = cache(async ({
   category = "",
   title = "",
   slug = "",
@@ -35,6 +36,6 @@ const getShowingStoreProducts = async ({
       error: error.message,
     };
   }
-};
+});
 
 export { getShowingStoreProducts };

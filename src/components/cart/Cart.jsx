@@ -95,15 +95,14 @@ const Cart = ({ setOpen, currency }) => {
           </p>
 
           <div className="flex space-x-3 mt-5">
-            <button
-              onClick={() => {
-                setOpen(false);
-                router.push("/checkout-cart");
-              }}
+            <Link
+              href="/checkout-cart"
+              prefetch={true}
+              onClick={() => setOpen(false)}
               className="relative h-auto inline-flex items-center justify-center rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-white text-slate-700 dark:bg-slate-900 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 flex-1 border border-slate-200 dark:border-slate-700 dark:focus:ring-offset-0 cursor-pointer"
             >
               Ver detalle de carrito
-            </button>
+            </Link>
             <button
               onClick={handleCheckout}
               className="relative h-auto inline-flex items-center justify-center rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-kachabazar-500 hover:bg-kachabazar-600 border border-kachabazar-500 text-white flex-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 cursor-pointer"

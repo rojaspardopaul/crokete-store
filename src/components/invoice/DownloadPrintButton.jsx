@@ -3,15 +3,25 @@
 import { useRef, useState, useEffect } from "react";
 import { useReactToPrint } from "react-to-print";
 import dynamic from "next/dynamic";
-import { Download, Printer } from "lucide-react";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Printer } from "lucide-react";
 
 // internal imports
 import Invoice from "@components/invoice/Invoice";
 import { Button } from "@components/ui/button";
 import { useSetting } from "@context/SettingContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import InvoicePDF from "@components/invoice/InvoiceForDownload";
+
+const PDFDownloadSection = dynamic(
+  () => import("@components/invoice/PDFDownloadSection"),
+  {
+    ssr: false,
+    loading: () => (
+      <Button variant="create" disabled>
+        Cargando PDF...
+      </Button>
+    ),
+  }
+);
 
 const DownloadPrintButton = ({ data }) => {
   const { globalSetting, storeCustomization } = useSetting();
@@ -21,7 +31,7 @@ const DownloadPrintButton = ({ data }) => {
 
   const handlePrintInvoice = useReactToPrint({
     contentRef: targetRef,
-    documentTitle: `Invoice-${data?.invoice}`,
+    documentTitle: `Pedido-${data?.invoice}`,
   });
 
   // Flag to only render PDFDownloadLink after client mount
@@ -50,19 +60,10 @@ const DownloadPrintButton = ({ data }) => {
         <div className="bg-white p-8 rounded-b-xl">
           <div className="flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between invoice-btn">
             {isClient && (
-              <PDFDownloadLink
-                document={
-                  <InvoicePDF data={data} globalSetting={globalSetting} />
-                }
-                fileName={`Invoice-${data.invoice}.pdf`}
-              >
-                {({ loading }) => (
-                  <Button variant="create">
-                    {loading ? "Generando..." : "Descargar PDF"}{" "}
-                    <Download className="ml-2" />
-                  </Button>
-                )}
-              </PDFDownloadLink>
+              <PDFDownloadSection
+                data={data}
+                globalSetting={globalSetting}
+              />
             )}
 
             <Button onClick={handlePrintInvoice} variant="import">

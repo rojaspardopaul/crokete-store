@@ -13,7 +13,6 @@ import {
 import Category from "@components/category/Category";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import SelectLanguage from "@components/form/SelectLanguage";
 import {
   AlertCircle,
   ChevronDownIcon,
@@ -23,13 +22,14 @@ import {
   HelpCircle,
   PhoneIncoming,
   ShoppingBag,
+  Truck,
   User,
 } from "lucide-react";
 import { useSetting } from "@context/SettingContext";
 
 const NavbarPromo = ({ languages, categories, categoryError }) => {
   const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const { storeCustomization } = useSetting();
+  const { storeCustomization, globalSetting } = useSetting();
 
   const { showingTranslateValue } = useUtilsFunction();
   const navbar = storeCustomization?.navbar;
@@ -45,35 +45,40 @@ const NavbarPromo = ({ languages, categories, categoryError }) => {
                   <Popover as="nav" className="md:flex space-x-10 items-center">
                     {navbar?.categories_menu_status && (
                       <Popover className="relative ">
-                        <PopoverButton className="group inline-flex items-center py-2 hover:text-kachabazar-600 focus:outline-none">
-                          <span className=" text-sm font-medium">
-                            {showingTranslateValue(navbar?.categories)}
-                          </span>
+                        {({ close }) => (
+                          <>
+                            <PopoverButton className="group inline-flex items-center py-2 hover:text-kachabazar-600 focus:outline-none">
+                              <span className=" text-sm font-medium">
+                                {showingTranslateValue(navbar?.categories)}
+                              </span>
 
-                          <ChevronDownIcon
-                            className="ml-1 h-3 w-3 group-hover:text-kachabazar-600"
-                            aria-hidden="true"
-                          />
-                        </PopoverButton>
-
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-200"
-                          enterFrom="opacity-0 translate-y-1"
-                          enterTo="opacity-100 translate-y-0"
-                          leave="transition ease-in duration-150"
-                          leaveFrom="opacity-100 translate-y-0"
-                          leaveTo="opacity-0 translate-y-1"
-                        >
-                          <PopoverPanel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
-                            <div className="rounded-md shadow-lg  overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
-                              <Category
-                                categories={categories}
-                                categoryError={categoryError}
+                              <ChevronDownIcon
+                                className="ml-1 h-3 w-3 group-hover:text-kachabazar-600"
+                                aria-hidden="true"
                               />
-                            </div>
-                          </PopoverPanel>
-                        </Transition>
+                            </PopoverButton>
+
+                            <Transition
+                              as={Fragment}
+                              enter="transition ease-out duration-200"
+                              enterFrom="opacity-0 translate-y-1"
+                              enterTo="opacity-100 translate-y-0"
+                              leave="transition ease-in duration-150"
+                              leaveFrom="opacity-100 translate-y-0"
+                              leaveTo="opacity-0 translate-y-1"
+                            >
+                              <PopoverPanel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
+                                <div className="rounded-md shadow-lg  overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
+                                  <Category
+                                    categories={categories}
+                                    categoryError={categoryError}
+                                    onClose={close}
+                                  />
+                                </div>
+                              </PopoverPanel>
+                            </Transition>
+                          </>
+                        )}
                       </Popover>
                     )}
 
@@ -98,149 +103,153 @@ const NavbarPromo = ({ languages, categories, categoryError }) => {
                     )}
 
                     <Popover className="relative">
-                      <PopoverButton className="group inline-flex items-center py-2 text-sm font-medium hover:text-kachabazar-600 focus:outline-none">
-                        <span>{showingTranslateValue(navbar?.pages)}</span>
-                        <ChevronDownIcon
-                          className="ml-1 h-3 w-3 group-hover:text-kachabazar-600"
-                          aria-hidden="true"
-                        />
-                      </PopoverButton>
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-200"
-                        enterFrom="opacity-0 translate-y-1"
-                        enterTo="opacity-100 translate-y-0"
-                        leave="transition ease-in duration-150"
-                        leaveFrom="opacity-100 translate-y-0"
-                        leaveTo="opacity-0 translate-y-1"
-                      >
-                        <PopoverPanel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs bg-white">
-                          <div className="rounded-lg shadow-lg overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
-                            <div className="relative grid gap-2 px-6 py-6">
-                              {navbar?.offers_menu_status && (
-                                <span className="p-2 items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                  <div className="w-full flex">
-                                    <Gift className="my-auto h-5 w-5 text-gray-700" />
-                                    <Link
-                                      href="/offers"
-                                      onClick={() => setIsLoading(!isLoading)}
-                                      className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                    >
-                                      {showingTranslateValue(navbar?.offers)}
-                                    </Link>
-                                  </div>
-                                </span>
-                              )}
-                              <span className="p-2 items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                <div className="w-full flex">
-                                  <ShoppingBag className="my-auto h-5 w-5 text-gray-700" />
-                                  <Link
-                                    href="/checkout"
-                                    onClick={() => setIsLoading(!isLoading)}
-                                    className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                  >
-                                    {showingTranslateValue(navbar?.checkout)}
-                                  </Link>
+                      {({ close }) => (
+                        <>
+                          <PopoverButton className="group inline-flex items-center py-2 text-sm font-medium hover:text-kachabazar-600 focus:outline-none">
+                            <span>{showingTranslateValue(navbar?.pages)}</span>
+                            <ChevronDownIcon
+                              className="ml-1 h-3 w-3 group-hover:text-kachabazar-600"
+                              aria-hidden="true"
+                            />
+                          </PopoverButton>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-200"
+                            enterFrom="opacity-0 translate-y-1"
+                            enterTo="opacity-100 translate-y-0"
+                            leave="transition ease-in duration-150"
+                            leaveFrom="opacity-100 translate-y-0"
+                            leaveTo="opacity-0 translate-y-1"
+                          >
+                            <PopoverPanel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs bg-white">
+                              <div className="rounded-lg shadow-lg overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
+                                <div className="relative grid gap-2 px-6 py-6">
+                                  {navbar?.offers_menu_status && (
+                                    <span className="p-2 items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                      <div className="w-full flex">
+                                        <Gift className="my-auto h-5 w-5 text-gray-700" />
+                                        <Link
+                                          href="/offers"
+                                          onClick={() => { setIsLoading(!isLoading); close(); }}
+                                          className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                        >
+                                          {showingTranslateValue(navbar?.offers)}
+                                        </Link>
+                                      </div>
+                                    </span>
+                                  )}
+                                  <span className="p-2 items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                    <div className="w-full flex">
+                                      <ShoppingBag className="my-auto h-5 w-5 text-gray-700" />
+                                      <Link
+                                        href="/checkout"
+                                        onClick={() => { setIsLoading(!isLoading); close(); }}
+                                        className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                      >
+                                        {showingTranslateValue(navbar?.checkout)}
+                                      </Link>
+                                    </div>
+                                  </span>
+
+                                  {navbar?.faq_status && (
+                                    <span className="p-2  items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                      <div className="w-full flex">
+                                        <HelpCircle className="my-auto h-5 w-5 text-gray-700" />
+                                        <Link
+                                          href="/faq"
+                                          onClick={() => { setIsLoading(!isLoading); close(); }}
+                                          className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                        >
+                                          {showingTranslateValue(navbar?.faq)}
+                                        </Link>
+                                      </div>
+                                    </span>
+                                  )}
+
+                                  {navbar?.about_menu_status && (
+                                    <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                      <div className="w-full flex">
+                                        <User className="my-auto h-5 w-5 text-gray-700" />
+                                        <Link
+                                          href="/about-us"
+                                          onClick={() => { setIsLoading(!isLoading); close(); }}
+                                          className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                        >
+                                          {showingTranslateValue(navbar?.about_us)}
+                                        </Link>
+                                      </div>
+                                    </span>
+                                  )}
+
+                                  {navbar?.contact_menu_status && (
+                                    <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                      <div className="w-full flex">
+                                        <PhoneIncoming className="my-auto h-5 w-5 text-gray-700" />
+                                        <Link
+                                          href="/contact-us"
+                                          onClick={() => { setIsLoading(!isLoading); close(); }}
+                                          className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                        >
+                                          {showingTranslateValue(
+                                            navbar?.contact_us
+                                          )}
+                                        </Link>
+                                      </div>
+                                    </span>
+                                  )}
+
+                                  {navbar?.privacy_policy_status && (
+                                    <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                      <div className="w-full flex">
+                                        <FolderLock className="my-auto h-5 w-5 text-gray-700" />
+                                        <Link
+                                          href="/privacy-policy"
+                                          onClick={() => { setIsLoading(!isLoading); close(); }}
+                                          className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                        >
+                                          {showingTranslateValue(
+                                            navbar?.privacy_policy
+                                          )}
+                                        </Link>
+                                      </div>
+                                    </span>
+                                  )}
+
+                                  {navbar?.term_and_condition_status && (
+                                    <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                      <div className="w-full flex">
+                                        <File className="my-auto h-5 w-5 text-gray-700" />
+                                        <Link
+                                          href="/terms-and-conditions"
+                                          onClick={() => { setIsLoading(!isLoading); close(); }}
+                                          className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                        >
+                                          {showingTranslateValue(
+                                            navbar?.term_and_condition
+                                          )}
+                                        </Link>
+                                      </div>
+                                    </span>
+                                  )}
+
+                                  <span className="p-2 items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
+                                    <div className="w-full flex">
+                                      <AlertCircle className="my-auto h-5 w-5 text-gray-700" />
+                                      <Link
+                                        href="/404"
+                                        onClick={() => { setIsLoading(!isLoading); close(); }}
+                                        className="relative inline-flex items-center ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
+                                      >
+                                        404
+                                      </Link>
+                                    </div>
+                                  </span>
                                 </div>
-                              </span>
-
-                              {navbar?.faq_status && (
-                                <span className="p-2  items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                  <div className="w-full flex">
-                                    <HelpCircle className="my-auto h-5 w-5 text-gray-700" />
-                                    <Link
-                                      href="/faq"
-                                      onClick={() => setIsLoading(!isLoading)}
-                                      className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                    >
-                                      {showingTranslateValue(navbar?.faq)}
-                                    </Link>
-                                  </div>
-                                </span>
-                              )}
-
-                              {navbar?.about_menu_status && (
-                                <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                  <div className="w-full flex">
-                                    <User className="my-auto h-5 w-5 text-gray-700" />
-                                    <Link
-                                      href="/about-us"
-                                      onClick={() => setIsLoading(!isLoading)}
-                                      className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                    >
-                                      {showingTranslateValue(navbar?.about_us)}
-                                    </Link>
-                                  </div>
-                                </span>
-                              )}
-
-                              {navbar?.contact_menu_status && (
-                                <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                  <div className="w-full flex">
-                                    <PhoneIncoming className="my-auto h-5 w-5 text-gray-700" />
-                                    <Link
-                                      href="/contact-us"
-                                      onClick={() => setIsLoading(!isLoading)}
-                                      className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                    >
-                                      {showingTranslateValue(
-                                        navbar?.contact_us
-                                      )}
-                                    </Link>
-                                  </div>
-                                </span>
-                              )}
-
-                              {navbar?.privacy_policy_status && (
-                                <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                  <div className="w-full flex">
-                                    <FolderLock className="my-auto h-5 w-5 text-gray-700" />
-                                    <Link
-                                      href="/privacy-policy"
-                                      onClick={() => setIsLoading(!isLoading)}
-                                      className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                    >
-                                      {showingTranslateValue(
-                                        navbar?.privacy_policy
-                                      )}
-                                    </Link>
-                                  </div>
-                                </span>
-                              )}
-
-                              {navbar?.term_and_condition_status && (
-                                <span className="p-2   items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                  <div className="w-full flex">
-                                    <File className="my-auto h-5 w-5 text-gray-700" />
-                                    <Link
-                                      href="/terms-and-conditions"
-                                      onClick={() => setIsLoading(!isLoading)}
-                                      className="relative inline-flex items-center  ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                    >
-                                      {showingTranslateValue(
-                                        navbar?.term_and_condition
-                                      )}
-                                    </Link>
-                                  </div>
-                                </span>
-                              )}
-
-                              <span className="p-2 items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                <div className="w-full flex">
-                                  <AlertCircle className="my-auto h-5 w-5 text-gray-700" />
-                                  <Link
-                                    href="/404"
-                                    onClick={() => setIsLoading(!isLoading)}
-                                    className="relative inline-flex items-center ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                  >
-                                    404
-                                  </Link>
-                                </div>
-                              </span>
-                            </div>
-                          </div>
-                        </PopoverPanel>
-                      </Transition>
+                              </div>
+                            </PopoverPanel>
+                          </Transition>
+                        </>
+                      )}
                     </Popover>
 
                     {navbar?.offers_menu_status && (
@@ -261,27 +270,15 @@ const NavbarPromo = ({ languages, categories, categoryError }) => {
               </div>
             </Popover>
           </div>
-          <div className="flex">
-            <SelectLanguage data={languages} />
-
-            {navbar?.privacy_policy_status && (
-              <Link
-                onClick={() => setIsLoading(!isLoading)}
-                href="/privacy-policy"
-                className=" mx-4 py-2 text-sm font-medium hover:text-kachabazar-600"
-              >
-                {showingTranslateValue(navbar?.privacy_policy)}
-              </Link>
-            )}
-            {navbar?.term_and_condition_status && (
-              <Link
-                onClick={() => setIsLoading(!isLoading)}
-                href="/terms-and-conditions"
-                className=" mx-4 py-2 text-sm font-medium hover:text-kachabazar-600"
-              >
-                {showingTranslateValue(navbar?.term_and_condition)}
-              </Link>
-            )}
+          <div className="flex items-center text-sm text-gray-600">
+            <Truck className="w-4 h-4 mr-2 text-kachabazar-600" />
+            <span>
+              Entregas el mismo día y{" "}
+              <strong className="text-kachabazar-600">gratis</strong> a partir de{" "}
+              <strong className="text-kachabazar-600">
+                ${Number(globalSetting?.free_shipping_threshold) || 599}
+              </strong>
+            </span>
           </div>
         </div>
       </div>

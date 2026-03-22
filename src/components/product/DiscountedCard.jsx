@@ -15,7 +15,11 @@ import Discount from "@components/common/Discount";
 import PriceTwo from "@components/common/PriceTwo";
 import Rating from "@components/common/Rating";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import ProductModal from "@components/modal/ProductModal";
+// Lazy-load ProductModal — only loaded when user opens quick-view
+const ProductModal = dynamic(
+  () => import("@components/modal/ProductModal"),
+  { ssr: false }
+);
 import ImageWithFallback from "@components/common/ImageWithFallBack";
 import { useSetting } from "@context/SettingContext";
 
@@ -145,7 +149,7 @@ const DiscountedCard = ({ product, attributes, currency }) => {
           >
             <ImageWithFallback
               fill
-              sizes="100%"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, (max-width: 1536px) 20vw, 16vw"
               alt="product"
               src={displayImage}
             />

@@ -1,6 +1,7 @@
+import { cache } from "react";
 import { baseURL, handleResponse } from "@services/CommonService";
 
-const getShowingCategory = async () => {
+const getShowingCategory = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/category/show`, {
       // cache: "no-cache",
@@ -12,6 +13,6 @@ const getShowingCategory = async () => {
   } catch (error) {
     return { categories: [], error: error.message, loading: false };
   }
-};
+});
 
 export { getShowingCategory };

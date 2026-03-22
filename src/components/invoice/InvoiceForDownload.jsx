@@ -10,6 +10,7 @@ import {
 } from "@react-pdf/renderer";
 import { createTw } from "react-pdf-tailwind";
 import dayjs from "dayjs";
+import "dayjs/locale/es";
 
 const tw = createTw({
   theme: {
@@ -80,7 +81,15 @@ const styles = StyleSheet.create({
 const InvoicePDF = ({ data, globalSetting }) => {
   const currency = globalSetting?.default_currency || "$";
   const getNumberTwo = (num) => (!num ? "0.00" : Number(num).toFixed(2));
-  const currentDate = dayjs().format("MMMM D, YYYY");
+  const currentDate = dayjs().locale("es").format("D [de] MMMM [de] YYYY");
+
+  const STATUS_LABELS = {
+    pedido: "Pedido",
+    empaquetado: "Empaquetado",
+    en_reparto: "En Reparto",
+    entregado: "Entregado",
+    cancelado: "Cancelado",
+  };
 
   return (
     <Document>
@@ -93,13 +102,13 @@ const InvoicePDF = ({ data, globalSetting }) => {
                 "text-2xl font-bold text-primary uppercase tracking-wider"
               )}
             >
-              FACTURA
+              Pedido
             </Text>
             <View
               style={tw("mt-1 px-3 py-1 bg-primary rounded-full inline-block")}
             >
               <Text style={tw("text-white text-xs font-bold")}>
-                {data?.status || "PENDIENTE"}
+                {STATUS_LABELS[data?.status] || data?.status || "Pedido"}
               </Text>
             </View>
           </View>
@@ -111,14 +120,19 @@ const InvoicePDF = ({ data, globalSetting }) => {
             <Text style={tw("font-bold")}>
               {globalSetting?.company_name || "Company Name"}
             </Text>
+            <Text style={tw("text-xs")}>
+              {globalSetting?.vat_number &&
+                `RFC: ${globalSetting.vat_number}`}
+            </Text>
             <Text style={tw("text-xs")}>{globalSetting?.address}</Text>
             <Text style={tw("text-xs")}>
-              {globalSetting?.contact} • {globalSetting?.email}
+              {globalSetting?.contact}
             </Text>
             <Text style={tw("text-xs")}>
               {globalSetting?.website}
-              {globalSetting?.vat_number &&
-                ` • VAT: ${globalSetting.vat_number}`}
+            </Text>
+            <Text style={tw("text-xs")}>
+              {globalSetting?.email}
             </Text>
           </View>
         </View>
@@ -126,9 +140,6 @@ const InvoicePDF = ({ data, globalSetting }) => {
         {/* Invoice Details */}
         <View style={tw("flex flex-row justify-between mb-8")}>
           <View>
-            <Text style={tw("text-sm font-bold text-dark mb-2")}>
-              FACTURADO A:
-            </Text>
             <Text style={tw("text-sm")}>
               {data?.user_info?.name || "Customer Name"}
             </Text>
@@ -139,17 +150,18 @@ const InvoicePDF = ({ data, globalSetting }) => {
               {data?.user_info?.contact || "N/A"}
             </Text>
             <Text style={tw("text-sm text-gray-600")}>
-              {data?.user_info?.address || "No address provided"}
+              {data?.user_info?.calle} {data?.user_info?.numExterior}
+              {data?.user_info?.numInterior ? ` Int. ${data.user_info.numInterior}` : ""}
             </Text>
             <Text style={tw("text-sm text-gray-600")}>
-              {data?.city} {data?.country} {data?.zipCode}
+              {data?.user_info?.colonia}, {data?.user_info?.municipio}, Jalisco C.P. {data?.user_info?.postalCode}
             </Text>
           </View>
 
           <View style={tw("text-right")}>
             <View style={tw("flex flex-row mb-1")}>
               <Text style={tw("w-28 text-sm font-bold text-dark text-left")}>
-                Factura #:
+                Pedido #:
               </Text>
               <Text style={tw("text-sm")}>#{data?.invoice || "N/A"}</Text>
             </View>
@@ -158,19 +170,10 @@ const InvoicePDF = ({ data, globalSetting }) => {
                 Emitida:
               </Text>
               <Text style={tw("text-sm")}>
-                {dayjs(data?.createdAt).format("MMMM D, YYYY")}
+                {dayjs(data?.createdAt).locale("es").format("D [de] MMMM [de] YYYY")}
               </Text>
             </View>
-            <View style={tw("flex flex-row mb-1")}>
-              <Text style={tw("w-28 text-sm font-bold text-dark text-left")}>
-                Vencimiento:
-              </Text>
-              <Text style={tw("text-sm")}>
-                {dayjs(data?.dueDate).isValid()
-                  ? dayjs(data.dueDate).format("MMMM D, YYYY")
-                  : "Al recibirla"}
-              </Text>
-            </View>
+
           </View>
         </View>
 
@@ -284,7 +287,7 @@ const InvoicePDF = ({ data, globalSetting }) => {
             MÉTODO DE PAGO:
           </Text>
           <Text style={tw("text-sm")}>
-            {data?.paymentMethod || "No especificado"}
+            {{"Cash": "Pago Contra Entrega", "Card": "Tarjeta de Crédito"}[data?.paymentMethod] || data?.paymentMethod || "No especificado"}
           </Text>
         </View>
 
@@ -301,7 +304,7 @@ const InvoicePDF = ({ data, globalSetting }) => {
               Generado el: {currentDate}
             </Text>
             <Text style={tw("text-xs text-gray-500")}>
-              {globalSetting?.company_name || "Nombre de Empresa"} • Factura #
+              {globalSetting?.company_name || "Nombre de Empresa"} • Pedido #
               {data?.invoice}
             </Text>
           </View>

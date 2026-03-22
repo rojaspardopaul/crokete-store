@@ -7,49 +7,34 @@ const fallbackImage =
 
 const ImageWithFallback = ({
   src,
-  img,
+  img, // kept for backward compatibility but ignored — always uses next/image
   fallback = fallbackImage,
   alt = "image",
   ...props
 }) => {
-  const [imgSrc, setImgSrc] = useState(src || fallback);
+  // Ensure we never pass an empty/falsy src to next/image
+  const validSrc = typeof src === "string" && src.trim() !== "" ? src : fallback;
+  const [imgSrc, setImgSrc] = useState(validSrc);
 
   useEffect(() => {
-    setImgSrc(src || fallback);
+    const next = typeof src === "string" && src.trim() !== "" ? src : fallback;
+    setImgSrc(next);
   }, [src, fallback]);
 
   return (
-    <>
-      {img ? (
-        <img
-          src={imgSrc}
-          onError={() => setImgSrc(fallback)}
-          alt={alt}
-          {...props}
-          className={`object-contain transition duration-150 ease-linear transform group-hover:scale-105 p-2 ${
-            props.className || ""
-          }`}
-          style={{
-            objectFit: "contain",
-            ...props.style,
-          }}
-        />
-      ) : (
-        <Image
-          src={imgSrc}
-          onError={() => setImgSrc(fallback)}
-          alt={alt}
-          {...props}
-          className={`object-contain transition duration-150 ease-linear transform group-hover:scale-105 p-2 ${
-            props.className || ""
-          }`}
-          style={{
-            objectFit: "contain",
-            ...props.style,
-          }}
-        />
-      )}
-    </>
+    <Image
+      src={imgSrc || fallback}
+      onError={() => setImgSrc(fallback)}
+      alt={alt}
+      {...props}
+      className={`object-contain transition duration-150 ease-linear transform group-hover:scale-105 p-2 ${
+        props.className || ""
+      }`}
+      style={{
+        objectFit: "contain",
+        ...props.style,
+      }}
+    />
   );
 };
 

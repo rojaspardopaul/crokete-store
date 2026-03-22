@@ -14,7 +14,7 @@ import dynamic from "next/dynamic";
 //internal import
 import Price from "@components/common/Price";
 import Stock from "@components/common/Stock";
-import { notifyError } from "@utils/toast";
+import { notifyError, notifySuccess } from "@utils/toast";
 import Rating from "@components/common/Rating";
 import useAddToCart from "@hooks/useAddToCart";
 import { useSetting } from "@context/SettingContext";
@@ -22,7 +22,11 @@ import Discount from "@components/common/Discount";
 import LoyaltyPointsBadge from "@components/loyalty/LoyaltyPointsBadge";
 import { handleLogEvent } from "src/lib/analytics";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import ProductModal from "@components/modal/ProductModal";
+// Lazy-load ProductModal — only loaded when user opens quick-view
+const ProductModal = dynamic(
+  () => import("@components/modal/ProductModal"),
+  { ssr: false }
+);
 import ImageWithFallback from "@components/common/ImageWithFallBack";
 
 const ProductCard = ({ product, attributes }) => {
@@ -114,15 +118,49 @@ const ProductCard = ({ product, attributes }) => {
     return 0;
   }, [displayPrice, displayOriginalPrice]);
 
-  const handleAddItem = (p) => {
-    if (p.stock < 1) return notifyError("Stock no válido!");
+  // Effective stock for the currently displayed variant (or product stock for simple products).
+  // Math.max(0, ...) guards against any negative stock values from the DB.
+  const displayStock = useMemo(() => {
+    const raw = variantOptions.length > 0
+      ? variantOptions[selectedVariantIdx]?.quantity ?? 0
+      : product?.stock ?? 0;
+    return Math.max(0, raw);
+  }, [variantOptions, selectedVariantIdx, product?.stock]);
 
+  const handleAddItem = (p) => {
     if (p?.variants?.length > 0) {
-      setModalOpen(!modalOpen);
+      // Add the currently selected variant directly — no modal
+      const selectedOpt = variantOptions[selectedVariantIdx];
+      if (!selectedOpt || selectedOpt.quantity < 1) {
+        return notifyError("¡Producto agotado!");
+      }
+      const { slug, variants, categories, description, ...updatedProduct } = product;
+      const newItem = {
+        ...updatedProduct,
+        id: p._id + "-" + (selectedOpt.variant._id || selectedVariantIdx),
+        title: showingTranslateValue(p?.title) + " - " + selectedOpt.label,
+        image: selectedOpt.variant.image || product?.image?.[0],
+        variant: selectedOpt.variant,
+        price: selectedOpt.price,
+        originalPrice: selectedOpt.originalPrice,
+      };
+      const existingQty = items.find((i) => i.id === newItem.id)?.quantity ?? 0;
+      if (existingQty + 1 > selectedOpt.quantity) {
+        return notifyError(`¡Solo quedan ${selectedOpt.quantity} unidad${selectedOpt.quantity === 1 ? "" : "es"} disponibles!`);
+      }
+      addItem(newItem);
+      notifySuccess(`${showingTranslateValue(p?.title)} agregado al carrito!`);
+      setAddedAnimation(true);
+      setTimeout(() => setAddedAnimation(false), 600);
       return;
     }
-    const { slug, variants, categories, description, ...updatedProduct } =
-      product;
+
+    if (p.stock < 1) return notifyError("¡Stock no válido!");
+    const existingQty = items.find((i) => i.id === p._id)?.quantity ?? 0;
+    if (existingQty + 1 > p.stock) {
+      return notifyError(`¡Solo quedan ${p.stock} unidad${p.stock === 1 ? "" : "es"} disponibles!`);
+    }
+    const { slug, variants, categories, description, ...updatedProduct } = product;
     const newItem = {
       ...updatedProduct,
       title: showingTranslateValue(p?.title),
@@ -132,7 +170,7 @@ const ProductCard = ({ product, attributes }) => {
       originalPrice: product.prices?.originalPrice,
     };
     addItem(newItem);
-    // Animación al agregar
+    notifySuccess(`${showingTranslateValue(p?.title)} agregado al carrito!`);
     setAddedAnimation(true);
     setTimeout(() => setAddedAnimation(false), 600);
   };
@@ -178,7 +216,7 @@ const ProductCard = ({ product, attributes }) => {
           >
             <ImageWithFallback
               fill
-              sizes="100%"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, (max-width: 1536px) 20vw, 16vw"
               alt="product"
               src={displayImage}
               className="object-contain transition-transform duration-500 group-hover:scale-105"
@@ -227,11 +265,13 @@ const ProductCard = ({ product, attributes }) => {
                           {item.quantity}
                         </p>
                         <button
-                          onClick={() =>
-                            item?.variants?.length > 0
-                              ? handleAddItem(item)
-                              : handleIncreaseQuantity(item)
-                          }
+                          onClick={() => {
+                            const maxStock = item.variant?.quantity ?? item.stock ?? 0;
+                            if (item.quantity >= maxStock) {
+                              return notifyError(`¡Solo quedan ${maxStock} unidad${maxStock === 1 ? "" : "es"} disponibles!`);
+                            }
+                            updateItemQuantity(item.id, item.quantity + 1);
+                          }}
                         >
                           <span className="text-lg cursor-pointer">
                             <IoAdd />
@@ -245,18 +285,35 @@ const ProductCard = ({ product, attributes }) => {
               <button
                 onClick={() => handleAddItem(product)}
                 aria-label="Agregar al carrito"
-                className="w-11 h-11 flex items-center justify-center rounded-full cursor-pointer bg-kachabazar-500 text-white shadow-lg transition-all duration-300 hover:bg-kachabazar-600 hover:scale-110 hover:shadow-xl focus:ring-2 focus:ring-kachabazar-500 focus:ring-offset-2 active:scale-95"
+                disabled={variantOptions.length > 0 && displayStock === 0}
+                className={`w-11 h-11 flex items-center justify-center rounded-full shadow-lg transition-all duration-300 focus:ring-2 focus:ring-offset-2 active:scale-95 ${
+                  variantOptions.length > 0 && displayStock === 0
+                    ? "bg-gray-400 text-white cursor-not-allowed focus:ring-gray-400"
+                    : "bg-kachabazar-500 text-white cursor-pointer hover:bg-kachabazar-600 hover:scale-110 hover:shadow-xl focus:ring-kachabazar-500"
+                }`}
               >
                 <IoBagAdd className="text-xl" />
               </button>
             )}
           </div>
 
-          {/* Stock bajo indicator */}
-          {product?.stock > 0 && product?.stock <= 5 && (
-            <div className="absolute top-3 left-3 z-10 bg-kachabazar-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-soft-pulse">
-              ¡Quedan {product.stock}!
-            </div>
+          {/* Stock indicator */}
+          {variantOptions.length > 0 ? (
+            displayStock === 0 ? (
+              <div className="absolute top-3 right-3 z-10 bg-gray-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                Agotado
+              </div>
+            ) : displayStock <= 5 ? (
+              <div className="absolute top-3 right-3 z-10 bg-kachabazar-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-soft-pulse">
+                ¡Quedan {displayStock}!
+              </div>
+            ) : null
+          ) : (
+            product?.stock > 0 && product?.stock <= 5 && (
+              <div className="absolute top-3 right-3 z-10 bg-kachabazar-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-soft-pulse">
+                ¡Quedan {product.stock}!
+              </div>
+            )
           )}
         </div>
 
@@ -310,8 +367,8 @@ const ProductCard = ({ product, attributes }) => {
               originalPrice={displayOriginalPrice}
             />
             <span className="text-[10px] text-gray-400">
-              {(variantOptions.length > 0 ? variantOptions[selectedVariantIdx]?.quantity : product?.stock) > 0
-                ? `Stock: ${variantOptions.length > 0 ? variantOptions[selectedVariantIdx]?.quantity : product?.stock}`
+              {displayStock > 0
+                ? `Stock: ${displayStock}`
                 : <span className="text-red-500">Agotado</span>}
             </span>
           </div>

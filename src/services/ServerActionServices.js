@@ -8,6 +8,7 @@ import {
   updateProfileFormSchema,
 } from "@lib/form-schema";
 import { baseURL, handleResponse } from "@services/CommonService";
+import { getHeaders as getServerHeaders, getUserServerSession } from "@lib/auth-server";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -204,21 +205,25 @@ const updateCustomer = async (userInfo, currentState, formState) => {
 
 const addShippingAddress = async (userInfo, currentState, formState) => {
   try {
+    // Get user from server session (reliable, works even if client binding was null)
+    const serverSession = await getUserServerSession();
+    const userId = serverSession?.id || userInfo?.id;
+
+    if (!userId) {
+      return { error: "No se pudo identificar al usuario. Por favor, inicia sesión." };
+    }
+
     const validatedFields = shippingAddressFormSchema.safeParse({
       name: formState.get("name"),
-      address: formState.get("address"),
       contact: formState.get("contact"),
-      country: formState.get("country"),
-      city: formState.get("city"),
-      area: formState.get("area"),
+      postalCode: formState.get("postalCode"),
+      colonia: formState.get("colonia"),
+      calle: formState.get("calle"),
+      numExterior: formState.get("numExterior"),
+      numInterior: formState.get("numInterior") || "",
+      municipio: formState.get("municipio"),
+      referencias: formState.get("referencias") || "",
     });
-
-    // revalidatePath("/");
-    // return {
-    //   success: "Hello from success message.",
-    // };
-
-    // console.log("validatedFields", validatedFields);
 
     // If any form fields are invalid, return early
     if (!validatedFields.success) {
@@ -227,31 +232,24 @@ const addShippingAddress = async (userInfo, currentState, formState) => {
       };
     }
 
-    const shippingAddressId = formState.get("shippingAddressId") || "";
-
-    // console.log(
-    //   "shippingAddressId",
-    //   shippingAddressId,
-    //   "validatedFields",
-    //   validatedFields
-    // );
+    const headers = await getServerHeaders();
 
     const response = await fetch(
-      `${baseURL}/customer/shipping/address/${userInfo?.id}?id=${shippingAddressId}`,
+      `${baseURL}/customer/shipping/address/${userId}`,
       {
         cache: "no-cache",
         method: "POST",
-        headers: getHeaders(),
+        headers,
         body: JSON.stringify(validatedFields.data),
       }
     );
 
     const res = await handleResponse(response);
-    // console.log("res:::", res);
 
     revalidatePath("/user/shipping-address");
+    revalidatePath("/checkout");
     return {
-      success: "Shipping address added successfully!",
+      success: "¡Dirección guardada correctamente!",
     };
   } catch (error) {
     return { error: error.message };

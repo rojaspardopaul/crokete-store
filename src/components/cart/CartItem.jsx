@@ -35,7 +35,19 @@ const CartItem = ({ item, currency }) => {
               {item.title}
             </Link>
             <span className="text-xs text-gray-400 mb-1">
-              Precio unitario: ${item.price}
+              Precio unitario:{" "}
+              {item.originalPrice && item.originalPrice > item.price ? (
+                <>
+                  <span className="line-through text-gray-400 mr-1">
+                    {currency}{item.originalPrice.toFixed(2)}
+                  </span>
+                  <span className="text-orange-500 font-semibold">
+                    {currency}{item.price.toFixed(2)}
+                  </span>
+                </>
+              ) : (
+                <span>{currency}{item.price.toFixed(2)}</span>
+              )}
             </span>
           </div>
           <div className="ml-4 flow-root shrink-0">
@@ -53,6 +65,11 @@ const CartItem = ({ item, currency }) => {
               {currency}
               {(item.price * item.quantity).toFixed(2)}
             </span>
+            {item.originalPrice && item.originalPrice > item.price && (
+              <span className="ml-2 inline-block text-[10px] bg-orange-100 text-orange-600 font-semibold px-1.5 py-0.5 rounded">
+                -{Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)}%
+              </span>
+            )}
           </div>
 
           <div className="h-8 w-22 md:w-24 lg:w-24 flex flex-wrap items-center justify-evenly p-1 border border-gray-100 bg-white text-gray-600 rounded-full">

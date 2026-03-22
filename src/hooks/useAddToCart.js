@@ -26,7 +26,7 @@ const useAddToCart = () => {
     if (result !== undefined) {
       if (
         result?.quantity + quantity <=
-        (product?.variants?.length > 0
+        (product?.variant
           ? product?.variant?.quantity
           : product?.stock)
       ) {
@@ -38,7 +38,7 @@ const useAddToCart = () => {
     } else {
       if (
         quantity <=
-        (product?.variants?.length > 0
+        (product?.variant
           ? product?.variant?.quantity
           : product?.stock)
       ) {
@@ -63,7 +63,7 @@ const useAddToCart = () => {
     if (result) {
       if (
         result?.quantity + item <=
-        (product?.variants?.length > 0
+        (product?.variant
           ? product?.variant?.quantity
           : product?.stock)
       ) {

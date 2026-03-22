@@ -12,14 +12,18 @@ import {
 } from "@headlessui/react";
 import Link from "next/link";
 import { pages } from "@utils/data";
-import { X } from "lucide-react";
+import { Truck, X } from "lucide-react";
 import Category from "@components/category/Category";
+import { useSetting } from "@context/SettingContext";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const PagesDrawer = ({ open, setOpen, categories, categoryError }) => {
+  const { globalSetting } = useSetting();
+  const freeShippingThreshold = Number(globalSetting?.free_shipping_threshold) || 599;
+
   return (
     <Transition show={open} as={Fragment}>
       <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -137,6 +141,18 @@ const PagesDrawer = ({ open, setOpen, categories, categoryError }) => {
                   </TabPanel>
                 </TabPanels>
               </TabGroup>
+
+              {/* Delivery promotion message */}
+              <div className="mt-auto border-t border-gray-200 px-4 py-4">
+                <div className="flex items-center text-sm text-gray-600 bg-green-50 rounded-lg p-3">
+                  <Truck className="w-5 h-5 mr-2 text-kachabazar-600 flex-shrink-0" />
+                  <span>
+                    Entregas el mismo día y{" "}
+                    <strong className="text-kachabazar-600">gratis</strong> a partir de{" "}
+                    <strong className="text-kachabazar-600">${freeShippingThreshold}</strong>
+                  </span>
+                </div>
+              </div>
             </DialogPanel>
           </TransitionChild>
         </div>

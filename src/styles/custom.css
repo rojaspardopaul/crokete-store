@@ -1181,63 +1181,64 @@ p:not(:last-of-type) {
 
 /* ─── Page Loading Indicator (route change) ──────────────────── */
 
-/* Full-screen semi-transparent overlay */
-.page-loading-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(2px);
-  pointer-events: all;
-  animation: pl-fade-in 0.15s ease-out;
-}
-
-/* Thin progress bar at the very top */
+/* Only the progress bar — non-blocking, no overlay */
 .page-loading-bar {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   height: 3px;
+  z-index: 9999;
+  pointer-events: none;
   background: linear-gradient(
     90deg,
-    var(--kachabazar-400, #60a5fa) 0%,
-    var(--kachabazar-600, #2563eb) 50%,
-    var(--kachabazar-400, #60a5fa) 100%
+    transparent 0%,
+    var(--kachabazar-400, #60a5fa) 30%,
+    var(--kachabazar-600, #2563eb) 60%,
+    transparent 100%
   );
-  background-size: 200% 100%;
-  animation: pl-bar-slide 1.2s ease-in-out infinite;
-  border-radius: 0 2px 2px 0;
-  width: 100%;
+  background-size: 300% 100%;
+  animation: pl-bar-slide 1.2s linear infinite, pl-fade-in 0.12s ease-out;
 }
 
-/* Centered paw + text */
-.page-loading-center {
-  position: absolute;
+/* Small paw badge — centered */
+.page-loading-badge {
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 9999;
+  pointer-events: none;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  animation: pl-badge-in 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Paw icon */
-.page-loading-paw {
-  width: 48px;
-  height: 48px;
-  color: var(--kachabazar-500, #3b82f6);
-  animation: pl-paw-bounce 0.8s ease-in-out infinite;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.10));
+/* Ring spinner on the badge */
+.page-loading-badge::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  border: 2px solid rgba(59, 130, 246, 0.18);
+  border-top-color: var(--kachabazar-500, #2563eb);
+  animation: pl-ring-spin 0.7s linear infinite;
 }
 
-/* Loading text */
-.page-loading-text {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--kachabazar-600, #2563eb);
-  letter-spacing: 0.05em;
-  animation: pl-text-pulse 1.5s ease-in-out infinite;
+/* Paw icon inside badge */
+.page-loading-paw-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--kachabazar-500, #2563eb);
+  position: relative;
+  z-index: 1;
+  opacity: 0.85;
 }
 
 /* ── Animations ── */
@@ -1246,21 +1247,17 @@ p:not(:last-of-type) {
   to   { opacity: 1; }
 }
 
+@keyframes pl-badge-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 @keyframes pl-bar-slide {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0%   { background-position: 150% 0; }
+  100% { background-position: -150% 0; }
 }
 
-@keyframes pl-paw-bounce {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  30%      { transform: scale(1.15) rotate(-8deg); }
-  60%      { transform: scale(0.95) rotate(5deg); }
+@keyframes pl-ring-spin {
+  to { transform: rotate(360deg); }
 }
-
-@keyframes pl-text-pulse {
-  0%, 100% { opacity: 0.6; }
-  50%      { opacity: 1; }
-}
-
-/* Hide on touch devices if needed — no, always show */
 

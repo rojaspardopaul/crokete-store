@@ -51,25 +51,10 @@ const SearchScreen = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [mobileFiltersOpen]);
 
-  // Build flat category list from tree
+  // Build parent-only category list (first level only)
   const flatCategories = useMemo(() => {
-    const flat = [];
-    const traverse = (cats) => {
-      cats?.forEach((cat) => {
-        if (cat.status === "show") {
-          flat.push(cat);
-          if (cat.children?.length > 0) {
-            traverse(cat.children);
-          }
-        }
-      });
-    };
-    if (categories?.[0]?.children) {
-      traverse(categories[0].children);
-    } else if (Array.isArray(categories)) {
-      traverse(categories);
-    }
-    return flat;
+    const source = categories?.[0]?.children ?? (Array.isArray(categories) ? categories : []);
+    return source.filter((cat) => cat.status === "show");
   }, [categories]);
 
   // Sort products
@@ -136,7 +121,7 @@ const SearchScreen = ({
   return (
     <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
       {/* ===== FILTER BAR (sticky below navbar) ===== */}
-      <div className="sticky top-20 lg:top-[162px] z-[15] bg-crokete-cream-50 dark:bg-zinc-900 py-1.5">
+      <div className="sticky top-14 sm:top-20 lg:top-[162px] z-[15] bg-crokete-cream-50 dark:bg-zinc-900 py-1.5">
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm px-3 py-2">
           {/* Desktop: horizontal layout */}
           <div className="hidden sm:flex flex-wrap items-center gap-2">
@@ -318,11 +303,6 @@ const SearchScreen = ({
             </h1>
           </div>
         )}
-
-        {/* Category carousel (compact) */}
-        <div className="relative">
-          <CategoryCarousel categories={categories} />
-        </div>
 
         {/* Results */}
         {productData?.length === 0 ? (

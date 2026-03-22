@@ -13,6 +13,7 @@ import {
   LockOpen,
   Settings,
   Star,
+  Stethoscope,
   User,
 } from "lucide-react";
 import useUtilsFunction from "@hooks/useUtilsFunction";
@@ -23,11 +24,13 @@ import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { useSetting } from "@context/SettingContext";
 import { getUserSession } from "@lib/auth-client";
+import { useVetContext } from "@context/VetContext";
 
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { storeCustomization } = useSetting();
+  const vetContext = useVetContext();
 
   const userInfo = getUserSession();
 
@@ -63,6 +66,16 @@ const Sidebar = () => {
       href: "/user/rewards",
       icon: Gift,
     },
+    // Vet consultations — only shown when vet system is enabled
+    ...(vetContext?.config?.enabled
+      ? [
+          {
+            title: "Consultas Veterinarias",
+            href: "/user/vet-consultations",
+            icon: Stethoscope,
+          },
+        ]
+      : []),
     {
       title: "Mi Cuenta",
       href: "/user/my-account",

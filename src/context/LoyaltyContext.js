@@ -18,13 +18,21 @@ export function LoyaltyProvider({ children }) {
   const [showEducationalModal, setShowEducationalModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Fetch public config (no auth required) — always fetched
+  // Fetch public config (no auth required) — cached in sessionStorage
   useEffect(() => {
     const fetchConfig = async () => {
       try {
+        // Check sessionStorage first to avoid refetching on every navigation
+        const cached = sessionStorage.getItem("loyalty_config");
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed?.enabled) setConfig(parsed);
+          return;
+        }
         const data = await requests.get("/loyalty/public-config");
         if (data?.enabled) {
           setConfig(data);
+          sessionStorage.setItem("loyalty_config", JSON.stringify(data));
         }
       } catch {
         // silently fail — loyalty features just won't show

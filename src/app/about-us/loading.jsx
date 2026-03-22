@@ -1,45 +1,114 @@
-import React from "react";
-import "react-loading-skeleton/dist/skeleton.css";
-
-//internal imports
-import CMSkeletonTwo from "@components/preloader/CMSkeletonTwo";
-
 export default function Loading() {
-  return (
-    <>
-      <CMSkeletonTwo count={7} />
-      <div className="h-20"></div>
-      <div className="mx-auto max-w-screen-2xl px-4 sm:px-10">
-        <div className="grid grid-cols-2 gap-1">
-          <div className="my-auto">
-            <CMSkeletonTwo count={10} width={90} />
-            <div className="mt-4 grid grid-cols-2">
-              <CMSkeletonTwo count={6} width={80} />
-              <CMSkeletonTwo count={6} width={80} />
-            </div>
-            {/* <div className="h-10">
-            <CMSkeletonTwo count={8} width={90} />
-            <CMSkeletonTwo count={8} width={90} />
-          </div> */}
-          </div>
-          <CMSkeletonTwo count={16} width={90} />
-        </div>
+  const shimmer =
+    "relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-200/60 before:to-transparent";
 
-        <div className="h-10"></div>
-        <CMSkeletonTwo count={16} width={95} />
-        <div className="h-20"></div>
-        <CMSkeletonTwo count={3} width={30} textAlign />
-        <div className="h-4"></div>
-        <div className="grid grid-cols-6 gap-1">
-          <CMSkeletonTwo count={6} width={75} />
-          <CMSkeletonTwo count={6} width={75} />
-          <CMSkeletonTwo count={6} width={75} />
-          <CMSkeletonTwo count={6} width={75} />
-          <CMSkeletonTwo count={6} width={75} />
-          <CMSkeletonTwo count={6} width={75} />
+  return (
+    <div className="bg-white animate-pulse">
+      {/* Hero skeleton */}
+      <div className="bg-gray-50 py-16 sm:py-20 lg:py-28">
+        <div className="max-w-3xl mx-auto px-4 text-center space-y-4">
+          <div className={`h-6 w-48 mx-auto rounded-full bg-gray-200 ${shimmer}`} />
+          <div className={`h-10 w-full max-w-md mx-auto rounded bg-gray-200 ${shimmer}`} />
+          <div className={`h-10 w-2/3 mx-auto rounded bg-gray-200 ${shimmer}`} />
+          <div className="space-y-2 pt-2">
+            <div className={`h-4 w-full max-w-lg mx-auto rounded bg-gray-200 ${shimmer}`} />
+            <div className={`h-4 w-4/5 mx-auto rounded bg-gray-200 ${shimmer}`} />
+          </div>
+          <div className="flex gap-3 justify-center pt-4">
+            <div className={`h-12 w-36 rounded-lg bg-gray-200 ${shimmer}`} />
+            <div className={`h-12 w-36 rounded-lg bg-gray-200 ${shimmer}`} />
+          </div>
         </div>
       </div>
-      <div className="h-10"></div>
-    </>
+
+      {/* Stats bar skeleton */}
+      <div className="bg-gray-300 py-8 sm:py-10">
+        <div className="max-w-screen-xl mx-auto px-4 grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="text-center space-y-2">
+              <div className={`h-8 w-16 mx-auto rounded bg-gray-400/40 ${shimmer}`} />
+              <div className={`h-3 w-24 mx-auto rounded bg-gray-400/30 ${shimmer}`} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Historia skeleton */}
+      <div className="py-16 sm:py-20">
+        <div className="max-w-screen-xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-4">
+            <div className={`h-5 w-32 rounded-full bg-gray-200 ${shimmer}`} />
+            <div className={`h-8 w-3/4 rounded bg-gray-200 ${shimmer}`} />
+            <div className="space-y-2 pt-2">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className={`h-4 rounded bg-gray-200 ${shimmer}`} style={{ width: `${85 + Math.random() * 15}%` }} />
+              ))}
+            </div>
+          </div>
+          <div className={`aspect-[4/3] rounded-2xl bg-gray-200 ${shimmer}`} />
+        </div>
+      </div>
+
+      {/* Compromiso skeleton */}
+      <div className="py-16 sm:py-20 bg-gray-50">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <div className="text-center space-y-3 mb-12">
+            <div className={`h-5 w-40 mx-auto rounded-full bg-gray-200 ${shimmer}`} />
+            <div className={`h-8 w-64 mx-auto rounded bg-gray-200 ${shimmer}`} />
+            <div className={`h-4 w-80 mx-auto rounded bg-gray-200 ${shimmer}`} />
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="bg-white rounded-xl p-6 border border-gray-100 space-y-3">
+                <div className={`h-12 w-12 rounded-lg bg-gray-200 ${shimmer}`} />
+                <div className={`h-5 w-3/4 rounded bg-gray-200 ${shimmer}`} />
+                <div className="space-y-1.5">
+                  <div className={`h-3 w-full rounded bg-gray-200 ${shimmer}`} />
+                  <div className={`h-3 w-5/6 rounded bg-gray-200 ${shimmer}`} />
+                  <div className={`h-3 w-4/6 rounded bg-gray-200 ${shimmer}`} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Trust section skeleton */}
+      <div className="py-16 sm:py-20">
+        <div className="max-w-screen-xl mx-auto px-4 grid lg:grid-cols-2 gap-12">
+          <div className="space-y-4">
+            <div className={`h-5 w-28 rounded-full bg-gray-200 ${shimmer}`} />
+            <div className={`h-8 w-48 rounded bg-gray-200 ${shimmer}`} />
+            <div className="space-y-2">
+              <div className={`h-4 w-full rounded bg-gray-200 ${shimmer}`} />
+              <div className={`h-4 w-5/6 rounded bg-gray-200 ${shimmer}`} />
+            </div>
+            <div className={`h-28 rounded-xl bg-gray-200 ${shimmer}`} />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-5">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="p-5 rounded-xl bg-white border border-gray-100 space-y-2">
+                <div className={`h-6 w-6 rounded bg-gray-200 ${shimmer}`} />
+                <div className={`h-4 w-3/4 rounded bg-gray-200 ${shimmer}`} />
+                <div className={`h-3 w-full rounded bg-gray-200 ${shimmer}`} />
+                <div className={`h-3 w-4/5 rounded bg-gray-200 ${shimmer}`} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA skeleton */}
+      <div className="bg-gray-300 py-16 sm:py-20">
+        <div className="text-center max-w-2xl mx-auto px-4 space-y-4">
+          <div className={`h-8 w-72 mx-auto rounded bg-gray-400/40 ${shimmer}`} />
+          <div className={`h-4 w-80 mx-auto rounded bg-gray-400/30 ${shimmer}`} />
+          <div className="flex gap-3 justify-center pt-4">
+            <div className={`h-12 w-40 rounded-lg bg-gray-400/40 ${shimmer}`} />
+            <div className={`h-12 w-40 rounded-lg bg-gray-400/30 ${shimmer}`} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

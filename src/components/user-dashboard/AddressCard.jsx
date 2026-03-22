@@ -16,10 +16,13 @@ const AddressCard = ({ address }) => {
           <h5 className="leading-none mb-2 text-base font-medium text-gray-700">
             {address?.name}
           </h5>
-          <p className="text-sm text-gray-500">{address?.phone} </p>
-          <p className="text-sm text-gray-500">{address?.address} </p>
+          <p className="text-sm text-gray-500">{address?.contact} </p>
           <p className="text-sm text-gray-500">
-            {address?.country}, {address?.city}, {address?.area}
+            {address?.calle} {address?.numExterior}
+            {address?.numInterior ? ` Int. ${address.numInterior}` : ""}
+          </p>
+          <p className="text-sm text-gray-500">
+            {address?.colonia}, {address?.municipio}, C.P. {address?.postalCode}
           </p>
         </div>
       </div>

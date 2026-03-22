@@ -141,6 +141,7 @@ export default function useProductAction({
     if (product?.variants?.length === 1 && product?.variants[0].quantity < 1)
       return notifyError("Stock no válido!");
     if (stock <= 0) return notifyError("Stock no válido!");
+    if (quantity > stock) return notifyError("Stock no válido!");
 
     const selectedVariantName = variantTitle
       ?.map((att) =>
@@ -169,7 +170,7 @@ export default function useProductAction({
             ? showingTranslateValue(product.title)
             : showingTranslateValue(product.title) + "-" + selectedVariantName,
         image: selectedImage,
-        variant: selectVariant || {},
+        variant: product?.variants?.length > 0 ? selectVariant : undefined,
         price:
           product.variants.length === 0
             ? getNumber(product.prices.price)

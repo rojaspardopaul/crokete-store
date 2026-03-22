@@ -1,104 +1,101 @@
 import React from "react";
-import Link from "next/link";
-import Image from "next/image";
+import { Truck, ShieldCheck, Star, Trophy } from "lucide-react";
 
-//internal import
-import CMSkeletonTwo from "@components/preloader/CMSkeleton";
+const getFeatures = (freeShippingThreshold) => [
+  {
+    Icon: Truck,
+    accent: "#10B981",
+    title: "Envío Gratis",
+    subtitle: `En pedidos desde $${freeShippingThreshold}`,
+    desc: `Recibe tus productos en la puerta de tu casa sin costo adicional en compras superiores a $${freeShippingThreshold}.`,
+  },
+  {
+    Icon: ShieldCheck,
+    accent: "#3B82F6",
+    title: "Compra Segura",
+    subtitle: "crokete.com.mx",
+    desc: "Pago 100 % cifrado. Tus datos y tu dinero están siempre protegidos en cada transacción.",
+  },
+  {
+    Icon: Star,
+    accent: "#F59E0B",
+    title: "Gana Puntos",
+    subtitle: "Con cada compra",
+    desc: "Acumula puntos automáticamente y canjéalos como descuento directo en tu próximo pedido.",
+  },
+  {
+    Icon: Trophy,
+    accent: "#A855F7",
+    title: "Sube de Nivel",
+    subtitle: "Nuevo · Frecuente · VIP",
+    desc: "A mayor nivel, más descuentos y beneficios exclusivos: envíos prioritarios, ofertas VIP y más.",
+  },
+];
 
-const FooterTop = async ({ error, storeCustomizationSetting }) => {
-  // console.log("storeCustomizationSetting", storeCustomizationSetting?.footer);
-
-  const home = storeCustomizationSetting?.home;
-
+const FooterTop = ({ globalSetting }) => {
+  const freeShippingThreshold = Number(globalSetting?.free_shipping_threshold) || 599;
+  const features = getFeatures(freeShippingThreshold);
   return (
-    <div
+    <section
       id="downloadApp"
-      className="bg-indigo-50 py-10 lg:py-16 bg-repeat bg-center overflow-hidden"
+      className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 py-14 lg:py-20 overflow-hidden"
     >
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2 md:gap-3 lg:gap-3 items-center">
-          <div className="flex-grow hidden lg:flex md:flex md:justify-items-center lg:justify-start">
-            <Image
-              src={home?.daily_need_img_left || "/app-download-img-left.png"}
-              alt="descargar app"
-              width={500}
-              height={394}
-              priority
-              className="block w-auto"
-            />
-          </div>
-          <div className="text-center">
-            <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3">
-              <CMSkeletonTwo
-                count={1}
-                height={30}
-                error={error}
-                loading={false}
-                data={home?.daily_need_title}
-              />
-            </h3>
-            <p className="text-base opacity-90 leading-7">
-              <CMSkeletonTwo
-                count={5}
-                height={10}
-                error={error}
-                loading={false}
-                data={home?.daily_need_description}
-              />
-            </p>
-            <div className="mt-8 flex mx-auto justify-center text-center">
-              <Link
-                href={`${home?.daily_need_app_link}`}
-                className="mx-2"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Image
-                  // width={170}
-                  // height={50}
-                  // className="mr-2 rounded"
-                  width="0"
-                  height="0"
-                  sizes="100vw"
-                  className="w-full h-auto"
-                  src={home?.button1_img || "/app/app-store.svg"}
-                  alt="tienda de apps"
-                />
-              </Link>
-              <Link
-                href={`${home?.daily_need_google_link}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Image
-                  // width={170}
-                  // height={50}
-                  width="0"
-                  height="0"
-                  sizes="100vw"
-                  className="w-full h-auto"
-                  src={home?.button2_img || "/app/play-store.svg"}
-                  alt="tienda de apps"
-                />
-              </Link>
-            </div>
-          </div>
-          <div className="md:hidden lg:block">
-            <div className="flex-grow hidden lg:flex md:flex lg:justify-end">
-              <Image
-                src={home?.daily_need_img_right || "/app-download-img.png"}
-                width={500}
-                height={394}
-                priority
-                alt="descargar app"
-                className="block w-auto"
-              />
-            </div>
-          </div>
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-10">
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <p className="text-blue-400 text-xs font-semibold tracking-widest uppercase mb-3">
+            ¿Por qué elegirnos?
+          </p>
+          <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
+            Todo lo que tu mascota merece,{" "}
+            <span className="text-blue-400">con total confianza</span>
+          </h2>
+          <p className="text-slate-400 mt-4 text-base max-w-xl mx-auto leading-relaxed">
+            Compra en{" "}
+            <span className="text-blue-400 font-semibold">crokete.com.mx</span>{" "}
+            y disfruta de una experiencia diseñada para ti y tu mascota.
+          </p>
         </div>
+
+        {/* Feature cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {features.map(({ Icon, accent, title, subtitle, desc }) => (
+            <div
+              key={title}
+              className="rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-200 hover:-translate-y-1"
+              style={{ backgroundColor: "rgba(255,255,255,0.04)" }}
+            >
+              {/* Icon badge */}
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                style={{ backgroundColor: accent + "22" }}
+              >
+                <Icon size={22} color={accent} strokeWidth={1.8} />
+              </div>
+
+              {/* Text */}
+              <h3 className="text-white font-bold text-lg leading-snug mb-1">
+                {title}
+              </h3>
+              <p
+                className="text-xs font-semibold mb-3 tracking-wide"
+                style={{ color: accent }}
+              >
+                {subtitle}
+              </p>
+              <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom tag line */}
+        <p className="text-center text-slate-500 text-xs mt-10 tracking-wide">
+          🐾 Crokete Pet · Tu tienda de confianza para mascotas
+        </p>
       </div>
-    </div>
+    </section>
   );
 };
 
 export default FooterTop;
+

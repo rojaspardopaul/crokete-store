@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCart } from "react-use-cart";
-import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
+// import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 //internal import
@@ -15,15 +15,15 @@ import { notifyError, notifySuccess } from "@utils/toast";
 import { addNotification } from "@services/NotificationServices";
 import {
   addOrder,
-  addRazorpayOrder,
-  createOrderByRazorPay,
+  // addRazorpayOrder,
+  // createOrderByRazorPay,
   createPaymentIntent,
   sendEmailInvoiceToCustomer,
 } from "@services/OrderServices";
 import { getUserSession } from "@lib/auth-client";
 import { useSetting } from "@context/SettingContext";
 import useUtilsFunction from "./useUtilsFunction";
-import { addShippingAddress } from "@services/ServerActionServices";
+// addShippingAddress server action replaced with direct API call in submitHandler
 import requests from "@services/httpServices";
 
 const useCheckoutSubmit = ({ shippingAddress }) => {
@@ -36,18 +36,20 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
   const [showCard, setShowCard] = useState(false);
   const [shippingCost, setShippingCost] = useState(0);
   const [discountAmount, setDiscountAmount] = useState(0);
+  const [productDiscount, setProductDiscount] = useState(0);
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [isCheckoutSubmit, setIsCheckoutSubmit] = useState(false);
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [useExistingAddress, setUseExistingAddress] = useState(false);
   const [isCouponAvailable, setIsCouponAvailable] = useState(false);
   const [loyaltyRewardCode, setLoyaltyRewardCode] = useState(null);
+  const [isFreeShipping, setIsFreeShipping] = useState(false);
 
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
   const couponRef = useRef("");
-  const { error: razorPayError, isLoading, Razorpay } = useRazorpay();
+  // const { error: razorPayError, isLoading, Razorpay } = useRazorpay();
   const { isEmpty, emptyCart, items, cartTotal } = useCart();
 
   const userInfo = getUserSession();
@@ -60,23 +62,58 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
 
   // console.log("res", data);
 
+  const [autoFilled, setAutoFilled] = useState(false);
+
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm();
 
+  // Coupon restore from cookie
   useEffect(() => {
     if (Cookies.get("couponInfo")) {
       const coupon = JSON.parse(Cookies.get("couponInfo"));
-      // console.log('coupon information',coupon)
       setCouponInfo(coupon);
       setDiscountPercentage(coupon.discountType);
       setMinimumAmount(coupon.minimumAmount);
     }
-    setValue("email", userInfo?.email);
   }, [isCouponApplied]);
+
+  // Auto-fill form with saved shipping address or session data
+  useEffect(() => {
+    if (autoFilled) return;
+
+    if (shippingAddress && Object.keys(shippingAddress).length > 0) {
+      setUseExistingAddress(true);
+      const nameParts = (shippingAddress.name || "").trim().split(" ");
+      setValue("firstName", nameParts[0] || "");
+      setValue("lastName", nameParts.length > 1 ? nameParts.slice(1).join(" ") : "");
+      setValue("contact", shippingAddress.contact || "");
+      setValue("email", shippingAddress.email || userInfo?.email || "");
+      setValue("postalCode", shippingAddress.postalCode || "");
+      setValue("colonia", shippingAddress.colonia || "");
+      setValue("calle", shippingAddress.calle || "");
+      setValue("numExterior", shippingAddress.numExterior || "");
+      setValue("numInterior", shippingAddress.numInterior || "");
+      setValue("municipio", shippingAddress.municipio || "");
+      setValue("referencias", shippingAddress.referencias || "");
+      setAutoFilled(true);
+    } else if (userInfo) {
+      setValue("email", userInfo.email);
+      if (userInfo.name) {
+        const nameParts = userInfo.name.trim().split(" ");
+        setValue("firstName", nameParts[0] || "");
+        setValue("lastName", nameParts.length > 1 ? nameParts.slice(1).join(" ") : "");
+      }
+      if (userInfo.phone) {
+        setValue("contact", userInfo.phone);
+      }
+      setAutoFilled(true);
+    }
+  }, [shippingAddress, userInfo, autoFilled]);
 
   //remove coupon if total value less then minimum amount of coupon
   useEffect(() => {
@@ -86,36 +123,54 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     }
   }, [minimumAmount, total]);
 
-  //calculate total and discount value
-  //calculate total and discount value
+  //calculate total, product discount, coupon discount, and free shipping
   useEffect(() => {
     const discountProductTotal = items?.reduce(
       (preValue, currentValue) => preValue + currentValue.itemTotal,
       0
     );
 
-    let totalValue = 0;
-    const subTotal = parseFloat(cartTotal + Number(shippingCost)).toFixed(2);
-    const discountAmount =
+    // Calculate product-level discount (originalPrice vs price)
+    const prodDiscount = items?.reduce((acc, item) => {
+      const orig = item.originalPrice || item.price;
+      if (orig > item.price) {
+        return acc + (orig - item.price) * item.quantity;
+      }
+      return acc;
+    }, 0) || 0;
+
+    setProductDiscount(prodDiscount);
+
+    // Free shipping threshold check
+    const freeShippingThreshold = Number(globalSetting?.free_shipping_threshold) || 599;
+    const qualifiesForFreeShipping = cartTotal >= freeShippingThreshold;
+    setIsFreeShipping(qualifiesForFreeShipping);
+    const effectiveShipping = qualifiesForFreeShipping ? 0 : Number(shippingCost);
+
+    // Coupon/loyalty discount
+    const couponDiscount =
       discountPercentage?.type === "fixed"
         ? discountPercentage?.value
         : discountProductTotal * (discountPercentage?.value / 100);
 
-    const discountAmountTotal = discountAmount ? discountAmount : 0;
+    const couponDiscountTotal = couponDiscount ? couponDiscount : 0;
 
-    totalValue = Number(subTotal) - discountAmountTotal;
+    const subTotal = parseFloat(cartTotal + effectiveShipping).toFixed(2);
+    const totalValue = Number(subTotal) - couponDiscountTotal;
 
-    setDiscountAmount(discountAmountTotal);
-
-    // console.log("total", totalValue);
-
+    setDiscountAmount(couponDiscountTotal);
     setTotal(totalValue);
-  }, [cartTotal, shippingCost, discountPercentage]);
+  }, [cartTotal, shippingCost, discountPercentage, globalSetting]);
 
   const submitHandler = async (data) => {
     // console.log("data", data);
     // return;
     try {
+      // Guard: never allow an order with an empty cart
+      if (isEmpty || !items || items.length === 0) {
+        notifyError("Tu carrito está vacío. Agrega productos antes de continuar.");
+        return;
+      }
       // dispatch({ type: "SAVE_SHIPPING_ADDRESS", payload: data });
       // Cookies.set("shippingAddress", JSON.stringify(data));
       setIsCheckoutSubmit(true);
@@ -125,30 +180,41 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
         name: `${data.firstName} ${data.lastName}`,
         contact: data.contact,
         email: data.email,
-        address: data.address,
-        country: data.country,
-        city: data.city,
-        zipCode: data.zipCode,
+        postalCode: data.postalCode,
+        colonia: data.colonia,
+        calle: data.calle,
+        numExterior: data.numExterior,
+        numInterior: data.numInterior || "",
+        municipio: data.municipio,
+        referencias: data.referencias || "",
+        estado: "Jalisco",
+        pais: "México",
       };
 
       let orderInfo = {
         user_info: userDetails,
-        shippingOption: data.shippingOption,
+        shippingOption: isFreeShipping ? "Envío Gratis" : data.shippingOption,
         paymentMethod: data.paymentMethod,
-        status: "pendiente",
+        status: "pedido",
         cart: items,
         subTotal: cartTotal,
-        shippingCost: shippingCost,
-        discount: discountAmount,
+        shippingCost: isFreeShipping ? 0 : shippingCost,
+        discount: discountAmount + productDiscount,
         total: total,
       };
 
-      await addShippingAddress({
-        userId: userInfo?.id,
-        shippingAddressData: {
-          ...userDetails,
-        },
-      });
+      // Save / update the shipping address via direct API call (non-blocking)
+      if (userInfo?.id && userInfo?.token) {
+        requests
+          .post(
+            `/customer/shipping/address/${userInfo.id}`,
+            userDetails,
+            { headers: { Authorization: `Bearer ${userInfo.token}` } }
+          )
+          .catch(() => {
+            // non-critical, order proceeds regardless
+          });
+      }
 
       // Handle payment based on method
       switch (data.paymentMethod) {
@@ -156,9 +222,9 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
           // await handlePaymentWithStripe(orderInfo);
           await handlePaymentWithStripeV2(orderInfo);
           break;
-        case "RazorPay":
-          await handlePaymentWithRazorpay(orderInfo);
-          break;
+        // case "RazorPay":
+        //   await handlePaymentWithRazorpay(orderInfo);
+        //   break;
         case "Cash":
           await handleCashPayment(orderInfo);
           break;
@@ -219,7 +285,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
 
       // Proceed with order success
       router.push(`/order/${orderResponse?._id}`);      
-      notifySuccess("Tu pedido ha sido confirmado! La factura se enviará a tu correo.");
+      notifySuccess("Tu pedido ha sido confirmado! El comprobante se enviará a tu correo.");
 
       // Mark loyalty reward as used (if applicable)
       if (loyaltyRewardCode && userInfo?.token) {
@@ -314,20 +380,22 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
   };
 
   const handlePaymentWithStripeV2 = async (orderInfo) => {
-    console.log('🚀 , orderInfo:', orderInfo)
     try {
       if (!stripe || !elements) {
-        throw new Error("Stripe is not initialized");
+        throw new Error("Stripe no está inicializado. Recarga la página e inténtalo de nuevo.");
       }
 
       //Crear PaymentIntent en tu backend
-      const { stripeInfo } = await createPaymentIntent(orderInfo);
+      const { stripeInfo, error: intentError } = await createPaymentIntent(orderInfo);
+      if (intentError) {
+        throw new Error(intentError);
+      }
       if (!stripeInfo?.client_secret) {
-        throw new Error("No client secret returned from backend");
+        throw new Error(stripeInfo?.message || "No se pudo iniciar el proceso de pago. Inténtalo de nuevo.");
       }
 
       //Confirmar pago desde frontend
-      const { error, paymentIntent } = await stripe.confirmCardPayment(
+      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
         stripeInfo.client_secret,
         {
           payment_method: {
@@ -340,13 +408,17 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
         }
       );
 
-      if (error) {
-        throw new Error(error.message);
+      if (stripeError) {
+        const friendlyMessage = translateStripeError(stripeError);
+        setError(friendlyMessage);
+        throw new Error(friendlyMessage);
       }
 
       if (paymentIntent.status !== "succeeded") {
-        throw new Error("Payment not completed");
+        throw new Error("El pago no se completó. Por favor, inténtalo de nuevo.");
       }
+
+      setError("");
 
       //Guardar la orden en DB (ya con pago confirmado)
       const orderData = { ...orderInfo, stripePaymentIntentId: paymentIntent.id };
@@ -364,51 +436,33 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     }
   };
 
-  //handle razorpay payment
-  const handlePaymentWithRazorpay = async (orderInfo) => {
-    try {
-      const { amount, id, currency } = await createOrderByRazorPay({
-        amount: Math.round(total).toString(),
-      });
+  /**
+   * Translates Stripe error codes to user-friendly Spanish messages.
+   */
+  const translateStripeError = (stripeError) => {
+    const errorMap = {
+      card_declined: "Tu tarjeta fue rechazada. Verifica los datos o usa otra tarjeta.",
+      insufficient_funds: "Fondos insuficientes. Verifica tu saldo o usa otra tarjeta.",
+      expired_card: "Tu tarjeta ha expirado. Usa una tarjeta vigente.",
+      incorrect_cvc: "El código de seguridad (CVC) es incorrecto.",
+      incorrect_number: "El número de tarjeta es incorrecto.",
+      invalid_expiry_month: "El mes de expiración no es válido.",
+      invalid_expiry_year: "El año de expiración no es válido.",
+      processing_error: "Error al procesar tu tarjeta. Inténtalo de nuevo en unos momentos.",
+      incorrect_zip: "El código postal no coincide con tu tarjeta.",
+    };
 
-      const options = {
-        key: storeSetting?.razorpay_id,
-        amount,
-        currency,
-        name: "Kachabazar Store",
-        description: "This is the total cost of your purchase",
-        order_id: id,
-        handler: async (response) => {
-          const razorpayDetails = {
-            amount: orderInfo.total,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpaySignature: response.razorpay_signature,
-          };
-
-          const orderData = { ...orderInfo, razorpay: razorpayDetails, car };
-          const { orderResponse, error } = await addRazorpayOrder(orderData);
-          if (error) {
-            setIsCheckoutSubmit(false);
-            return notifyError(error);
-          }
-          await handleOrderSuccess(orderResponse, orderInfo);
-        },
-        prefill: {
-          name: orderInfo?.user_info?.name || "Customer",
-          email: orderInfo?.user_info?.email || "customer@example.com",
-          contact: orderInfo?.user_info?.contact || "0000000000",
-        },
-        theme: { color: "#10b981" },
-      };
-
-      const rzpay = new Razorpay(options);
-      rzpay.open();
-    } catch (err) {
-      console.error("Razorpay payment error:", err.message);
-      throw new Error(err.message);
+    if (stripeError.decline_code && errorMap[stripeError.decline_code]) {
+      return errorMap[stripeError.decline_code];
     }
+    if (stripeError.code && errorMap[stripeError.code]) {
+      return errorMap[stripeError.code];
+    }
+    return stripeError.message || "Error al procesar el pago. Inténtalo de nuevo.";
   };
+
+  // Razorpay payment handler removed — not used
+  // const handlePaymentWithRazorpay = async (orderInfo) => { ... };
 
   const handleShippingCost = (value) => {
     // console.log("handleShippingCost", value);
@@ -430,21 +484,27 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
       setValue("firstName", firstName);
       setValue("lastName", lastName);
 
-      setValue("address", address.address);
       setValue("contact", address.contact);
       setValue("email", address.email);
-      setValue("city", address.city);
-      setValue("country", address.country);
-      setValue("zipCode", address.zipCode);
+      setValue("postalCode", address.postalCode);
+      setValue("colonia", address.colonia);
+      setValue("calle", address.calle);
+      setValue("numExterior", address.numExterior);
+      setValue("numInterior", address.numInterior || "");
+      setValue("municipio", address.municipio);
+      setValue("referencias", address.referencias || "");
     } else {
-      setValue("firstName");
-      setValue("lastName");
-      setValue("address");
-      setValue("contact");
+      setValue("firstName", "");
+      setValue("lastName", "");
+      setValue("contact", "");
       // setValue("email");
-      setValue("city");
-      setValue("country");
-      setValue("zipCode");
+      setValue("postalCode", "");
+      setValue("colonia", "");
+      setValue("calle", "");
+      setValue("numExterior", "");
+      setValue("numInterior", "");
+      setValue("municipio", "");
+      setValue("referencias", "");
     }
   };
   const handleCouponCode = async (e) => {
@@ -557,7 +617,9 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     handleCouponCode,
     discountPercentage,
     discountAmount,
+    productDiscount,
     shippingCost,
+    isFreeShipping,
     isCheckoutSubmit,
     isCouponApplied,
     useExistingAddress,
@@ -565,8 +627,11 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     globalSetting,
     storeSetting,
     storeCustomization,
+    currency,
     showingTranslateValue,
     handleDefaultShippingAddress,
+    setValue,
+    watch,
   };
 };
 

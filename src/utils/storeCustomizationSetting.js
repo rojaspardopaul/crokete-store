@@ -724,14 +724,14 @@ export const storeCustomization = {
     bottom_contact_status: true,
     social_links_status: true,
     shipping_card: {
-      en: "Free Shipping From €500.00",
-      de: "Kostenloser Versand ab 500,00 €",
-      es: "Envío Gratis a Partir de $500.00",
+      en: "Free Shipping From {free_shipping_threshold}",
+      de: "Kostenloser Versand ab {free_shipping_threshold}",
+      es: "Envío Gratis a Partir de {free_shipping_threshold}",
     },
     support_card: {
-      en: "Support 24/7  At Anytime",
-      de: "Support rund um die Uhr und jederzeit",
-      es: "Soporte 24/7 en Todo Momento",
+      en: "Free shipping applies to all orders over {free_shipping_threshold}",
+      de: "Kostenloser Versand für alle Bestellungen über {free_shipping_threshold}",
+      es: "Envío gratis en pedidos mayores a {free_shipping_threshold}",
     },
     payment_card: {
       en: "Secure Payment  Totally Safe",

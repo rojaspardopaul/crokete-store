@@ -30,7 +30,7 @@ const InputArea = ({
         )}
         <Input
           {...register(`${name}`, {
-            required: `${label} is required!`,
+            required: `${label} es requerido`,
           })}
           type={isPassword && showPassword ? "text" : type}
           name={name}

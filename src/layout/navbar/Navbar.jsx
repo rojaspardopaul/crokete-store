@@ -4,6 +4,7 @@
  */
 
 import Link from "next/link";
+import Image from "next/image";
 
 //internal imports
 import TopNavbar from "./TopNavbar";
@@ -14,10 +15,12 @@ import ProfileDropDown from "@components/navbar/ProfileDropDown";
 import { getShowingLanguage } from "@services/SettingServices";
 import { getShowingCategory } from "@services/CategoryService";
 import MobileFooter from "@layout/footer/MobileFooter";
+import { Truck } from "lucide-react";
 
 const Navbar = async ({ globalSetting, storeCustomization }) => {
-  const { languages } = await getShowingLanguage();
-  const { categories, error: categoryError } = await getShowingCategory();
+  // Parallelize language + category fetches
+  const [{ languages }, { categories, error: categoryError }] =
+    await Promise.all([getShowingLanguage(), getShowingCategory()]);
 
   const currency = globalSetting?.default_currency || "$";
 
@@ -30,25 +33,24 @@ const Navbar = async ({ globalSetting, storeCustomization }) => {
 
       <header as="header" className="bg-kachabazar-700 shadow-md">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
-          <div className="relative flex h-20 justify-between items-center">
-            <div className="relative z-10 hidden sm:flex px-2 lg:px-0">
-              <Link href="/" className="flex flex-shrink-0 items-center">
-                <img
+          <div className="relative flex flex-row h-14 sm:h-20 justify-between items-center gap-3">
+            <div className="relative z-10 flex flex-shrink-0">
+              <Link href="/" className="flex items-center">
+                <Image
                   id="navbar-logo"
-                  className="h-auto max-h-16 w-auto object-contain"
+                  className="h-auto max-h-9 sm:max-h-16 w-auto object-contain"
                   src={storeCustomization?.navbar?.logo || "/logo/logo-light.svg"}
                   alt="Crokete"
+                  width={160}
+                  height={64}
+                  priority
                 />
               </Link>
             </div>
 
             {/* search input section */}
-            <div className="min-w-0 flex-1 md:px-8 lg:px-10 xl:col-span-6">
-              <div className="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
-                <div className="w-full">
-                  <SearchInput />
-                </div>
-              </div>
+            <div className="min-w-0 flex-1 md:px-4 lg:px-6 xl:col-span-6">
+              <SearchInput />
             </div>
 
             {/* notification icons */}
@@ -69,6 +71,17 @@ const Navbar = async ({ globalSetting, storeCustomization }) => {
         categories={categories}
         categoryError={categoryError}
       />
+      {/* Delivery banner for tablets & small laptops (hidden on mobile footer, hidden on lg+ where NavbarPromo shows it) */}
+      <div className="hidden sm:flex lg:hidden bg-kachabazar-600 text-white items-center justify-center gap-2 py-1.5 px-3 text-xs font-medium">
+        <Truck className="w-4 h-4 flex-shrink-0" />
+        <span>
+          Entregas el mismo día y{" "}
+          <strong className="text-yellow-300">gratis</strong> a partir de{" "}
+          <strong className="text-yellow-300">
+            ${Number(globalSetting?.free_shipping_threshold) || 599}
+          </strong>
+        </span>
+      </div>
       <MobileFooter
         categories={categories}
         categoryError={categoryError}

@@ -1,8 +1,6 @@
 import { Suspense } from "react";
 
 //internal import
-import Banner from "@components/banner/Banner";
-import CardTwo from "@components/cta-card/CardTwo";
 import OfferCard from "@components/offer/OfferCard";
 import StickyCart from "@components/cart/StickyCart";
 import ProductCard from "@components/product/ProductCard";
@@ -15,22 +13,21 @@ import {
   getStoreCustomizationSetting,
 } from "@services/SettingServices";
 import DiscountedCard from "@components/product/DiscountedCard";
-
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import DeliveryBannerMobile from "@components/banner/DeliveryBannerMobile";
 
 const Home = async () => {
-  const { attributes } = await getShowingAttributes();
-  const { storeCustomizationSetting, error: storeCustomizationError } =
-    await getStoreCustomizationSetting();
-  const { popularProducts, discountedProducts, error } =
-    await getShowingStoreProducts({
-      category: "",
-      title: "",
-    });
-
-  const { globalSetting } = await getGlobalSetting();
+  // Parallelize all data fetches — eliminates sequential waterfall
+  const [
+    { attributes },
+    { storeCustomizationSetting, error: storeCustomizationError },
+    { popularProducts, discountedProducts, error },
+    { globalSetting },
+  ] = await Promise.all([
+    getShowingAttributes(),
+    getStoreCustomizationSetting(),
+    getShowingStoreProducts({ category: "", title: "" }),
+    getGlobalSetting(),
+  ]);
   const currency = globalSetting?.default_currency || "$";
 
   // console.log("storeCustomizationSetting", storeCustomizationSetting);
@@ -40,31 +37,26 @@ const Home = async () => {
       {/* Sticky cart lateral */}
       <StickyCart currency={currency} />
 
-      {/* === HERO: Carousel + Rewards + Banner === */}
+      {/* Mobile delivery banner */}
+      <DeliveryBannerMobile freeShippingThreshold={Number(globalSetting?.free_shipping_threshold) || 599} />
+
+      {/* === HERO: Carousel + Rewards === */}
       <div className="bg-white dark:bg-zinc-900">
-        <div className="mx-auto max-w-screen-2xl px-3 sm:px-6 lg:px-10 py-3 sm:py-4 lg:py-5 space-y-3 lg:space-y-0">
-          {/* Desktop: side by side · Mobile: stacked — both columns same height */}
-          <div className="flex flex-col lg:flex-row w-full gap-3 lg:gap-5">
-            {/* Carousel — fills sidebar height on lg via h-full */}
+        <div className="mx-auto max-w-screen-2xl px-3 sm:px-6 lg:px-10 py-3 sm:py-4 lg:py-5">
+          {/* Desktop: side by side · Mobile: stacked */}
+          <div className="flex flex-col lg:flex-row w-full gap-3 lg:gap-5 lg:min-h-[220px]">
+            {/* Carousel */}
             <div className="w-full lg:w-3/5">
               <Suspense fallback={<div className="aspect-[2.5/1] lg:h-full animate-shimmer rounded-2xl" />}>
                 <MainCarousel />
               </Suspense>
             </div>
 
-            {/* Sidebar: Rewards + Banner — dictates shared height */}
-            <div className="w-full lg:w-2/5 flex flex-col gap-3">
-              {/* Rewards widget — grows to fill remaining space */}
-              <div className="flex-1 min-h-0 flex flex-col">
-                <Suspense fallback={<div className="flex-1 animate-shimmer rounded-2xl" />}>
-                  <OfferCard />
-                </Suspense>
-              </div>
-
-              {/* Banner promocional — compact inline */}
-              <div className="bg-gradient-to-r from-kachabazar-50 to-kachabazar-100 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl dark:bg-slate-600 border border-kachabazar-200">
-                <Banner storeCustomizationSetting={storeCustomizationSetting} />
-              </div>
+            {/* Rewards widget — stretch to match carousel height */}
+            <div className="w-full lg:w-2/5 lg:self-stretch">
+              <Suspense fallback={<div className="h-full min-h-[160px] animate-shimmer rounded-2xl" />}>
+                <OfferCard />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -108,16 +100,7 @@ const Home = async () => {
         </div>
       )}
 
-      {/* === BANNER PROMOCIONAL CTA === */}
-      {storeCustomizationSetting?.home?.delivery_status && (
-        <div className="block mx-auto max-w-screen-2xl">
-          <div className="mx-auto max-w-screen-2xl px-3 sm:px-6 lg:px-10">
-            <div className="lg:p-12 p-5 sm:p-8 bg-gradient-to-br from-kachabazar-500 to-kachabazar-700 shadow-lg text-white rounded-2xl">
-              <CardTwo />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* === BANNER PROMOCIONAL CTA (removed) === */}
 
       {/* === PRODUCTOS CON DESCUENTO === */}
       {storeCustomizationSetting?.home?.discount_product_status &&
