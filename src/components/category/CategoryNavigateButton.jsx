@@ -11,17 +11,15 @@ const CategoryNavigateButton = ({ category }) => {
   const router = useRouter();
   const { showingTranslateValue } = useUtilsFunction();
 
-  // console.log("category", category);
-
-  const handleCategoryClick = (id, categoryName) => {
-    // console.log("handleCategoryClick", categoryName);
-
+  const handleCategoryClick = (id, categoryName, brandId = "") => {
     const category_name = categoryName
       .toLowerCase()
       .replace(/[^A-Z0-9]+/gi, "-");
-    const url = `/search?category=${category_name}&_id=${id}`;
+    const url = `/search?category=${category_name}&_id=${id}${brandId ? `&brand=${brandId}` : ""}`;
     router.push(url);
   };
+
+  const previewBrands = category?.relatedBrands?.slice(0, 3) || [];
 
   return (
     <>
@@ -38,29 +36,30 @@ const CategoryNavigateButton = ({ category }) => {
           {showingTranslateValue(category?.name)}
         </h3>
         <ul className="pt-1 mt-1">
-          {category?.children?.slice(0, 3).map((child) => (
-            <li key={child._id} className="pt-1">
-              <a
+          {previewBrands.length > 0 ? (
+            previewBrands.map((brand) => (
+              <li key={brand._id} className="pt-1">
+                <button
+                  type="button"
                 onClick={() =>
                   handleCategoryClick(
-                    child._id,
-                    showingTranslateValue(child?.name)
-                  )
-                }
-                className="flex hover:translate-x-2 transition-transform duration-300 items-center  text-xs text-gray-400 cursor-pointer"
-              >
-                <span className="text-xs text-gray-400 ">
-                  <IoChevronForwardSharp />
-                </span>
-                {showingTranslateValue(child?.name)}
-                {/* {console.log(
-                  "showingTranslateValue(child?.name)",
-                  showingTranslateValue(child?.name),
-                  child?.name
-                )} */}
-              </a>
-            </li>
-          ))}
+                      category._id,
+                      showingTranslateValue(category?.name),
+                      brand._id
+                    )
+                  }
+                  className="flex hover:translate-x-2 transition-transform duration-300 items-center text-xs text-gray-400 cursor-pointer"
+                >
+                  <span className="text-xs text-gray-400 ">
+                    <IoChevronForwardSharp />
+                  </span>
+                  {showingTranslateValue(brand?.name)}
+                </button>
+              </li>
+            ))
+          ) : (
+            <li className="pt-1 text-xs text-gray-400">Ver todos los productos</li>
+          )}
         </ul>
       </div>
     </>

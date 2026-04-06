@@ -4,8 +4,10 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { Transition, Menu, MenuButton } from "@headlessui/react";
 import { FiUser } from "react-icons/fi";
+import { IoLockOpenOutline } from "react-icons/io5";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 
 //internal imports
 import { userNavigation } from "@utils/data";
@@ -94,20 +96,17 @@ const ProfileDropDown = () => {
               </Menu.Item>
             ))}
 
-            {/* <Menu.Item className="px-6 py-1 hover:bg-gray-50 hover:text-teal-600">
+            <Menu.Item className="px-6 py-1 dark:hover:bg-zinc-800 hover:bg-gray-50 hover:text-teal-600">
               <div className="w-full flex">
                 <IoLockOpenOutline className="my-auto" />
-                <form action="">
-                  <button
-                    onClick={handleLogOut}
-                    // href={item.href}
-                    className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:text-teal-600"
-                  >
-                    Logout
-                  </button>
-                </form>
+                <button
+                  onClick={() => signOut()}
+                  className="block px-3 py-1 text-sm leading-6 dark:text-white text-gray-900 hover:text-teal-600"
+                >
+                  Cerrar sesión
+                </button>
               </div>
-            </Menu.Item> */}
+            </Menu.Item>
           </Menu.Items>
         </Transition>
       </Menu>

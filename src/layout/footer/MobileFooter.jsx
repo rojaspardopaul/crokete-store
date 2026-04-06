@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "react-use-cart";
@@ -11,10 +11,11 @@ import { FiHome, FiUser, FiShoppingCart, FiAlignLeft } from "react-icons/fi";
 import { getUserSession } from "@lib/auth-client";
 import PagesDrawer from "@components/drawer/PagesDrawer";
 import CartDrawer from "@components/drawer/CartDrawer";
+import { SidebarContext } from "@context/SidebarContext";
 
 const MobileFooter = ({ globalSetting, categories, categoryError }) => {
   const [openPageDrawer, setOpenPageDrawer] = useState(false);
-  const [openCartDrawer, setOpenCartDrawer] = useState(false);
+  const { cartDrawerOpen, setCartDrawerOpen } = useContext(SidebarContext);
   const { totalItems } = useCart();
   const userInfo = getUserSession();
 
@@ -24,8 +25,8 @@ const MobileFooter = ({ globalSetting, categories, categoryError }) => {
     <>
       <CartDrawer
         currency={currency}
-        open={openCartDrawer}
-        setOpen={setOpenCartDrawer}
+        open={cartDrawerOpen}
+        setOpen={setCartDrawerOpen}
       />
 
       <div className="flex flex-col h-full justify-between align-middle bg-white rounded cursor-pointer overflow-y-scroll flex-grow scrollbar-hide w-full">
@@ -56,7 +57,7 @@ const MobileFooter = ({ globalSetting, categories, categoryError }) => {
         </Link>
 
         <button
-          onClick={() => setOpenCartDrawer(!openCartDrawer)}
+          onClick={() => setCartDrawerOpen(!cartDrawerOpen)}
           className="h-9 w-9 relative whitespace-nowrap inline-flex items-center justify-center text-white text-lg"
         >
           <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 bg-red-500 rounded-full">

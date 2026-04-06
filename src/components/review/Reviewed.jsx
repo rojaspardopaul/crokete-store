@@ -5,6 +5,21 @@ import ImageWithFallback from "@components/common/ImageWithFallBack";
 import Pagination from "@components/pagination/Pagination";
 import { useRouter } from "next/navigation";
 
+const STATUS_BADGES = {
+  approved: {
+    label: "Aprobada ✓",
+    className: "bg-green-100 text-green-700",
+  },
+  pending: {
+    label: "En revisión ⏳",
+    className: "bg-amber-100 text-amber-700",
+  },
+  rejected: {
+    label: "Rechazada ✗",
+    className: "bg-red-100 text-red-700",
+  },
+};
+
 const Reviewed = ({ reviews, error }) => {
   const router = useRouter();
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -65,6 +80,19 @@ const Reviewed = ({ reviews, error }) => {
                     rating={item?.review?.rating || 0}
                   />
                 </div>
+
+                {/* Status Badge */}
+                {item?.review?.status && (
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                      STATUS_BADGES[item.review.status]?.className ||
+                      "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {STATUS_BADGES[item.review.status]?.label ||
+                      item.review.status}
+                  </span>
+                )}
 
                 {/* Review Button */}
                 <button

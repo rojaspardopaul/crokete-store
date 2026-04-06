@@ -30,12 +30,12 @@ const CartDrawer = ({ open, setOpen, currency }) => {
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full">
               <TransitionChild
                 as={Fragment}
-                enter="transform transition ease-in-out duration-200"
-                enterFrom="translate-x-full"
-                enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-200"
-                leaveFrom="translate-x-0"
-                leaveTo="translate-x-full"
+                enter="transform transition ease-out duration-500"
+                enterFrom="translate-x-full opacity-0"
+                enterTo="translate-x-0 opacity-100"
+                leave="transform transition ease-in duration-300"
+                leaveFrom="translate-x-0 opacity-100"
+                leaveTo="translate-x-full opacity-0"
               >
                 <DialogPanel className="pointer-events-auto">
                   <Cart setOpen={setOpen} currency={currency} />

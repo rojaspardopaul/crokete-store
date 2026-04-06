@@ -2,20 +2,25 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Rating from "@components/common/Rating";
+import ReviewSummary from "@components/review/ReviewSummary";
+import ReviewDistribution from "@components/review/ReviewDistribution";
 import {
   Dialog,
   DialogPanel,
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { X } from "lucide-react";
+import { X, ThumbsUp } from "lucide-react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import dynamic from "next/dynamic";
+import { toggleHelpful } from "@services/ReviewServices";
 
 const ProductReviews = ({ reviews }) => {
   const [zoomImage, setZoomImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [helpfulMap, setHelpfulMap] = useState({});
 
   const openZoom = (images, index) => {
     setZoomImage(images);
@@ -41,6 +46,14 @@ const ProductReviews = ({ reviews }) => {
     }
   };
 
+  const handleHelpful = async (reviewId) => {
+    if (helpfulMap[reviewId]) return;
+    const res = await toggleHelpful(reviewId);
+    if (!res.error) {
+      setHelpfulMap((prev) => ({ ...prev, [reviewId]: true }));
+    }
+  };
+
   return (
     <>
       <Transition
@@ -63,8 +76,32 @@ const ProductReviews = ({ reviews }) => {
           leaveTo="translate-x-full"
         >
           <div className="relative">
+            {/* Summary & Distribution */}
+            {reviews?.length > 0 ? (
+              <>
+                <ReviewSummary
+                  reviews={reviews}
+                  onWriteReview={() => window.location.href = "/user/my-reviews"}
+                />
+                <ReviewDistribution reviews={reviews} />
+              </>
+            ) : (
+              <div className="text-center py-10">
+                <p className="text-gray-500 text-sm mb-3">
+                  Aún no hay reseñas para este producto. ¡Sé el primero!
+                </p>
+                <Link
+                  href="/user/my-reviews"
+                  className="inline-block px-4 py-2 text-sm font-medium bg-kachabazar-500 text-white rounded-lg hover:bg-kachabazar-600 transition-colors"
+                >
+                  Escribir reseña
+                </Link>
+              </div>
+            )}
+
             {reviews?.map((review) => {
-              const userName = review?.user?.name || "Anonymous";
+              const userName =
+                review?.displayName || review?.user?.name || "Anónimo";
               const userInitial = userName.charAt(0);
               const userAvatar = "/avatar-placeholder.png";
 
@@ -94,7 +131,12 @@ const ProductReviews = ({ reviews }) => {
                       {new Date(review.createdAt).toLocaleDateString()}
                     </span>
 
-                    <p className="text-sm text-gray-700 mt-2">{review.comment}</p>
+                    {review.title && (
+                      <p className="font-semibold text-gray-800 mt-2">
+                        {review.title}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-700 mt-1">{review.comment}</p>
 
                     {/* Review Images */}
                     {review.images?.filter(Boolean).length > 0 && (
@@ -119,6 +161,24 @@ const ProductReviews = ({ reviews }) => {
                         ))}
                       </div>
                     )}
+
+                    {/* Helpful button */}
+                    <button
+                      onClick={() => handleHelpful(review._id)}
+                      disabled={helpfulMap[review._id]}
+                      className={`flex items-center gap-1 mt-3 text-xs transition-colors ${
+                        helpfulMap[review._id]
+                          ? "text-kachabazar-600 font-medium"
+                          : "text-gray-400 hover:text-gray-600"
+                      }`}
+                    >
+                      <ThumbsUp size={14} />
+                      <span>
+                        Útil
+                        {(review.helpfulVotes > 0 || helpfulMap[review._id]) &&
+                          ` (${(review.helpfulVotes || 0) + (helpfulMap[review._id] ? 1 : 0)})`}
+                      </span>
+                    </button>
                   </div>
                 </div>
               );

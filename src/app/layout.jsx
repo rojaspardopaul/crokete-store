@@ -5,9 +5,8 @@ import "@styles/custom-theme.css";
 import Providers from "./provider";
 import Navbar from "@layout/navbar/Navbar";
 import Footer from "@layout/footer/Footer";
-import FooterTop from "@layout/footer/FooterTop";
+import InformativeSection from "@layout/footer/InformativeSection";
 import MobileFooter from "@layout/footer/MobileFooter";
-import FeatureCard from "@components/feature-card/FeatureCard";
 import FloatingWhatsApp from "@components/common/FloatingWhatsApp";
 import PageLoading from "@components/common/PageLoading";
 import LoyaltyEducationalModal from "@components/loyalty/LoyaltyEducationalModal";
@@ -67,16 +66,11 @@ export default async function RootLayout({ children }) {
               {/* <div className="bg-gray-50 dark:bg-zinc-900 z-10">{children}</div> */}
               {/* <MobileFooter globalSetting={globalSetting} /> */}
               <div className="w-full">
-                <FooterTop
+                <InformativeSection
                   error={error}
                   globalSetting={globalSetting}
                   storeCustomizationSetting={storeCustomizationSetting}
                 />
-                <div className="hidden relative  lg:block mx-auto max-w-screen-2xl py-6 px-3 sm:px-10">
-                  <FeatureCard
-                    storeCustomizationSetting={storeCustomizationSetting}
-                  />
-                </div>
                 <hr className="hr-line"></hr>
                 <div className="border-t border-gray-100 w-full">
                   <Footer

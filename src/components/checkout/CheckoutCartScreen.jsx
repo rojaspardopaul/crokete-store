@@ -65,7 +65,7 @@ const CheckoutCartScreen = () => {
                 <div className="flex flex-col items-center">
                   <Image
                     className="size-40 flex-none rounded-md object-cover"
-                    src="/no-result.svg"
+                    src="/no-result.webp"
                     alt="no-result"
                     width={400}
                     height={380}

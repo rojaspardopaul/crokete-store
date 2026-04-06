@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 //internal import
 
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { getMenuCategories } from "@utils/categoryTree";
 
 const CategoryCarousel = ({ categories }) => {
   const router = useRouter();
@@ -19,6 +20,7 @@ const CategoryCarousel = ({ categories }) => {
   const nextRef = useRef(null);
 
   const { showingTranslateValue } = useUtilsFunction();
+  const menuCategories = getMenuCategories(categories);
 
   const handleCategoryClick = (id, category) => {
     const category_name = showingTranslateValue(category)
@@ -92,7 +94,7 @@ const CategoryCarousel = ({ categories }) => {
         className="mySwiper category-slider my-3"
       >
         <div>
-          {categories[0]?.children?.map((category, i) => (
+          {menuCategories.map((category, i) => (
             <SwiperSlide key={i + 1} className="group">
               <div
                 onClick={() =>

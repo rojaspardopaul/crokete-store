@@ -4,9 +4,11 @@ import Image from "next/image";
 import CMSkeletonTwo from "@components/preloader/CMSkeleton";
 import { getShowingCategory } from "@services/CategoryService";
 import CategoryNavigateButton from "@components/category/CategoryNavigateButton";
+import { getMenuCategories } from "@utils/categoryTree";
 
 const FeatureCategory = async () => {
   const { categories, error } = await getShowingCategory();
+  const menuCategories = getMenuCategories(categories);
 
   return (
     <>
@@ -14,7 +16,7 @@ const FeatureCategory = async () => {
         <CMSkeletonTwo count={10} height={20} error={error} loading={false} />
       ) : (
         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-3">
-          {categories[0]?.children?.map((category, i) => (
+          {menuCategories.map((category, i) => (
             <li className="group" key={i + 1}>
               <div className="flex w-full h-full rounded-2xl border border-kachabazar-100 bg-white dark:bg-zinc-900 p-4 cursor-pointer transition-all duration-300 ease-in-out group-hover:border-kachabazar-300 group-hover:shadow-md group-hover:-translate-y-1">
                 <div className="flex items-center gap-3">

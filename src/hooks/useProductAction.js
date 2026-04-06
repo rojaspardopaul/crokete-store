@@ -181,7 +181,7 @@ export default function useProductAction({
             : getNumber(originalPrice),
       };
 
-      handleAddItem(newItem, quantity);
+      handleAddItem(newItem, quantity, { openCart: false });
     } else {
       return notifyError("Por favor, seleccionar todas las variantes!");
     }

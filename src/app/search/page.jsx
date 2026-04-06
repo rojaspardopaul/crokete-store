@@ -53,7 +53,7 @@ const Search = async ({ searchParams }) => {
     getShowingCategory(),
     getGlobalSetting(),
     getShowingPets(),
-    getShowingBrands(),
+    getShowingBrands(_id || ""),
   ]);
   const currency = globalSetting?.default_currency || "$";
 

@@ -7,7 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 //internal imports
-import TopNavbar from "./TopNavbar";
 import NavbarPromo from "@layout/navbar/NavbarPromo";
 import SearchInput from "@components/navbar/SearchInput";
 import NotifyIcon from "@components/navbar/NotifyIcon";
@@ -27,10 +26,6 @@ const Navbar = async ({ globalSetting, storeCustomization }) => {
   return (
     // Navbar.jsx
     <div className="sticky z-20 top-0 w-full">
-      {/* navbar top section */}
-
-      <TopNavbar storeCustomization={storeCustomization} />
-
       <header as="header" className="bg-kachabazar-700 shadow-md">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
           <div className="relative flex flex-row h-14 sm:h-20 justify-between items-center gap-3">

@@ -1,28 +1,29 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { useCart } from "react-use-cart";
 
 //internal import
 import CartDrawer from "@components/drawer/CartDrawer";
+import { SidebarContext } from "@context/SidebarContext";
 
 const StickyCart = ({ currency }) => {
   const { totalItems, cartTotal } = useCart();
-  const [openCartDrawer, setOpenCartDrawer] = useState(false);
+  const { cartDrawerOpen, setCartDrawerOpen } = useContext(SidebarContext);
 
   return (
     <>
       <CartDrawer
         currency={currency}
-        open={openCartDrawer}
-        setOpen={setOpenCartDrawer}
+        open={cartDrawerOpen}
+        setOpen={setCartDrawerOpen}
       />
-      {!openCartDrawer && (
+      {!cartDrawerOpen && (
         <button
           aria-label="Cart"
-          onClick={() => setOpenCartDrawer(!openCartDrawer)}
+          onClick={() => setCartDrawerOpen(true)}
           className="absolute"
         >
           <div className="right-0 w-35 float-right fixed top-2/4 bottom-2/4 align-middle shadow-xl cursor-pointer z-30 hidden lg:block xl:block animate-float rounded-l-2xl overflow-hidden">

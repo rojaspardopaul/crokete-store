@@ -1,20 +1,21 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useContext } from "react";
 import { IoAdd, IoExpand, IoBagAdd, IoRemove } from "react-icons/io5";
 import { useCart } from "react-use-cart";
 import Link from "next/link";
 
 //internal import
 
-import { notifyError } from "@utils/toast";
+import { notifyError, notifySuccess } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
 import { handleLogEvent } from "src/lib/analytics";
 import Discount from "@components/common/Discount";
 import PriceTwo from "@components/common/PriceTwo";
 import Rating from "@components/common/Rating";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { SidebarContext } from "@context/SidebarContext";
 // Lazy-load ProductModal — only loaded when user opens quick-view
 const ProductModal = dynamic(
   () => import("@components/modal/ProductModal"),
@@ -30,6 +31,12 @@ const DiscountedCard = ({ product, attributes, currency }) => {
   const { handleIncreaseQuantity } = useAddToCart();
   const { showingTranslateValue, getNumber } = useUtilsFunction();
   const { globalSetting } = useSetting();
+  const { setCartDrawerOpen } = useContext(SidebarContext);
+
+  const openCartOnDesktop = () => {
+    if (typeof window !== "undefined" && window.innerWidth >= 640)
+      setCartDrawerOpen(true);
+  };
 
   // Resolve variant display names from attribute data
   const variantOptions = useMemo(() => {
@@ -120,6 +127,8 @@ const DiscountedCard = ({ product, attributes, currency }) => {
       originalPrice: product.prices?.originalPrice,
     };
     addItem(newItem);
+    notifySuccess(`${showingTranslateValue(p?.title)} agregado al carrito!`);
+    openCartOnDesktop();
   };
 
   const handleModalOpen = (event, id) => {

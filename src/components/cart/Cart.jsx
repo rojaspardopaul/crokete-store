@@ -12,10 +12,16 @@ import Link from "next/link";
 import Image from "next/image";
 import WhatsAppButton from "@components/button/WhatsAppButton";
 import LoyaltyCartBanner from "@components/loyalty/LoyaltyCartBanner";
+import { useSetting } from "@context/SettingContext";
 
 const Cart = ({ setOpen, currency }) => {
   const router = useRouter();
   const { isEmpty, items, cartTotal } = useCart();
+  const { globalSetting } = useSetting();
+
+  const freeShippingThreshold = Number(globalSetting?.free_shipping_threshold) || 599;
+  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - cartTotal);
+  const isFreeShipping = cartTotal >= freeShippingThreshold;
 
   const userInfo = getUserSession();
 
@@ -61,7 +67,7 @@ const Cart = ({ setOpen, currency }) => {
               <div className="flex flex-col items-center">
                 <Image
                   className="size-40 flex-none rounded-md object-cover"
-                  src="/no-result.svg"
+                  src="/no-result.webp"
                   alt="no-result"
                   width={400}
                   height={380}
@@ -81,20 +87,39 @@ const Cart = ({ setOpen, currency }) => {
           ))}
         </div>
         <div className="bg-neutral-50 dark:bg-slate-900 p-5">
+          {/* Free shipping progress bar */}
+          {!isFreeShipping && !isEmpty && (
+            <div className="mb-4 bg-amber-50 rounded-lg p-3">
+              <p className="text-xs text-amber-800 font-medium mb-2">
+                Agrega {currency}{remainingForFreeShipping.toFixed(2)} más para obtener <strong>envío gratis</strong>
+              </p>
+              <div className="w-full bg-amber-200 rounded-full h-1.5">
+                <div
+                  className="bg-kachabazar-500 h-1.5 rounded-full transition-all duration-300"
+                  style={{ width: `${Math.min(100, (cartTotal / freeShippingThreshold) * 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
+          {isFreeShipping && !isEmpty && (
+            <div className="mb-4 bg-green-50 rounded-lg p-3">
+              <p className="text-xs text-green-700 font-medium">
+                ✓ ¡Envío gratis aplicado!
+              </p>
+            </div>
+          )}
           <p className="flex justify-between font-semibold text-slate-900 dark:text-slate-100">
-            <span>
-              <span>Subtotal</span>
-              <span className="block text-sm text-slate-500 dark:text-slate-400 font-normal">
-                Los gastos de envío se calculan en la etapa de pago.
-              </span>
-            </span>
+            <span>Subtotal</span>
             <span>
               {currency}
               {cartTotal.toFixed(2)}
             </span>
           </p>
 
-          <div className="flex space-x-3 mt-5">
+          {/* Loyalty points estimate */}
+          <LoyaltyCartBanner cartTotal={cartTotal} compact={true} />
+
+          <div className="flex space-x-3 mt-3">
             <Link
               href="/checkout-cart"
               prefetch={true}
@@ -111,9 +136,6 @@ const Cart = ({ setOpen, currency }) => {
             </button>
           </div>
 
-          {/* Loyalty points estimate */}
-          <LoyaltyCartBanner cartTotal={cartTotal} />
-          
           {/* WhatsApp Order Button */}
           <div className="mt-3">
             <WhatsAppButton

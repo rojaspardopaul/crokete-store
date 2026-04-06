@@ -20,7 +20,7 @@ const LoyaltyProductInfo = ({ className = "" }) => {
   const { loyalty, openModal, isLoggedIn } = ctx;
 
   // Guest variant — encourage registration
-  if (!isLoggedIn || !loyalty) {
+  if (!isLoggedIn) {
     return (
       <div
         className={`flex items-center justify-between rounded-lg border border-kachabazar-200 bg-kachabazar-50 px-3 py-2 ${className}`}
@@ -42,6 +42,9 @@ const LoyaltyProductInfo = ({ className = "" }) => {
       </div>
     );
   }
+
+  // Logged in but loyalty data not loaded yet
+  if (!loyalty) return null;
 
   const tier = TIER_CONFIG[loyalty.tier] || TIER_CONFIG.nuevo;
 

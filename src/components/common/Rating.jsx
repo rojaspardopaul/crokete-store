@@ -39,7 +39,7 @@ const Rating = ({
   const pawSize =
     size === "lg" ? "w-5 h-5" : size === "md" ? "w-4 h-4" : size === "sm" ? "w-3.5 h-3.5" : "w-3 h-3";
   const textSize =
-    size === "lg" ? "text-base" : size === "sm" ? "text-sm" : "text-xs";
+    size === "lg" ? "text-sm" : "text-xs";
 
   return (
     <div className="flex items-center gap-0.5">
@@ -48,7 +48,7 @@ const Rating = ({
         {[...Array(fullPaws)].map((_, index) => (
           <PawIcon
             key={`full-${index}`}
-            className={`${pawSize} text-kachabazar-500`}
+            className={`${pawSize} text-amber-500`}
             filled={true}
           />
         ))}
@@ -61,7 +61,7 @@ const Rating = ({
               className="absolute inset-0 overflow-hidden"
               style={{ width: "50%" }}
             >
-              <PawIcon className={`${pawSize} text-kachabazar-500`} filled={true} />
+              <PawIcon className={`${pawSize} text-amber-500`} filled={true} />
             </div>
           </div>
         )}
@@ -77,10 +77,10 @@ const Rating = ({
       </div>
 
       {showReviews && (
-        <div className={`${textSize} ml-1 text-crokete-earth-600`}>
-          <span className="font-semibold text-kachabazar-700">{parseFloat(rating).toFixed(1)}</span>
-          <span className="text-gray-400"> ({totalReviews})</span>
-        </div>
+        <span className="ml-1 text-[11px] leading-none flex items-center gap-0.5">
+          <span className="font-semibold text-amber-600">{parseFloat(rating).toFixed(1)}</span>
+          <span className="text-gray-400">({totalReviews})</span>
+        </span>
       )}
     </div>
   );

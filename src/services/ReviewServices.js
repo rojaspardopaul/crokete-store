@@ -88,10 +88,25 @@ const deleteReview = async (reviewId) => {
   }
 };
 
+const toggleHelpful = async (reviewId) => {
+  try {
+    const response = await fetch(`${baseURL}/reviews/${reviewId}/helpful`, {
+      method: "PUT",
+      headers: await getHeaders(),
+    });
+
+    const result = await handleResponse(response);
+    return { result, error: null };
+  } catch (error) {
+    return { result: null, error: error.message };
+  }
+};
+
 export {
   addReview,
   updateReview,
   deleteReview,
+  toggleHelpful,
   getReviewsByProduct,
   getUserPurchasedProducts,
 };

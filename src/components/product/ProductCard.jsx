@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useContext } from "react";
 import {
   IoAdd,
   IoRemove,
@@ -22,6 +22,7 @@ import Discount from "@components/common/Discount";
 import LoyaltyPointsBadge from "@components/loyalty/LoyaltyPointsBadge";
 import { handleLogEvent } from "src/lib/analytics";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { SidebarContext } from "@context/SidebarContext";
 // Lazy-load ProductModal — only loaded when user opens quick-view
 const ProductModal = dynamic(
   () => import("@components/modal/ProductModal"),
@@ -39,6 +40,12 @@ const ProductCard = ({ product, attributes }) => {
   const { items, addItem, updateItemQuantity, inCart } = useCart();
   const { handleIncreaseQuantity } = useAddToCart();
   const { showingTranslateValue, getNumber } = useUtilsFunction();
+  const { setCartDrawerOpen } = useContext(SidebarContext);
+
+  const openCartOnDesktop = () => {
+    if (typeof window !== "undefined" && window.innerWidth >= 640)
+      setCartDrawerOpen(true);
+  };
 
   const currency = globalSetting?.default_currency || "$";
 
@@ -140,7 +147,7 @@ const ProductCard = ({ product, attributes }) => {
         id: p._id + "-" + (selectedOpt.variant._id || selectedVariantIdx),
         title: showingTranslateValue(p?.title) + " - " + selectedOpt.label,
         image: selectedOpt.variant.image || product?.image?.[0],
-        variant: selectedOpt.variant,
+        variant: { ...selectedOpt.variant, quantity: selectedOpt.quantity },
         price: selectedOpt.price,
         originalPrice: selectedOpt.originalPrice,
       };
@@ -150,6 +157,7 @@ const ProductCard = ({ product, attributes }) => {
       }
       addItem(newItem);
       notifySuccess(`${showingTranslateValue(p?.title)} agregado al carrito!`);
+      openCartOnDesktop();
       setAddedAnimation(true);
       setTimeout(() => setAddedAnimation(false), 600);
       return;
@@ -171,6 +179,7 @@ const ProductCard = ({ product, attributes }) => {
     };
     addItem(newItem);
     notifySuccess(`${showingTranslateValue(p?.title)} agregado al carrito!`);
+    openCartOnDesktop();
     setAddedAnimation(true);
     setTimeout(() => setAddedAnimation(false), 600);
   };
@@ -271,6 +280,8 @@ const ProductCard = ({ product, attributes }) => {
                               return notifyError(`¡Solo quedan ${maxStock} unidad${maxStock === 1 ? "" : "es"} disponibles!`);
                             }
                             updateItemQuantity(item.id, item.quantity + 1);
+                            notifySuccess(`${item.title} actualizado en el carrito!`);
+                            openCartOnDesktop();
                           }}
                         >
                           <span className="text-lg cursor-pointer">
@@ -326,6 +337,54 @@ const ProductCard = ({ product, attributes }) => {
             {showingTranslateValue(product?.title)}
           </Link>
 
+          <Rating
+            size="sm"
+            showReviews={true}
+            rating={product?.average_rating}
+            totalReviews={product?.total_reviews}
+          />
+
+          {/* Quick info mini chips */}
+          {product?.quickInfo && (product?.quickInfo?.pet || product?.quickInfo?.size) && (
+            <div className="flex flex-wrap gap-1 mt-0.5">
+              {product.quickInfo.pet && (
+                <span className="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+                  🐾 {product.quickInfo.pet}
+                </span>
+              )}
+              {product.quickInfo.size && (
+                <span className="text-[10px] px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+                  📏 {product.quickInfo.size}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Package info */}
+          {(() => {
+            // Try to extract weight from selected variant label (e.g. "2.5 kg", "5kg", "18 Kg")
+            const selectedLabel = variantOptions[selectedVariantIdx]?.label || "";
+            const variantWeightMatch = selectedLabel.match(/(\d+(?:[.,]\d+)?)\s*(kg|g|lb|lbs)/i);
+            const variantWeight = variantWeightMatch
+              ? { value: parseFloat(variantWeightMatch[1].replace(",", ".")), unit: variantWeightMatch[2].toLowerCase() }
+              : null;
+
+            // Use variant weight if found, otherwise fall back to product packageInfo
+            const weight = variantWeight?.value || product?.packageInfo?.weight;
+            const unit = variantWeight?.unit || product?.packageInfo?.unit || "kg";
+
+            if (!weight || weight <= 0) return null;
+
+            const pricePerUnit = displayPrice > 0 ? (displayPrice / weight).toFixed(2) : null;
+
+            return (
+              <span className="text-[10px] text-gray-500">
+                {weight}{unit}
+                {pricePerUnit && <> · ${pricePerUnit}/{unit}</>}
+              </span>
+            );
+          })()}
+
           {/* Variant pills - shown when product has variants */}
           {variantOptions.length > 1 && (
             <div className="flex flex-wrap gap-1.5 mt-1">
@@ -348,13 +407,6 @@ const ProductCard = ({ product, attributes }) => {
               ))}
             </div>
           )}
-
-          <Rating
-            size="sm"
-            showReviews={true}
-            rating={product?.average_rating}
-            totalReviews={product?.total_reviews}
-          />
 
           <LoyaltyPointsBadge price={displayPrice} size="sm" />
 

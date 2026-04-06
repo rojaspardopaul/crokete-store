@@ -61,28 +61,28 @@ const SearchInput = () => {
       return;
     }
 
-    let cancelled = false;
+    const controller = new AbortController();
     setIsLoading(true);
     setActiveIndex(-1);
 
-    fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}`)
+    fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}`, {
+      signal: controller.signal,
+    })
       .then((res) => res.json())
       .then((data) => {
-        if (!cancelled) {
-          setResults(data);
-          setIsLoading(false);
-          setIsOpen(true);
-        }
+        setResults(data);
+        setIsLoading(false);
+        setIsOpen(true);
       })
-      .catch(() => {
-        if (!cancelled) {
+      .catch((err) => {
+        if (err.name !== "AbortError") {
           setResults(null);
           setIsLoading(false);
         }
       });
 
     return () => {
-      cancelled = true;
+      controller.abort();
     };
   }, [debouncedQuery]);
 
@@ -217,6 +217,7 @@ const SearchInput = () => {
           className="flex-1 h-10 pl-3 pr-3 text-sm text-gray-700 placeholder-gray-400 bg-transparent border-none outline-none focus:ring-0"
           placeholder="Buscar productos, marcas..."
           autoComplete="off"
+          maxLength={100}
           role="combobox"
           aria-expanded={isOpen}
           aria-haspopup="listbox"
