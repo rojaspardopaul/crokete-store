@@ -115,7 +115,7 @@ const ProductModal = ({
               />
             </div>
 
-            <div className="w-full lg:w-[60%] pt-6 lg:pt-0 lg:pl-7 xl:pl-10 flex flex-col">
+            <div className="w-full lg:w-[60%] pt-6 lg:pt-0 lg:pl-7 xl:pl-10 flex flex-col overflow-y-auto">
               {/* Title */}
               <div className="mb-2 md:mb-2.5 block -mt-1.5">
                 <Link href={`/product/${product.slug}`}>
@@ -137,7 +137,7 @@ const ProductModal = ({
               </div>
 
               {/* Price */}
-              <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-3">
+              <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-1">
                 <Price
                   price={price}
                   product={product}
@@ -146,27 +146,15 @@ const ProductModal = ({
                 />
                 <Discount slug product={product} discount={discount} />
               </div>
-
-              {/* Extra info — solo visible en tablet/PC */}
-              <div className="hidden md:flex flex-col gap-2 mb-3">
-                <LoyaltyPointsBadge price={price} size="sm" />
-                <QuickInfoChips quickInfo={product?.quickInfo} />
-                <IconTagsRow iconTags={product?.iconTags} />
-                {product?.productHighlights?.length > 0 && (
-                  <div className="rounded-lg bg-gray-50 px-3 py-2 border border-gray-100">
-                    <ProductHighlightsList highlights={product?.productHighlights} />
-                  </div>
-                )}
-              </div>
+              <LoyaltyPointsBadge price={price} size="sm" />
 
               {/* Variants */}
               {variantTitle?.length > 0 && (
-                <div className="mb-3 bg-gray-50 rounded-lg px-3 py-2.5 border border-gray-100">
-                  <h3 className="text-xs font-medium text-gray-500 mb-2">Elige tu opción</h3>
+                <div className="mb-3 mt-2">
                   {variantTitle.map((a, i) => (
-                    <div key={a._id} className={`${i > 0 ? 'mt-3 pt-3 border-t border-gray-200' : ''}`}>
-                      <h4 className="text-sm py-1 text-gray-800 font-medium mb-1">
-                        {showingTranslateValue(a?.name)}:
+                    <div key={a._id} className={`${i > 0 ? 'mt-2' : ''}`}>
+                      <h4 className="text-xs font-medium text-gray-500 mb-1">
+                        {showingTranslateValue(a?.name)}
                       </h4>
                       <VariantList
                         att={a._id}
@@ -184,7 +172,7 @@ const ProductModal = ({
               )}
 
               {/* Actions */}
-              <div className="space-y-3 mt-auto">
+              <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border border-gray-300">
                     <button
@@ -249,6 +237,17 @@ const ProductModal = ({
                   fullWidth={true}
                   className="text-sm py-2.5 px-4"
                 />
+              </div>
+
+              {/* Extra info — solo visible en tablet/PC */}
+              <div className="hidden md:flex flex-col gap-2 mt-4 pt-3 border-t border-gray-100">
+                <QuickInfoChips quickInfo={product?.quickInfo} />
+                <IconTagsRow iconTags={product?.iconTags} />
+                {product?.productHighlights?.length > 0 && (
+                  <div className="rounded-lg bg-gray-50 px-3 py-2 border border-gray-100">
+                    <ProductHighlightsList highlights={product?.productHighlights} />
+                  </div>
+                )}
               </div>
 
               {/* Description snippet */}

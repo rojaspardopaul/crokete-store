@@ -251,13 +251,9 @@ const ProductScreen = ({ product, reviews, attributes, relatedProducts }) => {
               {/* ── Actions ── */}
               <div className="rounded-xl border border-kachabazar-100 bg-gradient-to-br from-kachabazar-50/30 to-white p-4 space-y-4 shadow-sm">
                 {variantTitle?.length > 0 && (
-                  <div className="bg-white/70 rounded-lg px-3 py-2.5 border border-gray-100">
-                    <h3 className="text-xs font-medium text-gray-500 mb-2">Elige tu opción</h3>
+                  <div>
                     {variantTitle.map((a, i) => (
-                      <div key={a._id} className={`${i > 0 ? 'mt-4 pt-3 border-t border-gray-200' : ''}`}>
-                        <h4 className="text-sm py-1 text-gray-800 font-medium mb-1">
-                          {showingTranslateValue(a?.name)}:
-                        </h4>
+                      <div key={a._id} className={`${i > 0 ? 'mt-2' : ''}`}>
                         <VariantList
                           att={a._id}
                           option={a.option}
@@ -401,7 +397,7 @@ const ProductScreen = ({ product, reviews, attributes, relatedProducts }) => {
               </h3>
               <div className="flex">
                 <div className="w-full">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
                     {relatedProducts?.slice(1, 13).map((product, i) => (
                       <ProductCard
                         key={product._id}
