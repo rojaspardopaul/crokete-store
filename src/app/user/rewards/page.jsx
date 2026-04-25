@@ -9,7 +9,7 @@ import { getUserServerSession } from "@lib/auth-server";
 
 export const metadata = {
   title: "Mis Recompensas | Crokete Pet",
-  description: "Consulta tus puntos, hitos y recompensas en Crokete Rewards",
+  description: "Consulta tus puntos, hitos y recompensas de nuestro programa de lealtad",
 };
 
 export default async function RewardsPage() {

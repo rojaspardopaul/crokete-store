@@ -24,7 +24,7 @@ import { getUserSession } from "@lib/auth-client";
 import { useSetting } from "@context/SettingContext";
 import useUtilsFunction from "./useUtilsFunction";
 // addShippingAddress server action replaced with direct API call in submitHandler
-import requests from "@services/httpServices";
+import requests, { setToken } from "@services/httpServices";
 
 const useCheckoutSubmit = ({ shippingAddress }) => {
   const { dispatch } = useContext(UserContext);
@@ -115,13 +115,15 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     }
   }, [shippingAddress, userInfo, autoFilled]);
 
-  //remove coupon if total value less then minimum amount of coupon
+  //remove coupon if total value less then minimum amount of coupon, or cart is empty
   useEffect(() => {
     if (minimumAmount - discountAmount > total || isEmpty) {
       setDiscountPercentage(0);
+      setIsCouponApplied(false);
+      setLoyaltyRewardCode(null);
       Cookies.remove("couponInfo");
     }
-  }, [minimumAmount, total]);
+  }, [minimumAmount, total, isEmpty]);
 
   //calculate total, product discount, coupon discount, and free shipping
   useEffect(() => {
@@ -156,9 +158,11 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     const couponDiscountTotal = couponDiscount ? couponDiscount : 0;
 
     const subTotal = parseFloat(cartTotal + effectiveShipping).toFixed(2);
-    const totalValue = Number(subTotal) - couponDiscountTotal;
+    // Cap discount so the total never goes below $0
+    const cappedDiscount = Math.min(couponDiscountTotal, Number(subTotal));
+    const totalValue = Math.max(0, Number(subTotal) - cappedDiscount);
 
-    setDiscountAmount(couponDiscountTotal);
+    setDiscountAmount(cappedDiscount);
     setTotal(totalValue);
   }, [cartTotal, shippingCost, discountPercentage, globalSetting]);
 
@@ -201,6 +205,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
         shippingCost: isFreeShipping ? 0 : shippingCost,
         discount: discountAmount + productDiscount,
         total: total,
+        loyaltyCouponCode: loyaltyRewardCode || null,
       };
 
       // Save / update the shipping address via direct API call (non-blocking)
@@ -290,7 +295,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
       // Mark loyalty reward as used (if applicable)
       if (loyaltyRewardCode && userInfo?.token) {
         try {
-          requests.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`;
+          setToken(userInfo.token);
           await requests.post("/loyalty/use-reward", {
             couponCode: loyaltyRewardCode,
             orderId: orderResponse?._id,
@@ -533,19 +538,21 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
       if (result.length < 1) {        // Try loyalty reward coupon as fallback
         try {
           if (userInfo?.token) {
-            const prevToken = requests.defaults?.headers?.common?.["Authorization"];
-            requests.defaults.headers.common["Authorization"] = `Bearer ${userInfo.token}`;
-            
+            setToken(userInfo.token);
+
             const rewardResult = await requests.post("/loyalty/apply-reward", {
               couponCode: couponRef.current.value,
               orderTotal: total,
             });
 
-            if (prevToken) {
-              requests.defaults.headers.common["Authorization"] = prevToken;
-            }
-
             if (rewardResult?.valid) {
+              // Block if fixed-discount coupon face value exceeds current order total
+              if (rewardResult.discountType === "fixed" && rewardResult.discountValue > total) {
+                notifyError(
+                  `El cupón ($${rewardResult.discountValue} MXN) supera el total de tu pedido ($${parseFloat(total).toFixed(2)} MXN). Agrega más productos para usarlo.`
+                );
+                return;
+              }
               const rewardCoupon = {
                 couponCode: rewardResult.couponCode,
                 discountType: {
@@ -584,7 +591,17 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
           `Se requiere un mínimo de ${currency}${result[0].minimumAmount} para aplicar este cupón.`
         );
         return;
-      } else {
+      }
+
+      // Block if fixed-discount coupon exceeds current order total
+      if (result[0]?.discountType?.type === "fixed" && result[0]?.discountType?.value > total) {
+        notifyError(
+          `El cupón ($${result[0].discountType.value} MXN) supera el total de tu pedido ($${parseFloat(total).toFixed(2)} MXN). Agrega más productos para usarlo.`
+        );
+        return;
+      }
+
+      {
         notifySuccess(`Tu cupón ${result[0].couponCode} ha sido aplicado correctamente!`);
         setIsCouponApplied(true);
         setMinimumAmount(result[0]?.minimumAmount);

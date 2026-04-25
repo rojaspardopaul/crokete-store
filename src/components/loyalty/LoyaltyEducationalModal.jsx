@@ -96,10 +96,10 @@ const LoyaltyEducationalModal = () => {
                     </div>
                     <div>
                       <h2 className="text-lg font-bold text-white">
-                        Programa Crokete Rewards
+                        Puntos de Recompensa
                       </h2>
                       <p className="text-sm text-amber-100">
-                        Gana puntos, sube de nivel, canjea descuentos
+                        Programa de lealtad para clientes frecuentes
                       </p>
                     </div>
                   </div>
@@ -175,6 +175,9 @@ const LoyaltyEducationalModal = () => {
                         </p>
                         <p className="text-xs text-gray-500 mt-0.5">
                           Acumula <span className="font-semibold text-amber-700">{config.minRedeemPoints} puntos</span> y canjéalos por descuentos en tus compras
+                        </p>
+                        <p className="text-xs text-amber-700 font-semibold mt-1">
+                          1 punto = ${config.pointValue} MXN — {config.minRedeemPoints} pts = ${(config.minRedeemPoints * config.pointValue).toFixed(2)} MXN de descuento
                         </p>
                       </div>
                     </div>

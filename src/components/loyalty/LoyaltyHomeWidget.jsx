@@ -50,7 +50,7 @@ const LoggedInWidget = ({ ctx, rewards }) => {
       <div className="bg-gradient-to-r from-kachabazar-500 to-kachabazar-600 px-3 py-1.5 lg:px-4 lg:py-2 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Trophy className="h-4 w-4 text-white" />
-          <h3 className="text-xs lg:text-sm font-bold text-white">Crokete Rewards</h3>
+          <h3 className="text-xs lg:text-sm font-bold text-white">Puntos de Recompensa</h3>
         </div>
         <button
           onClick={openModal}
@@ -258,7 +258,7 @@ const GuestWidget = ({ ctx }) => {
       <div className="bg-gradient-to-r from-kachabazar-500 to-kachabazar-600 px-3 py-1.5 lg:px-4 lg:py-2 flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Trophy className="h-4 w-4 text-white" />
-          <h3 className="text-xs lg:text-sm font-bold text-white">Únete a Crokete Rewards</h3>
+          <h3 className="text-xs lg:text-sm font-bold text-white">Puntos de Recompensa</h3>
         </div>
         <button
           onClick={openModal}

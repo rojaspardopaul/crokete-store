@@ -18,21 +18,27 @@ export function LoyaltyProvider({ children }) {
   const [showEducationalModal, setShowEducationalModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Fetch public config (no auth required) — cached in sessionStorage
+  // Fetch public config (no auth required) — cached in sessionStorage with TTL
   useEffect(() => {
+    const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
     const fetchConfig = async () => {
       try {
         // Check sessionStorage first to avoid refetching on every navigation
         const cached = sessionStorage.getItem("loyalty_config");
         if (cached) {
           const parsed = JSON.parse(cached);
-          if (parsed?.enabled) setConfig(parsed);
-          return;
+          // Invalidate cache if older than TTL
+          if (parsed?._cachedAt && Date.now() - parsed._cachedAt < CACHE_TTL) {
+            if (parsed?.enabled) setConfig(parsed);
+            return;
+          }
         }
         const data = await requests.get("/loyalty/public-config");
         if (data?.enabled) {
           setConfig(data);
-          sessionStorage.setItem("loyalty_config", JSON.stringify(data));
+          sessionStorage.setItem("loyalty_config", JSON.stringify({ ...data, _cachedAt: Date.now() }));
+        } else {
+          sessionStorage.removeItem("loyalty_config");
         }
       } catch {
         // silently fail — loyalty features just won't show

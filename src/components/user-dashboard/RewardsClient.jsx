@@ -147,7 +147,7 @@ export default function RewardsClient({
             {loyalty.totalPoints || 0}
           </p>
           <p className="text-sm text-gray-400 mt-1">
-            {loyalty.orderCount || 0} pedidos entregados
+            ≈ ${((loyalty.totalPoints || 0) * (config.pointValue || 0.1)).toFixed(2)} MXN · {loyalty.orderCount || 0} pedidos
           </p>
         </div>
 
@@ -458,14 +458,19 @@ export default function RewardsClient({
                       </p>
                     </div>
                   </div>
-                  <span
-                    className={`text-sm font-semibold flex-shrink-0 ml-3 ${
-                      tx.points > 0 ? "text-green-600" : "text-red-500"
-                    }`}
-                  >
-                    {tx.points > 0 ? "+" : ""}
-                    {tx.points}
-                  </span>
+                  <div className="flex-shrink-0 ml-3 text-right">
+                    <span
+                      className={`text-sm font-semibold block ${
+                        tx.points > 0 ? "text-green-600" : "text-red-500"
+                      }`}
+                    >
+                      {tx.points > 0 ? "+" : ""}
+                      {tx.points} pts
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {tx.points > 0 ? "+" : "-"}${Math.abs(tx.points * (config.pointValue || 0.1)).toFixed(2)} MXN
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>

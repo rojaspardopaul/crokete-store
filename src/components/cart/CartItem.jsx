@@ -13,24 +13,23 @@ const CartItem = ({ item, currency }) => {
   // console.log("item>>", item);
 
   return (
-    <div className="group w-full h-auto flex justify-start items-center py-4 transition-all relative border-b border-gray-200 last:border-b-0">
-      <div className="relative flex overflow-hidden flex-shrink-0 cursor-pointer mr-4">
+    <div className="group w-full h-auto flex justify-start items-center px-3 py-4 transition-all relative border-b border-gray-200 last:border-b-0">
+      <div className="relative flex overflow-hidden flex-shrink-0 cursor-pointer mr-3">
         <ImageWithFallback
           img
           width={40}
           height={40}
           src={item.image}
           alt={item.title}
-          className="size-20 flex-none rounded-md bg-gray-100 object-cover"
+          className="size-16 flex-none rounded-md bg-gray-100 object-cover"
         />
       </div>
-      <div className="flex flex-col w-full overflow-hidden">
-        <div className="flex">
+      <div className="flex flex-col w-full overflow-hidden min-w-0">
+        <div className="flex items-start gap-2">
           <div className="min-w-0 flex-1">
             <Link
               href={`/product/${item.slug}`}
-              // onClick={closeCartDrawer}
-              className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1"
+              className="truncate text-sm font-medium text-gray-700 text-heading line-clamp-1 block"
             >
               {item.title}
             </Link>
@@ -50,17 +49,15 @@ const CartItem = ({ item, currency }) => {
               )}
             </span>
           </div>
-          <div className="ml-4 flow-root shrink-0">
-            <button
-              onClick={() => removeItem(item.id)}
-              className="hover:text-red-600 text-red-400 text-lg cursor-pointer"
-            >
-              <FiTrash2 />
-            </button>
-          </div>
+          <button
+            onClick={() => removeItem(item.id)}
+            className="flex-shrink-0 p-1 hover:text-red-600 text-red-400 text-base cursor-pointer hover:bg-red-50 rounded transition-colors"
+          >
+            <FiTrash2 />
+          </button>
         </div>
-        <div className="flex items-center justify-between">
-          <div className="font-bold text-teal-600 hover:text-teal-700 text-sm md:text-base text-heading leading-5">
+        <div className="flex items-center justify-between mt-1.5">
+          <div className="font-bold text-teal-600 hover:text-teal-700 text-sm text-heading leading-5">
             <span>
               {currency}
               {(item.price * item.quantity).toFixed(2)}
@@ -72,21 +69,21 @@ const CartItem = ({ item, currency }) => {
             )}
           </div>
 
-          <div className="h-8 w-22 md:w-24 lg:w-24 flex flex-wrap items-center justify-evenly p-1 border border-gray-100 bg-white text-gray-600 rounded-full">
+          <div className="h-8 w-24 flex items-center justify-between px-2 border border-gray-200 bg-white text-gray-600 rounded-full shadow-sm">
             <button
               onClick={() => updateItemQuantity(item.id, item.quantity - 1)}
+              className="flex items-center justify-center w-5 h-5 cursor-pointer hover:text-kachabazar-600 transition-colors"
             >
-              <span className="text-dark text-base cursor-pointer hover:bg-gray-100">
-                <FiMinus />
-              </span>
+              <FiMinus className="text-sm" />
             </button>
-            <p className="text-sm font-semibold text-dark px-1">
+            <p className="text-sm font-semibold text-dark min-w-[1.25rem] text-center">
               {item.quantity}
             </p>
-            <button onClick={() => handleIncreaseQuantity(item)}>
-              <span className="text-dark text-base cursor-pointer hover:bg-gray-100">
-                <FiPlus />
-              </span>
+            <button
+              onClick={() => handleIncreaseQuantity(item)}
+              className="flex items-center justify-center w-5 h-5 cursor-pointer hover:text-kachabazar-600 transition-colors"
+            >
+              <FiPlus className="text-sm" />
             </button>
           </div>
         </div>

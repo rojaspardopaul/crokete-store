@@ -452,7 +452,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
             Resumen de tu pedido
           </h2>
 
-          <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-64 bg-gray-50 block">
+          <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-64 bg-gray-50 rounded-lg block">
             {items.map((item) => (
               <CartItem key={item.id} item={item} currency={currency} />
             ))}
