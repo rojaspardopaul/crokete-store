@@ -46,18 +46,15 @@ export const getDynamicAuthOptions = async () => {
   // console.log("storeSetting::::", storeSetting);
 
   const providers = [
-    Google({
-      clientId: storeSetting?.google_id || "",
-      clientSecret: storeSetting?.google_secret || "",
-    }),
-    GitHub({
-      clientId: storeSetting?.github_id || "",
-      clientSecret: storeSetting?.github_secret || "",
-    }),
-    Facebook({
-      clientId: storeSetting?.facebook_id || "",
-      clientSecret: storeSetting?.facebook_secret || "",
-    }),
+    ...(storeSetting?.google_login_status && storeSetting?.google_id
+      ? [Google({ clientId: storeSetting.google_id, clientSecret: storeSetting.google_secret || "" })]
+      : []),
+    ...(storeSetting?.github_login_status && storeSetting?.github_id
+      ? [GitHub({ clientId: storeSetting.github_id, clientSecret: storeSetting.github_secret || "" })]
+      : []),
+    ...(storeSetting?.facebook_login_status && storeSetting?.facebook_id
+      ? [Facebook({ clientId: storeSetting.facebook_id, clientSecret: storeSetting.facebook_secret || "" })]
+      : []),
     Credentials({
       name: "Credentials",
       credentials: {

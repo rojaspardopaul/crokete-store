@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "react-use-cart";
 import { IoBagCheckOutline, IoClose, IoBagHandle } from "react-icons/io5";
@@ -18,6 +19,7 @@ const Cart = ({ setOpen, currency }) => {
   const router = useRouter();
   const { isEmpty, items, cartTotal } = useCart();
   const { globalSetting } = useSetting();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const freeShippingThreshold = Number(globalSetting?.free_shipping_threshold) || 599;
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - cartTotal);
@@ -29,10 +31,9 @@ const Cart = ({ setOpen, currency }) => {
     if (items?.length <= 0) {
       setOpen(false);
     } else {
-      setOpen(false); // Always close the cart popup first
+      setCheckoutLoading(true);
+      setOpen(false);
       if (!userInfo) {
-        // console.log("userInfo::", userInfo, "history");
-        // Redirect to login page with returnUrl query parameter
         router.push(`/auth/login?redirectUrl=checkout`, { scroll: true });
       } else {
         router.push("/checkout", { scroll: true });
@@ -130,9 +131,20 @@ const Cart = ({ setOpen, currency }) => {
             </Link>
             <button
               onClick={handleCheckout}
-              className="relative h-auto inline-flex items-center justify-center rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-kachabazar-500 hover:bg-kachabazar-600 border border-kachabazar-500 text-white flex-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 cursor-pointer"
+              disabled={checkoutLoading}
+              className="relative h-auto inline-flex items-center justify-center gap-2 rounded-md transition-colors text-sm sm:text-base font-medium py-2 px-3 bg-kachabazar-500 hover:bg-kachabazar-600 border border-kachabazar-500 text-white flex-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 disabled:opacity-75 disabled:cursor-not-allowed"
             >
-              Ir a pagar
+              {checkoutLoading ? (
+                <>
+                  <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Cargando...
+                </>
+              ) : (
+                "Ir a pagar"
+              )}
             </button>
           </div>
 
