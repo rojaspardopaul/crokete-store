@@ -3,6 +3,7 @@
  * Para poder cambiar el logo, hay que cambiar el src de la imagen con id "navbar-logo". 
  */
 
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -45,7 +46,9 @@ const Navbar = async ({ globalSetting, storeCustomization }) => {
 
             {/* search input section */}
             <div className="min-w-0 flex-1 md:px-4 lg:px-6 xl:col-span-6">
-              <SearchInput />
+              <Suspense fallback={null}>
+                <SearchInput />
+              </Suspense>
             </div>
 
             {/* notification icons */}
