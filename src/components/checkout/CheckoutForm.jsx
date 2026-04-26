@@ -549,6 +549,12 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
             </div>
           </div>
 
+          {/* IVA desglosado */}
+          <div className="flex justify-between text-gray-500 text-xs pt-1">
+            <span>IVA (16%) incluido</span>
+            <span>{currency}{(parseFloat(total) * 16 / 116).toFixed(2)}</span>
+          </div>
+
           {/* Total */}
           <div className="border-t mt-4">
             <div className="flex items-center font-bold justify-between pt-4 text-sm uppercase">
@@ -557,9 +563,6 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                 {currency}{parseFloat(total).toFixed(2)}
               </span>
             </div>
-            <p className="text-xs text-gray-400 mt-1">
-              Los precios incluyen IVA.
-            </p>
             {/* Loyalty points estimate */}
             <div className="mt-3">
               <LoyaltyCartBanner cartTotal={parseFloat(total)} compact />

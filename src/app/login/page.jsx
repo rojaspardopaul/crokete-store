@@ -17,7 +17,9 @@ import { handleLogin } from "@services/ServerActionServices";
 
 const Login = () => {
   const userInfo = getUserSession();
-  const redirectUrl = useSearchParams().get("redirectUrl");
+  const rawRedirect = useSearchParams().get("redirectUrl");
+  // Only allow internal paths (must start with / but not //)
+  const redirectUrl = rawRedirect?.match(/^\/[^/]/) ? rawRedirect : "/user/dashboard";
   const [state, formAction] = useActionState(
     handleLogin.bind(null, userInfo),
     undefined

@@ -1,5 +1,9 @@
 //internal import
 
+// Regenerar página máx. cada 5 minutos; si el producto cambia en admin,
+// la próxima visita post-revalidate verá el cambio sin rebuild completo.
+export const revalidate = 300;
+
 import ProductScreen from "@components/slug-card/ProductScreen";
 import { showingTranslateValue } from "@lib/translate";
 import { getShowingAttributes } from "@services/AttributeServices";

@@ -2,6 +2,7 @@ import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import parse from "html-react-parser";
+import DOMPurify from "isomorphic-dompurify";
 import { cookies } from "next/headers";
 
 const CMSkeleton = async ({
@@ -38,7 +39,7 @@ const CMSkeleton = async ({
         <span className="text-center mx-auto text-red-500">{error}</span>
       ) : data ? (
         html ? (
-          parse(showingTranslateValue(data))
+          parse(DOMPurify.sanitize(showingTranslateValue(data) ?? ""))
         ) : (
           showingTranslateValue(data)
         )

@@ -29,11 +29,11 @@ const OrderTime = ({ data, currency, drawer }) => {
 
             <span className="my-1 truncate text-xs/5 text-gray-600">
               Cant: {item.quantity} x {currency}
-              {getNumberTwo(item.price)}
+              {getNumberTwo(item.originalPrice || item.price)}
             </span>
             <div className="font-bold text-sm">
               {currency}
-              {getNumberTwo(item.itemTotal)}
+              {getNumberTwo((item.originalPrice || item.price) * item.quantity)}
             </div>
           </div>
         </li>

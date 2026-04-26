@@ -34,12 +34,12 @@ const OrderTable = ({ data, currency, drawer }) => {
           </td>
           <td className="px-6 py-2 text-sm font-medium text-center text-gray-500">
             {currency}
-            {getNumberTwo(item.price)}
+            {getNumberTwo(item.originalPrice || item.price)}
           </td>
 
           <td className="px-6 py-2 text-sm text-right font-semibold text-gray-500">
             {currency}
-            {getNumberTwo(item.itemTotal)}
+            {getNumberTwo((item.originalPrice || item.price) * item.quantity)}
           </td>
         </tr>
       ))}

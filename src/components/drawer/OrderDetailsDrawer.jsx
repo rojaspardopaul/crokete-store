@@ -159,7 +159,10 @@ const OrderDetailsDrawer = ({ data }) => {
                 <div className="flex justify-between items-center gap-4 flex-wrap">
                   <h4 className="font-semibold text-base">Pago</h4>
                   <p className="text-gray-500 text-sm">
-                    Método de Pago: <strong>{data?.paymentMethod}</strong>
+                    Método de Pago:{" "}
+                    <strong>
+                      {({ Cash: "Pago Contra Entrega", Card: "Tarjeta de Crédito", Stripe: "Tarjeta de Crédito", PayPal: "PayPal", Razorpay: "Razorpay" })[data?.paymentMethod] || data?.paymentMethod}
+                    </strong>
                   </p>
                 </div>
               </div>
@@ -181,7 +184,7 @@ const OrderDetailsDrawer = ({ data }) => {
               </div>
               <div className="flex justify-between text-sm text-gray-500 bg-gray-50 px-4 py-2">
                 <span>Monto Total</span>
-                <span className="text-red-500 font-bold text-base">
+                <span className="text-emerald-600 font-bold text-base">
                   {currency}
                   {getNumberTwo(data.total)}
                 </span>

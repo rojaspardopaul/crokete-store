@@ -2,7 +2,7 @@
 
 import { getHeaders } from "@lib/auth-server";
 import { baseURL, handleResponse } from "@services/CommonService";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 const addOrder = async (orderInfo) => {
   try {
@@ -43,7 +43,6 @@ const createPaymentIntent = async (orderInfo) => {
     });
 
     const stripeInfo = await handleResponse(response);
-    console.log('🚀 , stripeInfo:', stripeInfo)
 
     return {
       stripeInfo,

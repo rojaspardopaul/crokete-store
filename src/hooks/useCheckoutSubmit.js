@@ -569,7 +569,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
               setDiscountPercentage(rewardCoupon.discountType);
               setLoyaltyRewardCode(rewardResult.couponCode);
               dispatch({ type: "SAVE_COUPON", payload: rewardCoupon });
-              Cookies.set("couponInfo", JSON.stringify(rewardCoupon));
+              Cookies.set("couponInfo", JSON.stringify(rewardCoupon), { sameSite: "Strict", secure: true });
               return;
             }
           }
@@ -607,7 +607,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
         setMinimumAmount(result[0]?.minimumAmount);
         setDiscountPercentage(result[0].discountType);
         dispatch({ type: "SAVE_COUPON", payload: result[0] });
-        Cookies.set("couponInfo", JSON.stringify(result[0]));
+        Cookies.set("couponInfo", JSON.stringify(result[0]), { sameSite: "Strict", secure: true });
       }
     } catch (error) {
       setIsCouponAvailable(false);

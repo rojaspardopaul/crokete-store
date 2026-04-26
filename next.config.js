@@ -2,25 +2,38 @@
 const nextConfig = {
   devIndicators: false,
   reactStrictMode: true,
-  // Disable static generation, use SSR only
   output: 'standalone',
 
   images: {
-    // Enable modern formats for smaller file sizes
     formats: ['image/avif', 'image/webp'],
-    // Fine-tune responsive sizes to match actual layout breakpoints
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "*.cloudinary.com" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+      { protocol: "https", hostname: "platform-lookaside.fbsbx.com" },
+      // Agrega aquí otros dominios de imágenes que uses
     ],
   },
 
-  // Enable gzip compression
   compress: true,
+
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
