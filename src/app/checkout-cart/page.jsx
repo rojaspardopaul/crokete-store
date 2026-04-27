@@ -2,22 +2,20 @@ import CheckoutCartScreen from "@components/checkout/CheckoutCartScreen";
 import React from "react";
 
 export const metadata = {
-  title: "Checkout Cart | Kachabazar",
+  title: "Carrito de compras | Crokete",
   description:
-    "Get in touch with us! Find our contact information and fill out our contact form.",
-  keywords: ["contact", "email", "phone", "location"],
-  // You can also add more advanced metadata here
+    "Revisa tu carrito de compras antes de proceder al pago.",
+  keywords: ["carrito", "compras", "crokete"],
   openGraph: {
-    title: "Checkout Cart | Kachabazar",
-    description:
-      "Get in touch with us! Find our contact information and fill out our contact form.",
-    url: "https://kachabazar-store-nine.vercel.app/faq",
+    title: "Carrito de compras | Crokete",
+    description: "Revisa tu carrito de compras antes de proceder al pago.",
+    url: "https://www.crokete.com.mx/checkout-cart",
     images: [
       {
-        url: "https://kachabazar-store-nine.vercel.app/og-image.jpg",
+        url: "https://www.crokete.com.mx/og-image.jpg",
         width: 800,
         height: 600,
-        alt: "Checkout Cart Page",
+        alt: "Carrito de compras Crokete",
       },
     ],
   },

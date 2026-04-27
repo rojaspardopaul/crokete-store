@@ -67,7 +67,7 @@ const PagesDrawer = ({ open, setOpen, categories, categoryError }) => {
                     <img
                       className="h-8 w-auto"
                       src="/logo/logo-color.png"
-                      alt="Kachabazar"
+                      alt="Crokete"
                     />
                   </Link>
                 </div>

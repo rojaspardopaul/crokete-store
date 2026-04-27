@@ -5,13 +5,12 @@ import { cookies } from "next/headers";
 
 const PageHeader = async ({ title, headerBg }) => {
   const cookiesStore = await cookies();
-  const lang = cookiesStore.get("_lang")?.value;
+  const lang = cookiesStore.get("_lang")?.value || "es";
   const showingTranslateValue = (data) => {
     const updatedData =
       data !== undefined && Object?.keys(data).includes(lang)
         ? data[lang]
-        : data?.en;
-    console.log("lang:::", lang, "updatedData", updatedData);
+        : data?.es ?? data?.en;
     return updatedData;
   };
 

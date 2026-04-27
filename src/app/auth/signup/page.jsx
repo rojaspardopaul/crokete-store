@@ -37,7 +37,7 @@ const SignUp = () => {
               <div className="overflow-hidden mx-auto">
                 <div className="text-center">
                   <h2 className="text-2xl font-semibold mb-1">
-                    Bienvenido a Kachabazar
+                    Bienvenido a Crokete
                   </h2>
                   <p className="text-sm text-gray-600 mt-1 mb-6">
                     Crea tu cuenta, es gratis.

@@ -16,12 +16,12 @@ const CMSkeleton = async ({
   highlightColor,
 }) => {
   const cookiesStore = await cookies();
-  const lang = cookiesStore.get("_lang")?.value;
+  const lang = cookiesStore.get("_lang")?.value || "es";
   const showingTranslateValue = (data) => {
     const updatedData =
       data !== undefined && Object?.keys(data).includes(lang)
         ? data[lang]
-        : data?.en;
+        : data?.es ?? data?.en;
     return updatedData;
   };
 

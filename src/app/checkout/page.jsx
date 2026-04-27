@@ -4,22 +4,20 @@ import CheckoutForm from "@components/checkout/CheckoutForm";
 import { getShippingAddress } from "@services/CustomerServices";
 
 export const metadata = {
-  title: "Checkout | Kachabazar",
+  title: "Pago | Crokete",
   description:
-    "Complete your purchase securely and quickly with our checkout process.",
-  keywords: ["checkout", "payment", "shipping", "order"],
-  // You can also add more advanced metadata here
+    "Completa tu compra de forma segura y rápida.",
+  keywords: ["pago", "checkout", "envío", "pedido"],
   openGraph: {
-    title: "Checkout | Kachabazar",
-    description:
-      "Complete your purchase securely and quickly with our checkout process.",
-    url: "https://kachabazar-store-nine.vercel.app/checkout",
+    title: "Pago | Crokete",
+    description: "Completa tu compra de forma segura y rápida.",
+    url: "https://www.crokete.com.mx/checkout",
     images: [
       {
-        url: "https://kachabazar-store-nine.vercel.app/og-image.jpg",
+        url: "https://www.crokete.com.mx/og-image.jpg",
         width: 800,
         height: 600,
-        alt: "Checkout Page",
+        alt: "Pago Crokete",
       },
     ],
   },
