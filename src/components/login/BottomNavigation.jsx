@@ -9,9 +9,9 @@ import { useSetting } from "@context/SettingContext";
 const BottomNavigation = ({ or, route, desc, pageName, loginTitle }) => {
   const { storeSetting } = useSetting();
 
-  const googleEnabled = storeSetting?.google_oauth_ready === true;
-  const facebookEnabled = storeSetting?.facebook_oauth_ready === true;
-  const githubEnabled = storeSetting?.github_oauth_ready === true;
+  const googleEnabled = storeSetting?.google_login_status === true;
+  const facebookEnabled = storeSetting?.facebook_login_status === true;
+  const githubEnabled = storeSetting?.github_login_status === true;
   const hasSocialProviders = googleEnabled || facebookEnabled || githubEnabled;
 
   const buttonStyles = `
