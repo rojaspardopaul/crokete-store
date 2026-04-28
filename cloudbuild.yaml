@@ -4,14 +4,14 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'us-south1-docker.pkg.dev/crokete/backend-repo/store-image:latest'
+      - 'us-south1-docker.pkg.dev/project-9266ab3a-2007-4933-be4/backend-repo/store-image:latest'
       - '.'
 
   # Push to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'us-south1-docker.pkg.dev/crokete/backend-repo/store-image:latest'
+      - 'us-south1-docker.pkg.dev/project-9266ab3a-2007-4933-be4/backend-repo/store-image:latest'
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -20,11 +20,11 @@ steps:
       - 'run'
       - 'deploy'
       - 'store-service'
-      - '--image=us-south1-docker.pkg.dev/crokete/backend-repo/store-image:latest'
+      - '--image=us-south1-docker.pkg.dev/project-9266ab3a-2007-4933-be4/backend-repo/store-image:latest'
       - '--region=us-south1'
       - '--platform=managed'
       - '--allow-unauthenticated'
-      - '--set-env-vars=NEXT_PUBLIC_API_BASE_URL=https://backend-service-704205683434.us-south1.run.app/v1,NEXT_PUBLIC_API_SOCKET_URL=https://backend-service-704205683434.us-south1.run.app,NEXT_PUBLIC_STRIPE_KEY=pk_test_51NbW24Ckl17m6CjSi8HKXU0EXb6ATi0OU3QQB8y0bCwuwGPkfWMGp3gZj9hqJEqbkoxgj6hslJRJFJO7vL1LMcF800vRN5pIJy,NEXT_PUBLIC_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/dr397rg7u/image/upload,NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=crokete_upload_preset,NEXT_PUBLIC_STORE_DOMAIN=https://www.crokete.com.mx,NEXTAUTH_URL=https://www.crokete.com.mx,NEXTAUTH_SECRET=3BRAQWnfbEfhT3fnlrVMEHe2T7TG9ky4sfs//Xx+8Vc='
+      - '--set-env-vars=NEXT_PUBLIC_API_BASE_URL=https://backend-service-812236940543.us-south1.run.app/v1,NEXT_PUBLIC_API_SOCKET_URL=https://backend-service-812236940543.us-south1.run.app,NEXT_PUBLIC_STRIPE_KEY=pk_test_51NbW24Ckl17m6CjSi8HKXU0EXb6ATi0OU3QQB8y0bCwuwGPkfWMGp3gZj9hqJEqbkoxgj6hslJRJFJO7vL1LMcF800vRN5pIJy,NEXT_PUBLIC_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/dr397rg7u/image/upload,NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=crokete_upload_preset,NEXT_PUBLIC_STORE_DOMAIN=https://www.crokete.com.mx,NEXTAUTH_URL=https://www.crokete.com.mx,NEXTAUTH_SECRET=3BRAQWnfbEfhT3fnlrVMEHe2T7TG9ky4sfs//Xx+8Vc='
       - '--memory=1Gi'
       - '--cpu=1'
       - '--timeout=300'
@@ -32,7 +32,7 @@ steps:
       - '--min-instances=0'
 
 images:
-  - 'us-south1-docker.pkg.dev/crokete/backend-repo/store-image:latest'
+  - 'us-south1-docker.pkg.dev/project-9266ab3a-2007-4933-be4/backend-repo/store-image:latest'
 
 options:
   logging: CLOUD_LOGGING_ONLY
