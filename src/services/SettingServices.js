@@ -65,12 +65,13 @@ const getStoreSetting = cache(async () => {
 const getStoreSecretKeys = cache(async () => {
   try {
     const response = await fetch(`${baseURL}/setting/store-setting/keys`, {
-      // cache: "force-cache", //if you want to no cache then comment this line, this setup will only re-call the api on hard reload after first call
       next: { revalidate: 120 }, // revalidate every 2 minutes
+      headers: {
+        "x-internal-key": process.env.NEXTAUTH_SECRET ?? "",
+      },
     });
 
     const storeSetting = await handleResponse(response);
-    // console.log("storeSetting:::>>>", storeSetting);
 
     return { storeSetting };
   } catch (error) {

@@ -24,7 +24,7 @@ steps:
       - '--region=us-south1'
       - '--platform=managed'
       - '--allow-unauthenticated'
-      - '--set-env-vars=NEXT_PUBLIC_API_BASE_URL=https://backend-service-704205683434.us-south1.run.app/v1,NEXT_PUBLIC_API_SOCKET_URL=https://backend-service-704205683434.us-south1.run.app,NEXT_PUBLIC_STRIPE_KEY=pk_test_51NbW24Ckl17m6CjSi8HKXU0EXb6ATi0OU3QQB8y0bCwuwGPkfWMGp3gZj9hqJEqbkoxgj6hslJRJFJO7vL1LMcF800vRN5pIJy,NEXT_PUBLIC_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/dr397rg7u/image/upload,NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=crokete_upload_preset,NEXT_PUBLIC_STORE_DOMAIN=https://store-service-704205683434.us-south1.run.app,NEXTAUTH_URL=https://store-service-704205683434.us-south1.run.app,NEXTAUTH_SECRET=3BRAQWnfbEfhT3fnlrVMEHe2T7TG9ky4sfs//Xx+8Vc='
+      - '--set-env-vars=NEXT_PUBLIC_API_BASE_URL=https://backend-service-704205683434.us-south1.run.app/v1,NEXT_PUBLIC_API_SOCKET_URL=https://backend-service-704205683434.us-south1.run.app,NEXT_PUBLIC_STRIPE_KEY=pk_test_51NbW24Ckl17m6CjSi8HKXU0EXb6ATi0OU3QQB8y0bCwuwGPkfWMGp3gZj9hqJEqbkoxgj6hslJRJFJO7vL1LMcF800vRN5pIJy,NEXT_PUBLIC_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/dr397rg7u/image/upload,NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=crokete_upload_preset,NEXT_PUBLIC_STORE_DOMAIN=https://www.crokete.com.mx,NEXTAUTH_URL=https://www.crokete.com.mx,NEXTAUTH_SECRET=3BRAQWnfbEfhT3fnlrVMEHe2T7TG9ky4sfs//Xx+8Vc='
       - '--memory=1Gi'
       - '--cpu=1'
       - '--timeout=300'
