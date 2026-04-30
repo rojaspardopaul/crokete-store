@@ -82,6 +82,7 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
   const [mounted, setMounted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [maxReachedStep, setMaxReachedStep] = useState(1);
+  const [autoAdvanceDone, setAutoAdvanceDone] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -134,6 +135,16 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
     if (colonias.length === 1) setValue("colonia", colonias[0]);
   }, [colonias, setValue]);
 
+  // Auto-advance on initial load when the user already has a saved address
+  useEffect(() => {
+    if (autoAdvanceDone || !mounted || currentStep !== 1) return;
+    if (!useExistingAddress) return;
+    setAutoAdvanceDone(true);
+    const target = isFreeShipping ? 4 : 3;
+    setCurrentStep(target);
+    setMaxReachedStep(target);
+  }, [useExistingAddress, mounted, autoAdvanceDone, currentStep, isFreeShipping]);
+
   if (!mounted) return null;
 
   const stepFields = {
@@ -150,33 +161,12 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
   const handleNext = async () => {
     const fields = stepFields[currentStep] ?? [];
 
-    if (currentStep === 1) {
-      const valid = await trigger(fields);
-      if (!valid) return;
-      // Skip step 2 if using saved address
-      if (useExistingAddress) {
-        goToStep(isFreeShipping ? 4 : 3);
-      } else {
-        goToStep(2);
-      }
+    if (currentStep === 2 && useExistingAddress) {
+      goToStep(3);
       return;
     }
 
-    if (currentStep === 2) {
-      if (useExistingAddress) {
-        goToStep(isFreeShipping ? 4 : 3);
-        return;
-      }
-      const valid = await trigger(fields);
-      if (valid) goToStep(isFreeShipping ? 4 : 3);
-      return;
-    }
-
-    if (currentStep === 3) {
-      if (isFreeShipping) {
-        goToStep(4);
-        return;
-      }
+    if (currentStep === 3 && !isFreeShipping) {
       const shippingVal = watch("shippingOption");
       if (!shippingVal) {
         await trigger(["shippingOption"]);
@@ -185,17 +175,12 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
       goToStep(4);
       return;
     }
+
+    const valid = fields.length === 0 || (await trigger(fields));
+    if (valid) goToStep(currentStep + 1);
   };
 
-  const handleBack = () => {
-    if (currentStep === 4 && isFreeShipping) {
-      setCurrentStep(useExistingAddress ? 1 : 2);
-    } else if (currentStep === 3 && useExistingAddress) {
-      setCurrentStep(1);
-    } else {
-      setCurrentStep((s) => s - 1);
-    }
-  };
+  const handleBack = () => setCurrentStep((s) => Math.max(1, s - 1));
 
   return isEmpty ? (
     <div className="py-20 flex flex-col items-center justify-center text-center">
