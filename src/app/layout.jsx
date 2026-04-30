@@ -24,7 +24,7 @@ export async function generateMetadata() {
   const shopName = globalSetting?.shop_name || APP_CONFIG.SHOP_NAME;
   
   return {
-    title: `${shopName} - Next Store e-commerce Template`,
+    title: `${shopName} - Pet`,
     description: `${shopName} - Plataforma de comercio electrónico`,
   };
 }

@@ -34,16 +34,20 @@ const STEPS = [
   { id: 4, label: "Pago", fullLabel: "Método de Pago", Icon: ImCreditCard },
 ];
 
-const StepIndicator = ({ current }) => (
+const StepIndicator = ({ current, maxReached, onStepClick }) => (
   <div className="flex items-center w-full mb-8 px-1">
     {STEPS.map((step, idx) => {
       const done = current > step.id;
       const active = current === step.id;
+      const clickable = step.id <= maxReached && step.id !== current;
       return (
         <React.Fragment key={step.id}>
           <div className="flex flex-col items-center min-w-0">
             <div
+              onClick={() => clickable && onStepClick(step.id)}
               className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold border-2 transition-all flex-shrink-0 ${
+                clickable ? "cursor-pointer hover:opacity-75" : ""
+              } ${
                 done
                   ? "bg-kachabazar-500 border-kachabazar-500 text-white"
                   : active
@@ -54,7 +58,7 @@ const StepIndicator = ({ current }) => (
               {done ? <FiCheckCircle className="w-4 h-4" /> : step.id}
             </div>
             <span
-              className={`text-xs mt-1 font-medium leading-tight text-center hidden sm:block ${
+              className={`text-[9px] sm:text-xs mt-0.5 sm:mt-1 font-medium leading-tight text-center ${
                 active ? "text-kachabazar-600" : done ? "text-kachabazar-500" : "text-gray-400"
               }`}
             >
@@ -77,6 +81,7 @@ const StepIndicator = ({ current }) => (
 const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
   const [mounted, setMounted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [maxReachedStep, setMaxReachedStep] = useState(1);
 
   useEffect(() => setMounted(true), []);
 
@@ -137,33 +142,60 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
     3: [],
   };
 
+  const goToStep = (step) => {
+    setCurrentStep(step);
+    setMaxReachedStep((prev) => Math.max(prev, step));
+  };
+
   const handleNext = async () => {
     const fields = stepFields[currentStep] ?? [];
-    // Skip address validation if using saved address
-    if (currentStep === 2 && useExistingAddress) {
-      setCurrentStep((s) => s + 1);
+
+    if (currentStep === 1) {
+      const valid = await trigger(fields);
+      if (!valid) return;
+      // Skip step 2 if using saved address
+      if (useExistingAddress) {
+        goToStep(isFreeShipping ? 4 : 3);
+      } else {
+        goToStep(2);
+      }
       return;
     }
-    // Skip shipping validation if free shipping
-    if (currentStep === 3 && isFreeShipping) {
-      setCurrentStep((s) => s + 1);
+
+    if (currentStep === 2) {
+      if (useExistingAddress) {
+        goToStep(isFreeShipping ? 4 : 3);
+        return;
+      }
+      const valid = await trigger(fields);
+      if (valid) goToStep(isFreeShipping ? 4 : 3);
       return;
     }
-    if (currentStep === 3 && !isFreeShipping) {
+
+    if (currentStep === 3) {
+      if (isFreeShipping) {
+        goToStep(4);
+        return;
+      }
       const shippingVal = watch("shippingOption");
       if (!shippingVal) {
-        // Trigger to show error
         await trigger(["shippingOption"]);
         return;
       }
-      setCurrentStep((s) => s + 1);
+      goToStep(4);
       return;
     }
-    const valid = fields.length === 0 || (await trigger(fields));
-    if (valid) setCurrentStep((s) => s + 1);
   };
 
-  const handleBack = () => setCurrentStep((s) => s - 1);
+  const handleBack = () => {
+    if (currentStep === 4 && isFreeShipping) {
+      setCurrentStep(useExistingAddress ? 1 : 2);
+    } else if (currentStep === 3 && useExistingAddress) {
+      setCurrentStep(1);
+    } else {
+      setCurrentStep((s) => s - 1);
+    }
+  };
 
   return isEmpty ? (
     <div className="py-20 flex flex-col items-center justify-center text-center">
@@ -189,7 +221,11 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
       {/* Checkout form */}
       <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
         <div className="mt-5 md:mt-0 md:col-span-2">
-          <StepIndicator current={currentStep} />
+          <StepIndicator
+            current={currentStep}
+            maxReached={maxReachedStep}
+            onStepClick={setCurrentStep}
+          />
 
           <form onSubmit={handleSubmit(submitHandler)}>
             {/* ── STEP 1: Datos personales ── */}
@@ -366,11 +402,25 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
                   </div>
                 )}
 
-                {useExistingAddress && (
-                  <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
-                    <FiCheckCircle className="w-4 h-4 flex-shrink-0" />
-                    Se usará tu dirección de envío guardada.
-                  </p>
+                {useExistingAddress && shippingAddress && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <FiCheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                      <span className="text-sm font-semibold text-green-800">Dirección de envío guardada</span>
+                    </div>
+                    <div className="text-sm text-gray-700 space-y-0.5 pl-6">
+                      <p className="font-medium">{shippingAddress.name}</p>
+                      <p>
+                        {shippingAddress.calle} {shippingAddress.numExterior}
+                        {shippingAddress.numInterior ? ` Int. ${shippingAddress.numInterior}` : ""}
+                      </p>
+                      <p>Col. {shippingAddress.colonia}</p>
+                      <p>{shippingAddress.municipio}, C.P. {shippingAddress.postalCode}</p>
+                      {shippingAddress.referencias && (
+                        <p className="text-gray-500 italic text-xs mt-1">{shippingAddress.referencias}</p>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             )}
