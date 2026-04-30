@@ -87,20 +87,41 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
   useEffect(() => {
     if (autoFilled) return;
 
-    if (shippingAddress && Object.keys(shippingAddress).length > 0) {
-      setUseExistingAddress(true);
-      const nameParts = (shippingAddress.name || "").trim().split(" ");
-      setValue("firstName", nameParts[0] || "");
-      setValue("lastName", nameParts.length > 1 ? nameParts.slice(1).join(" ") : "");
-      setValue("contact", shippingAddress.contact || "");
-      setValue("email", shippingAddress.email || userInfo?.email || "");
-      setValue("postalCode", shippingAddress.postalCode || "");
-      setValue("colonia", shippingAddress.colonia || "");
-      setValue("calle", shippingAddress.calle || "");
-      setValue("numExterior", shippingAddress.numExterior || "");
-      setValue("numInterior", shippingAddress.numInterior || "");
-      setValue("municipio", shippingAddress.municipio || "");
-      setValue("referencias", shippingAddress.referencias || "");
+    if (shippingAddress) {
+      const { name, contact, postalCode, colonia, calle, numExterior, municipio } = shippingAddress;
+      const nameParts = (name || "").trim().split(/\s+/);
+      const isComplete =
+        nameParts[0]?.trim() &&
+        nameParts[1]?.trim() &&
+        contact &&
+        postalCode &&
+        colonia &&
+        calle &&
+        numExterior &&
+        municipio;
+
+      if (isComplete) {
+        setUseExistingAddress(true);
+        setValue("firstName", nameParts[0]);
+        setValue("lastName", nameParts.slice(1).join(" "));
+        setValue("contact", contact);
+        setValue("email", shippingAddress.email || userInfo?.email || "");
+        setValue("postalCode", postalCode);
+        setValue("colonia", colonia);
+        setValue("calle", calle);
+        setValue("numExterior", numExterior);
+        setValue("numInterior", shippingAddress.numInterior || "");
+        setValue("municipio", municipio);
+        setValue("referencias", shippingAddress.referencias || "");
+      } else if (userInfo) {
+        setValue("email", userInfo.email || "");
+        if (userInfo.name) {
+          const parts = userInfo.name.trim().split(/\s+/);
+          setValue("firstName", parts[0] || "");
+          setValue("lastName", parts.length > 1 ? parts.slice(1).join(" ") : "");
+        }
+        if (userInfo.phone) setValue("contact", userInfo.phone);
+      }
       setAutoFilled(true);
     } else if (userInfo) {
       setValue("email", userInfo.email);

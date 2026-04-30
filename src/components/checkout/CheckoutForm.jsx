@@ -135,15 +135,38 @@ const CheckoutForm = ({ shippingAddress, hasShippingAddress }) => {
     if (colonias.length === 1) setValue("colonia", colonias[0]);
   }, [colonias, setValue]);
 
-  // Auto-advance on initial load when the user already has a saved address
+  // Auto-advance on initial load when the user already has a complete saved address
   useEffect(() => {
     if (autoAdvanceDone || !mounted || currentStep !== 1) return;
     if (!useExistingAddress) return;
+    // Guard: all required step-1 fields must be filled before skipping
+    const firstName = watch("firstName");
+    const lastName = watch("lastName");
+    const contact = watch("contact");
+    const email = watch("email");
+    if (!firstName?.trim() || !lastName?.trim() || !contact?.trim() || !email?.trim()) return;
     setAutoAdvanceDone(true);
     const target = isFreeShipping ? 4 : 3;
     setCurrentStep(target);
     setMaxReachedStep(target);
-  }, [useExistingAddress, mounted, autoAdvanceDone, currentStep, isFreeShipping]);
+  }, [useExistingAddress, mounted, autoAdvanceDone, currentStep, isFreeShipping, watch]);
+
+  // Redirect to first step containing validation errors after a failed submit
+  useEffect(() => {
+    if (!mounted) return;
+    const errorFields = Object.keys(errors);
+    if (errorFields.length === 0) return;
+    const stepsToCheck = [
+      { step: 1, fields: ["firstName", "lastName", "email", "contact"] },
+      { step: 2, fields: ["postalCode", "colonia", "calle", "numExterior", "municipio"] },
+    ];
+    for (const { step, fields } of stepsToCheck) {
+      if (fields.some((f) => errorFields.includes(f))) {
+        setCurrentStep(step);
+        return;
+      }
+    }
+  }, [errors, mounted]);
 
   if (!mounted) return null;
 
