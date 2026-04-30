@@ -6,6 +6,20 @@ import { signIn } from "next-auth/react";
 import { Button } from "@components/ui/button";
 import { useSetting } from "@context/SettingContext";
 
+const isWebView = () => {
+  if (typeof window === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  // Detect Android WebView, in-app browsers (Instagram, Facebook, etc.)
+  return (
+    /wv/.test(ua) ||
+    /FBAN|FBAV/.test(ua) ||
+    /Instagram/.test(ua) ||
+    /Twitter/.test(ua) ||
+    (ua.includes("Android") && !ua.includes("Chrome")) ||
+    (ua.includes("iPhone") && !ua.includes("Safari") && ua.includes("Mobile"))
+  );
+};
+
 const BottomNavigation = ({ or, route, desc, pageName, loginTitle }) => {
   const { storeSetting } = useSetting();
 
@@ -13,6 +27,7 @@ const BottomNavigation = ({ or, route, desc, pageName, loginTitle }) => {
   const facebookEnabled = storeSetting?.facebook_oauth_ready === true;
   const githubEnabled = storeSetting?.github_oauth_ready === true;
   const hasSocialProviders = googleEnabled || facebookEnabled || githubEnabled;
+  const inWebView = hasSocialProviders && isWebView();
 
   const buttonStyles = `
     text-sm cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center rounded-md focus:outline-none shadow-sm
@@ -27,7 +42,21 @@ const BottomNavigation = ({ or, route, desc, pageName, loginTitle }) => {
         </div>
       )}
 
-      {hasSocialProviders && (
+      {inWebView && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+          <p className="font-semibold mb-1">⚠️ Abre en tu navegador</p>
+          <p>Para iniciar sesión con Google, abre este sitio directamente en <strong>Chrome</strong> o <strong>Safari</strong> en lugar de desde otra aplicación.</p>
+          <button
+            type="button"
+            onClick={() => navigator.clipboard?.writeText(window.location.href)}
+            className="mt-2 text-xs underline text-amber-700"
+          >
+            Copiar enlace
+          </button>
+        </div>
+      )}
+
+      {hasSocialProviders && !inWebView && (
         <div className="flex flex-col mb-4">
           {googleEnabled && (
             <Button

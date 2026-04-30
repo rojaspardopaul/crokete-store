@@ -69,6 +69,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     handleSubmit,
     setValue,
     watch,
+    trigger,
     formState: { errors },
   } = useForm();
 
@@ -649,6 +650,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     handleDefaultShippingAddress,
     setValue,
     watch,
+    trigger,
   };
 };
 
