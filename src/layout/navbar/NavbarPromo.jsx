@@ -14,7 +14,6 @@ import Category from "@components/category/Category";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import {
-  AlertCircle,
   ChevronDownIcon,
   File,
   FolderLock,
@@ -67,12 +66,13 @@ const NavbarPromo = ({ languages, categories, categoryError }) => {
                               leaveFrom="opacity-100 translate-y-0"
                               leaveTo="opacity-0 translate-y-1"
                             >
-                              <PopoverPanel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
-                                <div className="rounded-md shadow-lg  overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
+                              <PopoverPanel className="absolute z-10 -ml-1 mt-1 w-[560px] bg-white">
+                                <div className="rounded-xl shadow-xl border border-gray-100 overflow-hidden">
                                   <Category
                                     categories={categories}
                                     categoryError={categoryError}
                                     onClose={close}
+                                    megaMenu
                                   />
                                 </div>
                               </PopoverPanel>
@@ -232,18 +232,6 @@ const NavbarPromo = ({ languages, categories, categoryError }) => {
                                     </span>
                                   )}
 
-                                  <span className="p-2 items-center rounded-md hover:bg-gray-50 w-full hover:text-kachabazar-600">
-                                    <div className="w-full flex">
-                                      <AlertCircle className="my-auto h-5 w-5 text-gray-700" />
-                                      <Link
-                                        href="/404"
-                                        onClick={() => { setIsLoading(!isLoading); close(); }}
-                                        className="relative inline-flex items-center ml-2 py-0 rounded text-sm font-medium  hover:text-kachabazar-600"
-                                      >
-                                        404
-                                      </Link>
-                                    </div>
-                                  </span>
                                 </div>
                               </div>
                             </PopoverPanel>
