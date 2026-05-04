@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useReactToPrint } from "react-to-print";
-import { CreditCard, Printer, Truck, X } from "lucide-react";
+import { CreditCard, MapPin, Printer, X } from "lucide-react";
+import dayjs from "dayjs";
+import "dayjs/locale/es";
 
-//internal import
 import MainDrawer from "./MainDrawer";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { SidebarContext } from "@context/SidebarContext";
@@ -16,196 +19,182 @@ const PDFDownloadSection = dynamic(
   {
     ssr: false,
     loading: () => (
-      <Button variant="create" disabled>
+      <Button variant="create" disabled className="w-full justify-center">
         Cargando PDF...
       </Button>
     ),
   }
 );
 
+const STATUS_CONFIG = {
+  pedido:      { bg: "bg-orange-50",  text: "text-orange-700",  dot: "bg-orange-400",  border: "border-orange-200",  label: "Pedido" },
+  empaquetado: { bg: "bg-blue-50",    text: "text-blue-700",    dot: "bg-blue-400",    border: "border-blue-200",    label: "Empaquetado" },
+  en_reparto:  { bg: "bg-purple-50",  text: "text-purple-700",  dot: "bg-purple-400",  border: "border-purple-200",  label: "En Reparto" },
+  entregado:   { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", border: "border-emerald-200", label: "Entregado" },
+  cancelado:   { bg: "bg-red-50",     text: "text-red-700",     dot: "bg-red-400",     border: "border-red-200",     label: "Cancelado" },
+};
+
+const PAYMENT_LABELS = {
+  Cash: "Pago Contra Entrega",
+  Card: "Tarjeta de Crédito",
+  Stripe: "Tarjeta de Crédito",
+  PayPal: "PayPal",
+  Razorpay: "Razorpay",
+};
+
 const OrderDetailsDrawer = ({ data }) => {
   const printRef = useRef();
   const { drawerOpen, closeDrawer } = useContext(SidebarContext);
-  const { globalSetting, storeCustomization } = useSetting();
-  const { showingTranslateValue, getNumberTwo, currency } = useUtilsFunction();
-
-  const dashboard = storeCustomization?.dashboard;
+  const { globalSetting } = useSetting();
+  const { getNumberTwo, currency } = useUtilsFunction();
 
   const handlePrintInvoice = useReactToPrint({
     contentRef: printRef,
     documentTitle: `Pedido-${data?.invoice}`,
   });
 
-  // Flag to only render PDFDownloadLink after client mount
   const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  useEffect(() => { setIsClient(true); }, []);
+
+  const statusCfg = STATUS_CONFIG[data?.status?.toLowerCase() || ""];
 
   return (
     <MainDrawer open={drawerOpen} onClose={closeDrawer}>
-      <div className="flex flex-col w-full h-full justify-between items-middle bg-white rounded">
-        <div
-          ref={printRef}
-          className="overflow-y-scroll scrollbar-hide w-full max-h-full"
-        >
-          <div className="w-full flex justify-between items-center relative px-5 py-4 border-b bg-indigo-50 border-gray-100">
-            <div className="flex flex-col">
-              <h2 className="font-semibold text-lg m-0 text-heading flex items-center">
-                Pedido #{data?.invoice}
-              </h2>
+      <div className="flex flex-col h-full bg-white">
 
-              <div className="text-sm">
-                {(data.status === "Entregado" ||
-                  data?.status === "entregado") && (
-                  <span className="flex items-center gap-x-2 justify-start">
-                    <div className="flex-none rounded-full bg-green-400/10 p-1 text-green-400">
-                      <div className="size-2.5 rounded-full bg-current"></div>
-                    </div>
-                    <span className="block">{data.status}</span>
-                  </span>
-                )}
-                {(data.status === "Pendiente" || data?.status === "pendiente") && (
-                  <span className="flex items-center gap-x-2 justify-start">
-                    <div className="flex-none rounded-full bg-orange-400/10 p-1 text-orange-400">
-                      <div className="size-2.5 rounded-full bg-current"></div>
-                    </div>
-                    <span className="block">{data.status}</span>
-                  </span>
-                )}
-                {(data.status === "Cancelado" || data.status === "cancelado") && (
-                  <span className="flex items-center gap-x-2 justify-start">
-                    <div className="flex-none rounded-full bg-red-400/10 p-1 text-red-400">
-                      <div className="size-2.5 rounded-full bg-current"></div>
-                    </div>
-                    <span className="block">{data.status}</span>
-                  </span>
-                )}
-                {(data.status === "Procesando" ||
-                  data.status === "procesando") && (
-                  <span className="flex items-center gap-x-2 justify-start">
-                    <div className="flex-none rounded-full bg-kachabazar-400/10 p-1 text-kachabazar-400">
-                      <div className="size-2.5 rounded-full bg-current"></div>
-                    </div>
-                    <span className="block">{data.status}</span>
-                  </span>
-                )}
-              </div>
-            </div>
+        {/* ── Header ── */}
+        <div className="flex items-start justify-between px-5 py-4 border-b border-gray-100 bg-white shrink-0">
+          <div className="flex flex-col gap-1 min-w-0 pr-3">
+            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+              Detalle del Pedido
+            </p>
+            <h2 className="text-lg font-bold text-gray-900 leading-none">
+              Pedido #{data?.invoice}
+            </h2>
+            {data?.createdAt && (
+              <p className="text-xs text-gray-400 mt-0.5">
+                {dayjs(data.createdAt).locale("es").format("D [de] MMMM [de] YYYY")}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {statusCfg && (
+              <span
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${statusCfg.bg} ${statusCfg.text} ${statusCfg.border}`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${statusCfg.dot}`} />
+                {statusCfg.label}
+              </span>
+            )}
             <button
               onClick={closeDrawer}
-              className="inline-flex print:hidden text-base items-center cursor-pointer justify-center text-gray-500 p-2 focus:outline-none transition-opacity hover:text-red-400"
+              className="print:hidden p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
             >
-              <X />
-              <span className="font-sens text-sm text-gray-500 hover:text-red-400 ml-1">
-                Cerrar
-              </span>
+              <X className="w-5 h-5" />
             </button>
           </div>
-          <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-full px-3 sm:px-6 py-4">
-            <div className="bg-kachabazar-100 rounded-md mb-5 px-4 py-3 hidden">
-              <label>
-                {showingTranslateValue(dashboard?.invoice_message_first)}{" "}
-                <span className="font-bold text-kachabazar-600">
-                  {data?.user_info?.name},
-                </span>{" "}
-                {showingTranslateValue(dashboard?.invoice_message_last)}
-              </label>
-            </div>
+        </div>
 
-            <OrderItems drawer data={data} currency={currency} />
-            <div className="border border-gray-200 mt-4 rounded-md">
-              {data?.status === "entregado" ||
-                (data?.status === "Entregado" && (
-                  <div className="flex items-center gap-3 p-4 border-b border-gray-200">
-                    <span>
-                      <Truck
-                        aria-hidden="true"
-                        className="size-4.5 text-gray-400 shrink-0"
-                      />
-                    </span>
-                    <div className="items-center gap-4 flex justify-between flex-wrap">
-                      <span className="font-semibold text-base">Entrega </span>
-                      <span className="text-gray-600 text-sm">
-                        Entrega Estimada: <strong>Feb 8, 2025</strong>
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              <div className="flex flex-col text-gray-500 p-4 text-sm">
-                <span>{data?.user_info?.name}</span>
-                <span>{data?.user_info?.email} </span>
-                <span>
-                  {data?.user_info?.calle} {data?.user_info?.numExterior}
-                  {data?.user_info?.numInterior ? ` Int. ${data.user_info.numInterior}` : ""}
-                </span>
-                <span>
-                  {data?.user_info?.colonia}, {data?.user_info?.municipio}, Jalisco C.P. {data?.user_info?.postalCode}
-                </span>
-                {data?.user_info?.referencias && (
-                  <span>Ref: {data.user_info.referencias}</span>
-                )}
-                <span className="font-medium">{data?.user_info?.contact}</span>
-              </div>
+        {/* ── Scrollable body ── */}
+        <div ref={printRef} className="flex-1 overflow-y-auto px-5 py-5 space-y-4">
+
+          {/* Products */}
+          <div className="rounded-xl border border-gray-100 overflow-hidden">
+            <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-100">
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Productos
+              </h3>
             </div>
-            <div className="mt-6 border border-gray-200 rounded-md">
-              <div className="flex items-center gap-3 p-4 border-b border-gray-200">
-                <span>
-                  <CreditCard
-                    aria-hidden="true"
-                    className="size-4.5 text-gray-400 shrink-0"
-                  />
+            <div className="px-4">
+              <OrderItems drawer data={data} currency={currency} />
+            </div>
+          </div>
+
+          {/* Shipping address */}
+          <div className="rounded-xl border border-gray-100 overflow-hidden">
+            <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
+              <MapPin className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Dirección de Envío
+              </h3>
+            </div>
+            <div className="px-4 py-4 text-sm text-gray-600 space-y-0.5">
+              <p className="font-semibold text-gray-900">{data?.user_info?.name}</p>
+              <p className="text-gray-500">{data?.user_info?.email}</p>
+              <p>
+                {data?.user_info?.calle} {data?.user_info?.numExterior}
+                {data?.user_info?.numInterior ? ` Int. ${data.user_info.numInterior}` : ""}
+              </p>
+              {data?.user_info?.colonia && (
+                <p>Col. {data.user_info.colonia}</p>
+              )}
+              <p>
+                {data?.user_info?.municipio}
+                {data?.user_info?.postalCode ? `, C.P. ${data.user_info.postalCode}` : ""}
+              </p>
+              {data?.user_info?.referencias && (
+                <p className="text-gray-400 italic text-xs pt-1">
+                  Ref: {data.user_info.referencias}
+                </p>
+              )}
+              {data?.user_info?.contact && (
+                <p className="font-medium text-gray-800 pt-1">{data.user_info.contact}</p>
+              )}
+            </div>
+          </div>
+
+          {/* Payment summary */}
+          <div className="rounded-xl border border-gray-100 overflow-hidden">
+            <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
+              <CreditCard className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Resumen de Pago
+              </h3>
+            </div>
+            <div className="px-4 py-4 space-y-2.5">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Método</span>
+                <span className="font-semibold text-gray-800">
+                  {PAYMENT_LABELS[data?.paymentMethod] || data?.paymentMethod}
                 </span>
-                <div className="flex justify-between items-center gap-4 flex-wrap">
-                  <h4 className="font-semibold text-base">Pago</h4>
-                  <p className="text-gray-500 text-sm">
-                    Método de Pago:{" "}
-                    <strong>
-                      {({ Cash: "Pago Contra Entrega", Card: "Tarjeta de Crédito", Stripe: "Tarjeta de Crédito", PayPal: "PayPal", Razorpay: "Razorpay" })[data?.paymentMethod] || data?.paymentMethod}
-                    </strong>
-                  </p>
-                </div>
               </div>
-              <div className="flex flex-col text-gray-500 p-4">
-                <div className="flex justify-between text-sm text-gray-500 mb-2">
-                  <span>Costo de Envío</span>
-                  <span className="text-gray-800 font-semibold">
-                    {currency}
-                    {getNumberTwo(data.shippingCost)}
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Envío</span>
+                <span className="font-semibold text-gray-800">
+                  {currency}{getNumberTwo(data?.shippingCost)}
+                </span>
+              </div>
+              {Number(data?.discount) > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Descuento</span>
+                  <span className="font-semibold text-emerald-600">
+                    -{currency}{getNumberTwo(data?.discount)}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span>Descuento</span>
-                  <span className="text-gray-800 font-semibold">
-                    {currency}
-                    {getNumberTwo(data.discount)}
-                  </span>
-                </div>
-              </div>
-              <div className="flex justify-between text-sm text-gray-500 bg-gray-50 px-4 py-2">
-                <span>Monto Total</span>
-                <span className="text-emerald-600 font-bold text-base">
-                  {currency}
-                  {getNumberTwo(data.total)}
+              )}
+              <div className="border-t border-gray-100 pt-2.5 flex justify-between items-center">
+                <span className="font-semibold text-gray-700">Total</span>
+                <span className="text-xl font-bold text-emerald-600">
+                  {currency}{getNumberTwo(data?.total)}
                 </span>
               </div>
             </div>
           </div>
         </div>
-        <div className="bg-neutral-50 dark:bg-slate-900 p-4 sm:p-6 mt-4">
-          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between">
-            {isClient && (
-              <PDFDownloadSection
-                data={data}
-                globalSetting={globalSetting}
-              />
-            )}
 
-            <Button onClick={handlePrintInvoice} variant="import" className="w-full sm:w-auto justify-center">
+        {/* ── Footer: buttons (siempre apilados, nunca encimados) ── */}
+        <div className="shrink-0 border-t border-gray-100 bg-gray-50 px-5 py-4 print:hidden">
+          <div className="flex flex-col gap-3">
+            {isClient && (
+              <PDFDownloadSection data={data} globalSetting={globalSetting} fullWidth />
+            )}
+            <Button
+              onClick={handlePrintInvoice}
+              variant="import"
+              className="w-full justify-center gap-2"
+            >
+              <Printer className="w-4 h-4" />
               Imprimir Pedido
-              <span className="ml-2">
-                <Printer />
-              </span>
             </Button>
           </div>
         </div>
@@ -214,6 +203,4 @@ const OrderDetailsDrawer = ({ data }) => {
   );
 };
 
-export default dynamic(() => Promise.resolve(OrderDetailsDrawer), {
-  ssr: false,
-});
+export default dynamic(() => Promise.resolve(OrderDetailsDrawer), { ssr: false });

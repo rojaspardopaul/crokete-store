@@ -57,20 +57,17 @@ const DownloadPrintButton = ({ data }) => {
       <Invoice data={data} printRef={targetRef} globalSetting={globalSetting} />
 
       <div className="bg-white rounded-lg shadow-sm">
-        <div className="bg-white p-8 rounded-b-xl">
-          <div className="flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between invoice-btn">
+        <div className="bg-white p-6 rounded-b-xl">
+          <div className="flex flex-col sm:flex-row gap-3">
             {isClient && (
               <PDFDownloadSection
                 data={data}
                 globalSetting={globalSetting}
               />
             )}
-
-            <Button onClick={handlePrintInvoice} variant="import">
-              {showingTranslateValue(dashboard?.print_button)}{" "}
-              <span className="ml-2">
-                <Printer />
-              </span>
+            <Button onClick={handlePrintInvoice} variant="import" className="gap-2">
+              <Printer className="w-4 h-4" />
+              {showingTranslateValue(dashboard?.print_button) || "Imprimir Pedido"}
             </Button>
           </div>
         </div>
