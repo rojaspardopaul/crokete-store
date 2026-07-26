@@ -7,19 +7,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import ImageZoomLens from "@components/product/ImageZoomLens";
 
 const PLACEHOLDER_IMG =
-  "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png";
-
-/**
- * Build a high-resolution Cloudinary URL for the zoom panel.
- */
-const getHiResSrc = (url) => {
-  if (!url) return url;
-  const marker = "/image/upload/";
-  const idx = url.indexOf(marker);
-  if (idx === -1) return url;
-  const pos = idx + marker.length;
-  return url.slice(0, pos) + "w_1500,q_auto:best/" + url.slice(pos);
-};
+  "/placeholder.png";
 
 // ─── Lightbox Fullscreen Popup ──────────────────────────────────────────
 const Lightbox = ({ images, startIndex, onClose }) => {
@@ -110,7 +98,7 @@ const Lightbox = ({ images, startIndex, onClose }) => {
                 className="flex-[0_0_100%] min-w-0 flex items-center justify-center"
               >
                 <Image
-                  src={getHiResSrc(img)}
+                  src={img}
                   alt={`Imagen ${i + 1}`}
                   width={900}
                   height={900}
@@ -393,7 +381,7 @@ const ProductGallery = ({
             className="zoom-panel rounded-lg border border-gray-200 shadow-2xl overflow-hidden bg-white pointer-events-none"
             style={{
               ...zoomPanelStyle,
-              backgroundImage: `url(${getHiResSrc(currentImage)})`,
+              backgroundImage: `url(${currentImage})`,
               backgroundSize: `${zoomFactor * 100}% ${zoomFactor * 100}%`,
               backgroundPosition: `${zoomState.bgX}% ${zoomState.bgY}%`,
               backgroundRepeat: "no-repeat",

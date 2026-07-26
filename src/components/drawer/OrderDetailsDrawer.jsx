@@ -38,8 +38,6 @@ const PAYMENT_LABELS = {
   Cash: "Pago Contra Entrega",
   Card: "Tarjeta de Crédito",
   Stripe: "Tarjeta de Crédito",
-  PayPal: "PayPal",
-  Razorpay: "Razorpay",
 };
 
 const OrderDetailsDrawer = ({ data }) => {

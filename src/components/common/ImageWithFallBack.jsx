@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 const fallbackImage =
-  "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png";
+  "/placeholder.png";
 
 const ImageWithFallback = ({
   src,

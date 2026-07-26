@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import { FiUploadCloud } from "react-icons/fi";
 import { notifyError } from "@utils/toast";
+import { uploadCustomerImage } from "@services/UploadServices";
+
+/** El archivo se manda al backend como data-URI. */
+const toDataUri = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("No se pudo leer el archivo."));
+    reader.readAsDataURL(file);
+  });
 
 const Uploader = ({ setImageUrl, imageUrl, multiple }) => {
   const [files, setFiles] = useState([]);
-  const uploadUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-  const upload_Preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+  const [uploading, setUploading] = useState(false);
 
   // console.log("imageUrl", imageUrl);
   // console.log("uploadUrl", uploadUrl);
@@ -47,34 +55,40 @@ const Uploader = ({ setImageUrl, imageUrl, multiple }) => {
   ));
 
   useEffect(() => {
-    const uploadURL = uploadUrl;
-    const uploadPreset = upload_Preset;
-    if (files) {
-      if (multiple && imageUrl?.length + files?.length > 4) {
-        return notifyError(`Se pueden subir hasta 4 imagenes como máximo!`);
-      }
-      files.forEach((file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", uploadPreset);
-        axios({
-          url: uploadURL,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          data: formData,
-        })
-          .then((res) => {
-            if (multiple) {
-              setImageUrl((imgUrl) => [...imgUrl, res.data.secure_url]);
-            } else {
-              setImageUrl(res.data.secure_url);
-            }
-          })
-          .catch((err) => console.log(err));
-      });
+    if (!files?.length) return;
+
+    if (multiple && imageUrl?.length + files?.length > 4) {
+      return notifyError(`Se pueden subir hasta 4 imagenes como máximo!`);
     }
+
+    let cancelled = false;
+
+    (async () => {
+      setUploading(true);
+      for (const file of files) {
+        try {
+          const dataUri = await toDataUri(file);
+          const { url, error } = await uploadCustomerImage(dataUri);
+          if (cancelled) return;
+          if (error || !url) {
+            notifyError(error || "No se pudo subir la imagen.");
+            continue;
+          }
+          if (multiple) {
+            setImageUrl((imgUrl) => [...imgUrl, url]);
+          } else {
+            setImageUrl(url);
+          }
+        } catch (err) {
+          if (!cancelled) notifyError(err.message);
+        }
+      }
+      if (!cancelled) setUploading(false);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
@@ -96,9 +110,11 @@ const Uploader = ({ setImageUrl, imageUrl, multiple }) => {
         <span className="mx-auto flex justify-center">
           <FiUploadCloud className="text-3xl text-kachabazar-500" />
         </span>
-        <p className="text-sm mt-2">Arrastra tu imagen aquí</p>
+        <p className="text-sm mt-2">
+          {uploading ? "Subiendo imagen…" : "Arrastra tu imagen aquí"}
+        </p>
         <em className="text-xs text-gray-400">
-          (Solo se aceptarán imágenes *.jpeg y *.png)
+          (Solo se aceptarán imágenes *.jpeg, *.png y *.webp)
         </em>
       </div>
       <aside className="flex flex-row flex-wrap mt-4">

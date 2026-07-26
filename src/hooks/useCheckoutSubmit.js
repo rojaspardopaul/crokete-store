@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCart } from "react-use-cart";
-// import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 
 //internal import
@@ -15,8 +14,6 @@ import { notifyError, notifySuccess } from "@utils/toast";
 import { addNotification } from "@services/NotificationServices";
 import {
   addOrder,
-  // addRazorpayOrder,
-  // createOrderByRazorPay,
   createPaymentIntent,
   sendEmailInvoiceToCustomer,
 } from "@services/OrderServices";
@@ -49,7 +46,6 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
   const stripe = useStripe();
   const elements = useElements();
   const couponRef = useRef("");
-  // const { error: razorPayError, isLoading, Razorpay } = useRazorpay();
   const { isEmpty, emptyCart, items, cartTotal } = useCart();
 
   const userInfo = getUserSession();
@@ -249,9 +245,6 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
           // await handlePaymentWithStripe(orderInfo);
           await handlePaymentWithStripeV2(orderInfo);
           break;
-        // case "RazorPay":
-        //   await handlePaymentWithRazorpay(orderInfo);
-        //   break;
         case "Cash":
           await handleCashPayment(orderInfo);
           break;
@@ -276,7 +269,7 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
           } placed an order of ${parseFloat(orderResponse?.total).toFixed(2)}!`,
         image:
           userInfo?.image ||
-          "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png",
+          "/placeholder.png",
       };
 
       const updatedData = {
@@ -487,9 +480,6 @@ const useCheckoutSubmit = ({ shippingAddress }) => {
     }
     return stripeError.message || "Error al procesar el pago. Inténtalo de nuevo.";
   };
-
-  // Razorpay payment handler removed — not used
-  // const handlePaymentWithRazorpay = async (orderInfo) => { ... };
 
   const handleShippingCost = (value) => {
     // console.log("handleShippingCost", value);

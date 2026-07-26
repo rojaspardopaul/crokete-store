@@ -42,8 +42,8 @@ export default async function RootLayout({ children }) {
     <html lang="es" className="" suppressHydrationWarning>
       <head>
         {/* Preconnect to critical origins for faster resource loading */}
-        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://mcvufmicaqrhgwdharub.supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://mcvufmicaqrhgwdharub.supabase.co" />
       </head>
       <body
         suppressHydrationWarning

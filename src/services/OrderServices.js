@@ -54,53 +54,6 @@ const createPaymentIntent = async (orderInfo) => {
   }
 };
 
-const addRazorpayOrder = async ({ orderInfo }) => {
-  try {
-    const response = await fetch(`${baseURL}/order/add/razorpay`, {
-      cache: "no-cache",
-      method: "POST",
-      headers: await getHeaders(),
-      body: JSON.stringify({ orderInfo }),
-    });
-
-    const order = await handleResponse(response);
-    revalidateTag("user-orders");
-    revalidateTag("reviewed_products");
-
-    return {
-      order,
-    };
-  } catch (error) {
-    return {
-      error: error.message,
-    };
-  }
-};
-
-const createOrderByRazorPay = async ({ amount }) => {
-  try {
-    const response = await fetch(`${baseURL}/order/create/razorpay`, {
-      cache: "no-cache",
-      method: "POST",
-      headers: await getHeaders(),
-      body: JSON.stringify({ amount }),
-    });
-    const order = await handleResponse(response);
-    // console.log("order", order);
-
-    return {
-      id: order.id,
-      amount: order.amount,
-      currency: order.currency,
-    };
-  } catch (error) {
-    // console.log("error", error);
-    return {
-      error: error.message,
-    };
-  }
-};
-
 const getOrderCustomer = async ({ page = 1, limit = 8 }) => {
   try {
     const response = await fetch(
@@ -171,8 +124,6 @@ const sendEmailInvoiceToCustomer = async (body) => {
 export {
   addOrder,
   createPaymentIntent,
-  addRazorpayOrder,
-  createOrderByRazorPay,
   getOrderCustomer,
   getOrderById,
   sendEmailInvoiceToCustomer,
