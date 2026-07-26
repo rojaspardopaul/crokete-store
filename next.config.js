@@ -11,10 +11,6 @@ const nextConfig = {
     remotePatterns: [
       // Imágenes del catálogo: Supabase Storage (bucket público del proyecto).
       { protocol: "https", hostname: "mcvufmicaqrhgwdharub.supabase.co" },
-      // TRANSITORIO: el backend en producción todavía sirve el catálogo desde
-      // Mongo, cuyas URLs siguen apuntando a Cloudinary. Se puede quitar en
-      // cuanto el corte a Postgres esté desplegado.
-      { protocol: "https", hostname: "res.cloudinary.com" },
       // Avatares de los proveedores OAuth.
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
